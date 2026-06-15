@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PERMATA - Muslimah Wahdah Islamiyah</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -19,18 +19,11 @@
             background: linear-gradient(135deg, rgba(9, 21, 46, 0.8) 0%, rgba(4, 9, 20, 0.98) 100%);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(212, 163, 89, 0.2);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.05);
-            transform: perspective(1200px) translateZ(20px);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .layer-5d-panel:hover {
-            border-color: rgba(212, 163, 89, 0.4);
-            transform: perspective(1200px) translateZ(30px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
         }
         .wall-score-premium {
             background: linear-gradient(145deg, #081126 0%, #02040a 100%);
             border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: 0 12px 24px -6px rgba(0,0,0,0.6);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .wall-score-premium.active-tim {
@@ -39,25 +32,16 @@
             box-shadow: 0 0 30px rgba(212, 163, 89, 0.2);
             transform: scale(1.02);
         }
-        .glow-gold {
-            text-shadow: 0 0 25px rgba(212, 163, 89, 0.5);
-        }
+        .glow-gold { text-shadow: 0 0 25px rgba(212, 163, 89, 0.5); }
         .color-card-5d {
-            background: rgba(4, 8, 16, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            animation: floatCard 3s infinite ease-in-out;
-        }
-        @keyframes floatCard {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-3px); }
+            transition: all 0.3s ease;
         }
         .mic-pulse {
-            animation: micGlow 1.6s infinite cubic-bezier(0.4, 0, 0.6, 1);
+            animation: micGlow 1.4s infinite cubic-bezier(0.4, 0, 0.6, 1);
         }
         @keyframes micGlow {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-            50% { transform: scale(1.06); box-shadow: 0 0 25px 8px rgba(239, 68, 68, 0.2); }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+            50% { transform: scale(1.08); box-shadow: 0 0 20px 6px rgba(239, 68, 68, 0.3); }
         }
     </style>
 </head>
@@ -66,84 +50,85 @@
     <header class="text-center my-2 relative z-10">
         <div class="font-['Amiri'] text-2xl font-bold text-amber-500/20 tracking-widest mb-0.5 select-none">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
         <h1 class="text-3xl font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 glow-gold">PERMATA</h1>
-        <p class="text-[11px] font-bold text-teal-400 uppercase tracking-[0.3em] mt-1 flex items-center justify-center gap-2">
-            Muslimah Wahdah Islamiyah
-        </p>
+        <p class="text-[11px] font-bold text-teal-400 uppercase tracking-[0.3em] mt-1">Muslimah Wahdah Islamiyah</p>
     </header>
 
     <main class="w-full max-w-6xl mx-auto my-auto grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch relative z-10">
         
         <div class="lg:col-span-3 flex flex-col justify-between space-y-4">
-            <div class="layer-5d-panel rounded-3xl p-6 text-center min-h-[480px] flex flex-col justify-between relative overflow-hidden">
+            <div class="layer-5d-panel rounded-3xl p-6 text-center min-h-[490px] flex flex-col justify-between relative overflow-hidden">
                 
-                <div class="absolute top-0 left-0 w-6 h-6 border-t border-l border-amber-500/30 rounded-tl-lg"></div>
-                <div class="absolute top-0 right-0 w-6 h-6 border-t border-r border-amber-500/30 rounded-tr-lg"></div>
-                <div class="absolute bottom-0 left-0 w-6 h-6 border-b border-l border-amber-500/30 rounded-bl-lg"></div>
-                <div class="absolute bottom-0 right-0 w-6 h-6 border-b border-r border-amber-500/30 rounded-br-lg"></div>
-
-                <div class="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
+                <div class="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
                 
                 <div class="flex justify-between items-center text-xs text-slate-400 font-semibold tracking-wide">
-                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 text-[11px]">BABAK SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> <span class="text-slate-700">/</span> 20</span>
-                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 text-[11px]">SISA DURASI: <strong id="timer-text" class="text-amber-400 text-sm">7</strong>s</span>
+                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80">SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> <span class="text-slate-700">/</span> 20</span>
+                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider" id="status-timer-container">Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">4</strong> Detik</span>
                 </div>
 
-                <div id="game-display" class="py-4 my-auto w-full">
+                <div id="game-display" class="py-2 my-auto w-full transition-all duration-300">
                     <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">SISTEM PENTAMATRIX SUARA AKTIF</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Silakan pilih salah satu Tim di papan kanan untuk mengaktifkan sensor mikrofon penangkap 5 warna.</p>
+                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Sistem Akustik Sensor Siap</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">Pilih salah satu Tim di papan skor sebelah kanan untuk mengaktifkan radar penangkap suara jernih berdurasi konsisten.</p>
                     </div>
                 </div>
 
                 <div class="flex flex-col items-center justify-center space-y-2 relative">
-                    <div id="mic-indicator" class="w-11 h-11 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner transition-all duration-500">
+                    <div id="mic-indicator" class="w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner transition-all duration-500">
                         🔒
                     </div>
-                    <div id="speech-preview" class="text-[11px] font-bold text-slate-400 tracking-widest bg-slate-950/90 px-6 py-1.5 rounded-full border border-slate-800 min-h-[30px] min-w-[220px] flex items-center justify-center uppercase">
+                    <div id="speech-preview" class="text-[11px] font-bold text-slate-400 tracking-widest bg-slate-950/90 px-6 py-1.5 rounded-full border border-slate-800 min-h-[30px] min-w-[240px] flex items-center justify-center uppercase">
                         Radar Terkunci
                     </div>
                 </div>
             </div>
             
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
-                <div class="text-xl text-amber-400 select-none">🎯</div>
-                <div class="text-[10.5px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Aturan Pentamatrix (5 Warna):</strong> Layar menampilkan 5 kotak warna acak (Merah, Biru, Kuning, Putih, Hijau). Peserta wajib fokus mencari kotak bertanda <span class="text-amber-400 font-bold">"🎯 SOAL UTAMA"</span> lalu sebutkan warna aslinya secara lisan!
+                <div class="text-xl text-amber-400">⚡</div>
+                <div class="text-[11px] text-slate-400 leading-relaxed">
+                    <strong class="text-amber-400">Sistem Jeda Konsisten Aktif:</strong> Setiap soal berdurasi tetap <span class="text-white font-bold">4 detik</span>. Begitu terjawab, sistem akan berhenti sejenak selama 2 detik agar skor terhitung dengan stabil di papan pengumuman sebelum berpindah otomatis.
                 </div>
             </div>
         </div>
 
         <div class="flex flex-col justify-between space-y-4">
-            <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] pl-1 text-center lg:text-left">🏆 PAPAN DINDING SKOR</h3>
+            <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] text-center lg:text-left pl-1">🏆 PAPAN SKOR DIGITAL</h3>
             
             <div class="grid grid-cols-1 gap-3 flex-grow justify-center">
-                <div onclick="startMatch('A')" id="card-A" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('A')" id="card-A" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-amber-500 rounded-full"></div>
-                        <span class="font-bold text-slate-300 text-sm">TIM A</span>
+                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM A</span>
                     </div>
-                    <div id="score-A" class="text-2xl font-black text-amber-400 font-sans">0</div>
+                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
+                        <span id="score-A" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                    </div>
                 </div>
-                <div onclick="startMatch('B')" id="card-B" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('B')" id="card-B" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-teal-500 rounded-full"></div>
-                        <span class="font-bold text-slate-300 text-sm">TIM B</span>
+                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM B</span>
                     </div>
-                    <div id="score-B" class="text-2xl font-black text-amber-400 font-sans">0</div>
+                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
+                        <span id="score-B" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                    </div>
                 </div>
-                <div onclick="startMatch('C')" id="card-C" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('C')" id="card-C" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-emerald-500 rounded-full"></div>
-                        <span class="font-bold text-slate-300 text-sm">TIM C</span>
+                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM C</span>
                     </div>
-                    <div id="score-C" class="text-2xl font-black text-amber-400 font-sans">0</div>
+                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
+                        <span id="score-C" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                    </div>
                 </div>
-                <div onclick="startMatch('D')" id="card-D" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('D')" id="card-D" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-rose-500 rounded-full"></div>
-                        <span class="font-bold text-slate-300 text-sm">TIM D</span>
+                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM D</span>
                     </div>
-                    <div id="score-D" class="text-2xl font-black text-amber-400 font-sans">0</div>
+                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
+                        <span id="score-D" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                    </div>
                 </div>
             </div>
             
@@ -153,8 +138,8 @@
         </div>
     </main>
 
-    <footer class="text-center text-[9px] text-slate-600 my-2 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Pentamatrix Voice Module Active.
+    <footer class="text-center text-[9px] text-slate-600 my-1 tracking-widest">
+        &copy; 2026 Muslimah Wahdah Islamiyah. Anti-Drift Voice Processor Engine v6.2.
     </footer>
 
     <script>
@@ -162,92 +147,87 @@
         let matchScores = { A: 0, B: 0, C: 0, D: 0 };
         let activeQuestionNum = 0;
         let gameTimer = null;
-        let timeRemaining = 70; // 7 detik agar peserta leluasa membaca formasi 5 kotak acak
+        let timeRemaining = 40; // Tetap 40 (artinya 4.0 detik) secara presisi
         let targetColorAnswer = '';
         let isQuestionActive = false;
+        let isWaitingForNextSoal = false; // Kunci pengaman anti-lompat cepat
 
-        // Ditambahkan opsi warna "PUTIH" sesuai permintaan
-        const coreColors = ["MERAH", "BIRE", "KUNING", "PUTIH", "HIJAU"];
+        const coreColors = ["MERAH", "BIRU", "KUNING", "PUTIH", "HIJAU"];
         
-        // Pemetaan warna teks Tailwind CSS
         const cssTextColors = {
-            "MERAH": "text-red-500",
-            "BIRU": "text-blue-500",
-            "KUNING": "text-amber-400",
-            "PUTIH": "text-slate-100",
-            "HIJAU": "text-emerald-500"
+            "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400",
+            "PUTIH": "text-slate-100", "HIJAU": "text-emerald-500"
         };
 
-        // Pemetaan warna background kotak transparan
         const cssBgColors = {
-            "MERAH": "rgba(220, 38, 38, 0.12)",
-            "BIRU": "rgba(59, 130, 246, 0.12)",
-            "KUNING": "rgba(245, 158, 11, 0.12)",
-            "PUTIH": "rgba(255, 255, 255, 0.08)",
-            "HIJAU": "rgba(16, 185, 129, 0.12)"
+            "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)",
+            "PUTIH": "rgba(255, 255, 255, 0.08)", "HIJAU": "rgba(16, 185, 129, 0.15)"
         };
 
-        // SENSOR SUARA SPEECH RECOGNITION INTERFACE
+        // KONFIGURASI ULTRA-PRESERVED SPEECH RECOGNITION (TANGKAPAN SUARA JERNIH)
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
 
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
             recognition.continuous = true; 
-            recognition.interimResults = false;
+            recognition.interimResults = true; // Mengaktifkan pembacaan realtime sebelum peserta selesai berbicara
             recognition.lang = 'id-ID';
 
             recognition.onresult = function(event) {
-                if (!isQuestionActive) return;
+                // Jangan terima suara jika sedang dalam masa jeda 2 detik atau game mati
+                if (!isQuestionActive || isWaitingForNextSoal) return;
                 
-                let resultIndex = event.results.length - 1;
-                let kataSuara = event.results[resultIndex][0].transcript.toUpperCase().trim();
+                let hasilSuaraRealtime = "";
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    hasilSuaraRealtime += event.results[i][0].transcript;
+                }
                 
-                document.getElementById('speech-preview').innerText = "Mendengar: " + kataSuara;
+                let kataKunci = hasilSuaraRealtime.toUpperCase().trim();
+                document.getElementById('speech-preview').innerText = "Mendengar: " + kataKunci;
 
-                if (kataSuara.includes("MERAH") || kataSuara.includes("MERA")) {
+                // FILTER MULTI-DIALEK KATA JAWABAN (Meningkatkan Akurasi Kebisingan Ruangan)
+                if (kataKunci.includes("MERAH") || kataKunci.includes("MERA") || kataKunci.includes("MERAHAN")) {
                     evaluateVoiceInput("MERAH");
-                } else if (kataSuara.includes("HIJAU") || kataSuara.includes("IJO")) {
+                } else if (kataKunci.includes("HIJAU") || kataKunci.includes("IJO") || kataKunci.includes("HIJAUAN")) {
                     evaluateVoiceInput("HIJAU");
-                } else if (kataSuara.includes("BIRU")) {
+                } else if (kataKunci.includes("BIRU") || kataKunci.includes("BIRUAN")) {
                     evaluateVoiceInput("BIRU");
-                } else if (kataSuara.includes("KUNING")) {
+                } else if (kataSuara = kataKunci.includes("KUNING") || kataKunci.includes("KUNINGAN")) {
                     evaluateVoiceInput("KUNING");
-                } else if (kataSuara.includes("PUTIH") || kataSuara.includes("PUTI")) {
+                } else if (kataKunci.includes("PUTIH") || kataKunci.includes("PUTI") || kataKunci.includes("PUTIHES")) {
                     evaluateVoiceInput("PUTIH");
                 }
             };
 
             recognition.onend = function() {
+                // Pertahankan mikrofon tetap menyala jernih selama babak tanding aktif
                 if (isQuestionActive) {
                     try { recognition.start(); } catch(e) {}
                 }
             };
         } else {
-            alert("Browser Google Chrome versi Desktop direkomendasikan untuk mengaktifkan sensor mikrofon.");
+            alert("Harap jalankan di Google Chrome Desktop demi stabilitas tangkapan mikrofon siber.");
         }
 
+        // GENERATOR AUDIO FEEDBACK (TING & TROOT)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
         function playSoundEffect(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            osc.connect(gain); gain.connect(audioCtx.destination);
 
             if (type === 'correct') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
+                osc.type = 'sine'; osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.2);
             } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(100, audioCtx.currentTime); 
-                gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(95, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.35);
             }
         }
 
@@ -257,30 +237,26 @@
                 let textToSpeak = finalScore >= 70 ? "MasyaAllah Luar Biasa!" : "Semangat!";
                 let utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = 'id-ID';
-                
-                let availableVoices = window.speechSynthesis.getVoices();
-                let femaleVoice = availableVoices.find(voice => voice.lang.includes('id') && (voice.name.toLowerCase().includes('female') || voice.name.toLowerCase().includes('wanita')));
-                if (femaleVoice) utterance.voice = femaleVoice;
-                
-                utterance.pitch = 1.12; utterance.rate = 0.95;
                 window.speechSynthesis.speak(utterance);
             }
         }
 
+        // MEMULAI PERTANDINGAN TIM
         function startMatch(tim) {
             clearInterval(gameTimer);
+            isWaitingForNextSoal = false;
             
-            // Set warna tim aktif di dinding skor
-            ["A", "B", "C", "D"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
-            document.getElementById(`card-${tim}`).classList.add('active-tim');
+            coreColors.forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
+            const activeCard = document.getElementById(`card-${tim}`);
+            if(activeCard) activeCard.classList.add('active-tim');
 
             selectedTim = tim;
             activeQuestionNum = 0;
             isQuestionActive = true;
 
             let micElement = document.getElementById('mic-indicator');
-            micElement.innerHTML = "🔴";
-            micElement.className = "w-11 h-11 rounded-full bg-red-950 border border-red-500/40 flex items-center justify-center text-white text-xs mic-pulse";
+            micElement.innerHTML = "🎙️";
+            micElement.className = "w-12 h-12 rounded-full bg-red-950 border border-red-500/50 flex items-center justify-center text-white text-base mic-pulse";
             document.getElementById('speech-preview').innerText = "Mendengarkan...";
             
             try { recognition.start(); } catch(e) {}
@@ -288,6 +264,7 @@
             generateNextSoal();
         }
 
+        // GENERATOR FORMASI 5 WARNA ACAK SEKALIGUS
         function generateNextSoal() {
             if (activeQuestionNum >= 20) {
                 concludeMatch();
@@ -295,31 +272,27 @@
             }
             activeQuestionNum++;
             document.getElementById('question-num').innerText = activeQuestionNum;
+            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">4</strong> Detik`;
 
-            // Penulisan array warna murni (diperbaiki teks "BIRU")
-            const colorsList = ["MERAH", "BIRU", "KUNING", "PUTIH", "HIJAU"];
+            isWaitingForNextSoal = false; // Buka kunci interaksi suara
 
-            // Mengacak urutan teks dan urutan warna visual secara independen
-            let arrayTeksWarna = [...colorsList].sort(() => Math.random() - 0.5);
-            let arrayVisualWarna = [...colorsList].sort(() => Math.random() - 0.5);
+            let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
+            let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
 
-            // Pilih baris target (0 sampai 4) sebagai kunci jawaban
             let indexTargetJawaban = Math.floor(Math.random() * 5);
             targetColorAnswer = arrayVisualWarna[indexTargetJawaban]; 
 
-            // Bangun layout grid asimetris 5 dimensi mewah (3 kolom di baris atas, 2 kolom di baris bawah)
-            let htmlGridContent = `<div class="flex flex-wrap justify-center gap-3.5 max-w-2xl mx-auto mt-2">`;
-            
+            let htmlGridContent = `<div class="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto mt-2">`;
             for (let i = 0; i < 5; i++) {
                 let teks = arrayTeksWarna[i];
                 let warnaVisual = arrayVisualWarna[i];
                 let cssTeks = cssTextColors[warnaVisual];
                 let cssBg = cssBgColors[warnaVisual];
                 
-                let penandaTarget = (i === indexTargetJawaban) ? `<span class="absolute top-1 left-2.5 text-[8px] tracking-widest text-amber-400 font-extrabold uppercase">🎯 SOAL UTAMA</span>` : "";
+                let penandaTarget = (i === indexTargetJawaban) ? `<span class="absolute top-1 left-2.5 text-[8px] tracking-widest text-amber-400 font-extrabold bg-slate-950/90 px-1.5 py-0.5 rounded border border-amber-500/30">🎯 SOAL UTAMA</span>` : "";
 
                 htmlGridContent += `
-                    <div class="color-card-5d p-3.5 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-20 border border-slate-800/40 w-[30%] min-w-[130px] flex-grow" style="background-color: ${cssBg};">
+                    <div class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-20 border border-slate-800/40 w-[28%] min-w-[125px] flex-grow" style="background-color: ${cssBg};">
                         ${penandaTarget}
                         <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
                     </div>
@@ -327,71 +300,101 @@
             }
             htmlGridContent += `</div>`;
 
-            let displayArea = document.getElementById('game-display');
-            displayArea.innerHTML = `
-                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">PENTAMATRIX TIM ${selectedTim}</span>
-                <p class="text-[11px] text-slate-300 mb-3">Sebutkan warna asli dari teks yang bertanda <span class="text-amber-400 font-bold">"🎯 SOAL UTAMA"</span>!</p>
+            document.getElementById('game-display').innerHTML = `
+                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim}</span>
+                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari teks yang bertanda <span class="text-amber-400 font-bold">"🎯 SOAL UTAMA"</span>!</p>
                 ${htmlGridContent}
             `;
 
             initiateCountdown();
         }
 
+        // TIMING KONSISTEN 4 DETIK (40 * 100 Ticks)
         function initiateCountdown() {
             clearInterval(gameTimer);
-            timeRemaining = 70; // 7.0 detik
+            timeRemaining = 40; 
             document.getElementById('timer-bar').style.width = "100%";
             
             gameTimer = setInterval(() => {
+                if (isWaitingForNextSoal) return; // Freeze timer jika sedang dalam masa jeda penampilan hasil
+                
                 timeRemaining--;
-                document.getElementById('timer-text').innerText = (timeRemaining / 10).toFixed(0);
-                document.getElementById('timer-bar').style.width = (timeRemaining * 1.42) + "%";
+                document.getElementById('timer-text').innerText = Math.ceil(timeRemaining / 10);
+                document.getElementById('timer-bar').style.width = (timeRemaining * 2.5) + "%";
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
-                    playSoundEffect('wrong'); 
-                    generateNextSoal(); 
+                    triggerJedaJawaban(false, "WAKTU HABIS!"); 
                 }
             }, 100);
         }
 
+        // VALIDASI INPUTAN GELOMBANG SUARA PESERTA
         function evaluateVoiceInput(spokenColor) {
+            if (isWaitingForNextSoal) return; 
             clearInterval(gameTimer);
+
             if (spokenColor === targetColorAnswer) {
-                playSoundEffect('correct'); 
                 matchScores[selectedTim] += 5; 
-                document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
+                document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim]; // UPDATE REALTIME DI PAPAN DINDING SKOR KANAN
+                triggerJedaJawaban(true, `BENAR! (+5 POIN)`);
             } else {
-                playSoundEffect('wrong'); 
+                triggerJedaJawaban(false, `SALAH! (JAWABAN: ${targetColorAnswer})`);
             }
-            generateNextSoal();
         }
 
+        // PENGENDALIAN JEDA 2 DETIK ANTI-LOMPAT CEPAT
+        function triggerJedaJawaban(isBenar, pesanInfo) {
+            isWaitingForNextSoal = true; // Mengunci input suara agar tidak membaca double jawaban
+            playSoundEffect(isBenar ? 'correct' : 'wrong');
+            
+            document.getElementById('timer-bar').style.width = "0%";
+            document.getElementById('status-timer-container').innerHTML = `<span class="text-amber-400 font-bold animated pulse">MEMPERSIAPKAN SOAL BERIKUTNYA...</span>`;
+            
+            // Tampilkan Feedback Instan Menarik Di Tengah Layar
+            const overlayWarna = isBenar ? 'text-emerald-400' : 'text-rose-500';
+            document.getElementById('game-display').innerHTML = `
+                <div class="flex flex-col items-center justify-center h-48 space-y-2">
+                    <div class="text-5xl">${isBenar ? '✨' : '❌'}</div>
+                    <h3 class="text-2xl font-black ${overlayWarna} tracking-wider">${pesanInfo}</h3>
+                    <p class="text-xs text-slate-500 tracking-widest uppercase mt-2">Menyimpan nilai ke papan skor dinding...</p>
+                </div>
+            `;
+
+            // Tahan layar selama tepat 2 detik secara konsisten, lalu panggil soal baru
+            setTimeout(() => {
+                generateNextSoal();
+            }, 2000);
+        }
+
+        // AKHIR PERTANDINGAN TIM
         function concludeMatch() {
             clearInterval(gameTimer);
             isQuestionActive = false;
+            isWaitingForNextSoal = false;
             try { recognition.stop(); } catch(e) {}
 
             let micElement = document.getElementById('mic-indicator');
             micElement.innerHTML = "🔒";
-            micElement.className = "w-11 h-11 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner";
+            micElement.className = "w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner";
             document.getElementById('speech-preview').innerText = "Sistem Selesai";
             document.getElementById('timer-bar').style.width = "0%";
             
             let totalSkor = matchScores[selectedTim];
-            
             document.getElementById('game-display').innerHTML = `
-                <span class="text-emerald-400 font-bold block text-sm tracking-widest mb-1">🎉 MATCH SELESAI</span>
-                <span class="text-xs text-slate-400">Total Perolehan Nilai Akhir Tim ${selectedTim}:</span>
+                <span class="text-emerald-400 font-bold block text-sm tracking-widest mb-1">🎉 PERTANDINGAN SELESAI</span>
+                <span class="text-xs text-slate-400">Total Akumulasi Nilai Tim ${selectedTim}:</span>
                 <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400 glow-gold mt-3 block">${totalSkor} POIN</span>
             `;
             
             playFinalCommentVoice(totalSkor);
         }
 
+        // RESET MASTER TOTAL PERMAINAN
         function resetSystem() {
             clearInterval(gameTimer);
             isQuestionActive = false;
+            isWaitingForNextSoal = false;
             try { recognition.stop(); } catch(e) {}
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             
@@ -405,18 +408,18 @@
             });
             
             document.getElementById('question-num').innerText = "0";
-            document.getElementById('timer-text').innerText = "7";
+            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">4</strong> Detik`;
             document.getElementById('timer-bar').style.width = "100%";
             
             let micElement = document.getElementById('mic-indicator');
             micElement.innerHTML = "🔒";
-            micElement.className = "w-11 h-11 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner";
+            micElement.className = "w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base";
             document.getElementById('speech-preview').innerText = "Radar Terkunci";
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">SISTEM PENTAMATRIX SUARA AKTIF</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Silakan pilih salah satu Tim di papan kanan untuk mengaktifkan sensor mikrofon penangkap 5 warna.</p>
+                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Sistem Akustik Sensor Siap</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Pilih salah satu Tim di papan skor sebelah kanan untuk mengaktifkan radar penangkap suara jernih berdurasi konsisten.</p>
                 </div>
             `;
         }
