@@ -62,7 +62,7 @@
                 
                 <div class="flex justify-between items-center text-xs text-slate-400 font-semibold tracking-wide">
                     <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80">SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> <span class="text-slate-700">/</span> 20</span>
-                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider" id="status-timer-container">Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">4</strong> Detik</span>
+                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider" id="status-timer-container">Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik</span>
                 </div>
 
                 <div id="game-display" class="py-2 my-auto w-full transition-all duration-300">
@@ -85,7 +85,7 @@
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
                 <div class="text-xl text-amber-400">⚡</div>
                 <div class="text-[11px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Sistem Jeda Konsisten Aktif:</strong> Setiap soal berdurasi tetap <span class="text-white font-bold">4 detik</span>. Begitu terjawab, sistem akan berhenti sejenak selama 2 detik agar skor terhitung dengan stabil di papan pengumuman sebelum berpindah otomatis.
+                    <strong class="text-amber-400">Sistem Jeda Konsisten Aktif:</strong> Setiap soal berdurasi tetap <span class="text-white font-bold">5 detik</span>. Begitu terjawab, sistem akan berhenti sejenak selama 2 detik agar skor terhitung dengan stabil di papan pengumuman sebelum berpindah otomatis.
                 </div>
             </div>
         </div>
@@ -147,21 +147,22 @@
         let matchScores = { A: 0, B: 0, C: 0, D: 0 };
         let activeQuestionNum = 0;
         let gameTimer = null;
-        let timeRemaining = 40; // Tetap 40 (artinya 4.0 detik) secara presisi
+        let timeRemaining = 50; // Tetap 50 (artinya 5.0 detik) secara presisi
         let targetColorAnswer = '';
         let isQuestionActive = false;
         let isWaitingForNextSoal = false; // Kunci pengaman anti-lompat cepat
 
-        const coreColors = ["MERAH", "BIRU", "KUNING", "PUTIH", "HIJAU"];
+        // Warna dibatasi hanya 4 sesuai permintaan
+        const coreColors = ["MERAH", "BIRU", "KUNING", "HIJAU"];
         
         const cssTextColors = {
             "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400",
-            "PUTIH": "text-slate-100", "HIJAU": "text-emerald-500"
+            "HIJAU": "text-emerald-500"
         };
 
         const cssBgColors = {
             "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)",
-            "PUTIH": "rgba(255, 255, 255, 0.08)", "HIJAU": "rgba(16, 185, 129, 0.15)"
+            "HIJAU": "rgba(16, 185, 129, 0.15)"
         };
 
         // KONFIGURASI ULTRA-PRESERVED SPEECH RECOGNITION (TANGKAPAN SUARA JERNIH)
@@ -193,10 +194,8 @@
                     evaluateVoiceInput("HIJAU");
                 } else if (kataKunci.includes("BIRU") || kataKunci.includes("BIRUAN")) {
                     evaluateVoiceInput("BIRU");
-                } else if (kataSuara = kataKunci.includes("KUNING") || kataKunci.includes("KUNINGAN")) {
+                } else if (kataKunci.includes("KUNING") || kataKunci.includes("KUNINGAN")) {
                     evaluateVoiceInput("KUNING");
-                } else if (kataKunci.includes("PUTIH") || kataKunci.includes("PUTI") || kataKunci.includes("PUTIHES")) {
-                    evaluateVoiceInput("PUTIH");
                 }
             };
 
@@ -246,7 +245,7 @@
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
             
-            coreColors.forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
+            ["A", "B", "C", "D"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
             const activeCard = document.getElementById(`card-${tim}`);
             if(activeCard) activeCard.classList.add('active-tim');
 
@@ -264,7 +263,7 @@
             generateNextSoal();
         }
 
-        // GENERATOR FORMASI 5 WARNA ACAK SEKALIGUS
+        // GENERATOR FORMASI 4 WARNA ACAK SEKALIGUS
         function generateNextSoal() {
             if (activeQuestionNum >= 20) {
                 concludeMatch();
@@ -272,18 +271,18 @@
             }
             activeQuestionNum++;
             document.getElementById('question-num').innerText = activeQuestionNum;
-            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">4</strong> Detik`;
+            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
 
             isWaitingForNextSoal = false; // Buka kunci interaksi suara
 
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
 
-            let indexTargetJawaban = Math.floor(Math.random() * 5);
+            let indexTargetJawaban = Math.floor(Math.random() * 4);
             targetColorAnswer = arrayVisualWarna[indexTargetJawaban]; 
 
-            let htmlGridContent = `<div class="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto mt-2">`;
-            for (let i = 0; i < 5; i++) {
+            let htmlGridContent = `<div class="grid grid-cols-2 gap-4 max-w-xl mx-auto mt-2">`;
+            for (let i = 0; i < 4; i++) {
                 let teks = arrayTeksWarna[i];
                 let warnaVisual = arrayVisualWarna[i];
                 let cssTeks = cssTextColors[warnaVisual];
@@ -292,9 +291,9 @@
                 let penandaTarget = (i === indexTargetJawaban) ? `<span class="absolute top-1 left-2.5 text-[8px] tracking-widest text-amber-400 font-extrabold bg-slate-950/90 px-1.5 py-0.5 rounded border border-amber-500/30">🎯 SOAL UTAMA</span>` : "";
 
                 htmlGridContent += `
-                    <div class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-20 border border-slate-800/40 w-[28%] min-w-[125px] flex-grow" style="background-color: ${cssBg};">
+                    <div class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-24 border border-slate-800/40 w-full" style="background-color: ${cssBg};">
                         ${penandaTarget}
-                        <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
+                        <h4 class="text-2xl font-black tracking-widest ${cssTeks}">${teks}</h4>
                     </div>
                 `;
             }
@@ -309,10 +308,10 @@
             initiateCountdown();
         }
 
-        // TIMING KONSISTEN 4 DETIK (40 * 100 Ticks)
+        // TIMING KONSISTEN 5 DETIK (50 * 100 Ticks)
         function initiateCountdown() {
             clearInterval(gameTimer);
-            timeRemaining = 40; 
+            timeRemaining = 50; 
             document.getElementById('timer-bar').style.width = "100%";
             
             gameTimer = setInterval(() => {
@@ -320,7 +319,7 @@
                 
                 timeRemaining--;
                 document.getElementById('timer-text').innerText = Math.ceil(timeRemaining / 10);
-                document.getElementById('timer-bar').style.width = (timeRemaining * 2.5) + "%";
+                document.getElementById('timer-bar').style.width = (timeRemaining * 2) + "%";
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
@@ -408,7 +407,7 @@
             });
             
             document.getElementById('question-num').innerText = "0";
-            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">4</strong> Detik`;
+            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
             document.getElementById('timer-bar').style.width = "100%";
             
             let micElement = document.getElementById('mic-indicator');
