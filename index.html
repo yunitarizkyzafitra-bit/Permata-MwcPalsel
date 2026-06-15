@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PERMATA Premium - Multi Screen System</title>
+    <title>PERMATA Premium - Multi Screen Dynamic System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -43,6 +44,7 @@
             0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
             50% { transform: scale(1.05); box-shadow: 0 0 30px 10px rgba(239, 68, 68, 0.3); }
         }
+        #qrcode img { margin: 0 auto; border: 8px solid white; border-radius: 12px; }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-8 islamic-pattern">
@@ -74,7 +76,7 @@
         <main class="w-full max-w-6xl mx-auto my-auto grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch relative z-10">
             
             <div class="lg:col-span-3 flex flex-col justify-between space-y-4">
-                <div class="premium-panel rounded-3xl p-6 md:p-8 text-center min-h-[460px] flex flex-col justify-between relative overflow-hidden">
+                <div class="premium-panel rounded-3xl p-6 md:p-8 text-center min-h-[480px] flex flex-col justify-between relative overflow-hidden">
                     
                     <div class="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
                     
@@ -86,7 +88,7 @@
                         <span class="bg-slate-950/80 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider">WAKTU: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S</span>
                     </div>
 
-                    <div id="game-display" class="py-4 my-auto w-full">
+                    <div id="game-display" class="py-4 my-auto w-full flex flex-col items-center justify-center">
                         </div>
 
                     <div id="hp-control-deck" class="hidden bg-slate-950/80 border border-slate-800 rounded-2xl p-4 mt-2">
@@ -95,7 +97,7 @@
                             <div class="text-[11px] font-bold text-amber-400">RADAR KONTROL HP AKTIF</div>
                         </div>
                         <div id="speech-preview" class="text-xs font-bold text-slate-400 bg-black/50 py-2.5 px-4 rounded-xl min-h-[36px] flex items-center justify-center border border-slate-900 uppercase tracking-wider">
-                            Menunggu instruksi laptop...
+                            Menunggu inisiasi panggung...
                         </div>
                     </div>
                 </div>
@@ -103,7 +105,7 @@
                 <div class="bg-slate-950/40 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3 shadow-xl">
                     <div class="text-xl text-amber-500">⚜️</div>
                     <div class="text-[10px] text-slate-400 leading-relaxed" id="system-instruction-note">
-                        Pilih tim pada Papan Skor di sebelah kanan untuk mendistribusikan enkripsi soal ke dalam sistem.
+                        Pastikan HP dan Laptop terhubung hijau sebelum menekan tombol nama Tim.
                     </div>
                 </div>
             </div>
@@ -146,17 +148,13 @@
                 </button>
             </div>
         </main>
-
-        <footer class="text-center text-[9px] text-slate-700 my-2 tracking-widest">
-            &copy; 2026 Muslimah Wahdah Islamiyah. Professional Wireless Engine.
-        </footer>
     </div>
 
     <script>
         let deviceMode = ''; 
         let peer = null;
         let peerConnection = null;
-        const PEER_ROOM_ID = "permata-wahdah-islamiyah-room-2026"; 
+        let finalRoomID = '';
 
         let selectedTim = '';
         let matchScores = { Tarbiyah: 0, Tahsin: 0, Dirosa: 0 };
@@ -175,46 +173,95 @@
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
-        let audioCtx = null; // Diinisialisasi saat interaksi pengguna
+        let audioCtx = null;
 
         function initMode(mode) {
             deviceMode = mode;
             document.getElementById('mode-selector').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
 
-            // Inisialisasi Audio Context dengan aman setelah tombol ditekan
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            } catch(e) { console.log("AudioContext tidak didukung"); }
+            try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+
+            // Cek parameter URL untuk mendeteksi auto-room HP
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetRoom = urlParams.get('room');
 
             if (deviceMode === 'laptop') {
-                setupLaptopScreen();
+                // Generate ID acak 5 digit agar tidak crash di HTTPS
+                finalRoomID = "permata-" + Math.floor(10000 + Math.random() * 90000);
                 initPeerJSForLaptop();
             } else {
-                setupHPScreen();
-                initPeerJSForHP();
+                if (targetRoom) {
+                    finalRoomID = targetRoom;
+                    setupHPScreen();
+                    initPeerJSForHP();
+                } else {
+                    document.getElementById('game-display').innerHTML = `
+                        <div class="p-6 text-center text-rose-400 font-bold">
+                            ⚠️ Silakan scan QR Code langsung dari layar laptop untuk masuk ke kontrol HP.
+                        </div>
+                    `;
+                }
             }
         }
 
-        function setupLaptopScreen() {
-            document.getElementById('game-display').innerHTML = `
-                <div class="max-w-md mx-auto text-center space-y-3 py-6">
-                    <div class="text-4xl animate-pulse">📡</div>
-                    <span class="text-xs font-bold text-amber-500 tracking-widest uppercase block">Sinkronisasi Jaringan Nirkabel</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Sistem siap. Silakan klik salah satu nama <strong class="text-amber-400">TIM</strong> di sebelah kanan untuk memunculkan kotak soal pertama!</p>
-                </div>
-            `;
+        function initPeerJSForLaptop() {
+            peer = new Peer(finalRoomID);
+            
+            peer.on('open', (id) => {
+                updateSyncUI(false, "MENUNGGU HP...");
+                // Generate Link & QR Code otomatis
+                const currentBaseUrl = window.location.href.split('?')[0];
+                const targetConnectUrl = `${currentBaseUrl}?room=${id}`;
+
+                document.getElementById('game-display').innerHTML = `
+                    <div class="max-w-md mx-auto text-center space-y-4 py-4">
+                        <span class="text-xs font-bold text-amber-400 tracking-widest uppercase block">PINDAI UNTUK HUBUNGKAN HANDPHONE</span>
+                        <div id="qrcode" class="my-2 flex justify-center"></div>
+                        <p class="text-[11px] text-slate-400 leading-relaxed px-4">Scan QR di atas dengan HP Juri/Peserta, atau buka link di bawah ini di browser HP:</p>
+                        <input type="text" value="${targetConnectUrl}" readonly class="w-full bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-[10px] text-teal-400 text-center select-all">
+                    </div>
+                `;
+                new QRCode(document.getElementById("qrcode"), { text: targetConnectUrl, width: 160, height: 160 });
+            });
+
+            peer.on('connection', (conn) => {
+                peerConnection = conn;
+                updateSyncUI(true, "TERINTEGRASI");
+                document.getElementById('game-display').innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-5xl mb-3 animate-bounce">🟢</div>
+                        <h3 class="text-xl font-bold text-emerald-400 tracking-wider">KONEKSI BERHASIL DIDIRIKAN</h3>
+                        <p class="text-xs text-slate-400 mt-1">Silakan klik nama <strong class="text-amber-400">TIM</strong> di sebelah kanan untuk memulai kuis.</p>
+                    </div>
+                `;
+                listenToHPMessages();
+            });
+        }
+
+        function initPeerJSForHP() {
+            peer = new Peer();
+            peer.on('open', () => {
+                updateSyncUI(false, "MENYAMBUNGKAN...");
+                let attempts = setInterval(() => {
+                    peerConnection = peer.connect(finalRoomID);
+                    peerConnection.on('open', () => {
+                        clearInterval(attempts);
+                        updateSyncUI(true, "TERKONEKSI LAPTOP");
+                        listenToLaptopMessages();
+                    });
+                }, 1000);
+            });
         }
 
         function setupHPScreen() {
             document.getElementById('hp-control-deck').classList.remove('hidden');
             document.getElementById('btn-master-reset').classList.add('hidden');
-            document.getElementById('system-instruction-note').innerText = "MODE HP AKTIF: Letakkan smartphone ini dekat dengan mic peserta untuk menangkap artikulasi warna secara jernih.";
             
             document.getElementById('game-display').innerHTML = `
-                <div class="max-w-sm mx-auto text-center py-6">
+                <div class="text-center py-6">
                     <div class="text-3xl mb-2">📱</div>
-                    <p class="text-xs text-slate-400">Handphone siap digunakan sebagai penerima input suara nirkabel.</p>
+                    <p class="text-xs text-slate-400">Smartphone aktif sebagai penerima ketukan mic suara.</p>
                 </div>
             `;
 
@@ -231,7 +278,7 @@
                         textResult += event.results[i][0].transcript;
                     }
                     let rawVoice = textResult.toLowerCase().trim();
-                    document.getElementById('speech-preview').innerText = "Mendengar: " + rawVoice.toUpperCase();
+                    document.getElementById('speech-preview').innerText = rawVoice.toUpperCase();
 
                     let kataKata = rawVoice.split(/\s+/);
                     kataKata.forEach(kata => {
@@ -256,41 +303,15 @@
             }
         }
 
-        function initPeerJSForLaptop() {
-            peer = new Peer(PEER_ROOM_ID);
-            peer.on('open', () => { updateSyncUI(false, "MENUNGGU HP..."); });
-            peer.on('connection', (conn) => {
-                peerConnection = conn;
-                updateSyncUI(true, "TERINTEGRASI");
-                listenToHPMessages();
-            });
-        }
-
-        function initPeerJSForHP() {
-            peer = new Peer(); 
-            peer.on('open', () => {
-                updateSyncUI(false, "MENYAMBUNGKAN...");
-                let connectAttempts = setInterval(() => {
-                    peerConnection = peer.connect(PEER_ROOM_ID);
-                    peerConnection.on('open', () => {
-                        clearInterval(connectAttempts);
-                        updateSyncUI(true, "TERKONEKSI LAPTOP");
-                        listenToLaptopMessages();
-                    });
-                }, 1500);
-            });
-        }
-
         function updateSyncUI(connected, text) {
             const badge = document.getElementById('sync-badge');
             const txtEl = document.getElementById('sync-text');
+            if(!txtEl) return;
             txtEl.innerText = text;
             if (connected) {
                 badge.className = "bg-emerald-950/50 text-emerald-400 px-4 py-1.5 rounded-full border border-emerald-900 flex items-center gap-2 text-[10px]";
-                badge.querySelector('span').className = "w-2 h-2 rounded-full bg-emerald-400";
             } else {
                 badge.className = "bg-rose-950/40 text-rose-400 px-4 py-1.5 rounded-full border border-rose-900/50 flex items-center gap-2 text-[10px]";
-                badge.querySelector('span').className = "w-2 h-2 rounded-full bg-rose-500 animate-pulse";
             }
         }
 
@@ -317,9 +338,8 @@
                     document.getElementById('question-num').innerText = data.qNum;
                     document.getElementById('mic-status-badge').innerText = "🎙️ MIC ON";
                     document.getElementById('mic-status-badge').className = "text-[10px] font-bold px-3 py-1 bg-red-950 text-red-400 rounded-full border border-red-900 pulse-mic";
-                    document.getElementById('speech-preview').innerText = "SILAKAN BICARA (KIRI KE KANAN)...";
-
-                    try { recognition.stop(); setTimeout(() => { recognition.start(); }, 40); } catch(e) { try{recognition.start();}catch(x){} }
+                    
+                    try { recognition.stop(); setTimeout(() => { recognition.start(); }, 50); } catch(e) { try{recognition.start();}catch(x){} }
                 }
                 if (data.type === 'LOCK_SYSTEM') {
                     isQuestionActive = false;
@@ -327,24 +347,20 @@
                     try { recognition.stop(); } catch(e) {}
                     document.getElementById('mic-status-badge').innerText = "🔒 MIC LOCK";
                     document.getElementById('mic-status-badge').className = "text-[10px] font-bold px-3 py-1 bg-slate-900 text-slate-500 rounded-full border border-slate-800";
-                    document.getElementById('speech-preview').innerText = "Memproses transisi babak...";
                 }
                 if (data.type === 'SCORE_SYNC') {
                     document.getElementById(`score-${data.tim}`).innerText = data.score;
                 }
                 if (data.type === 'RESET') {
-                    location.reload();
+                    window.location.href = window.location.href.split('?')[0];
                 }
             });
         }
 
         function triggerSelectTim(tim) {
-            if (deviceMode !== 'laptop') return; 
+            if (deviceMode !== 'laptop' || !peerConnection) return; 
             
-            // Aktifkan Audio Context jika status ter-suspend oleh browser
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
 
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
@@ -399,7 +415,7 @@
 
             document.getElementById('game-display').innerHTML = `
                 <span class="text-[11px] font-bold text-teal-400 tracking-[0.25em] uppercase block mb-1">GILIRAN TIM: ${selectedTim.toUpperCase()}</span>
-                <p class="text-xs text-slate-400 mb-4 tracking-wide">Sebutkan warna asli dari teks di bawah dari arah <span class="text-amber-400 font-bold">Kiri ke Kanan!</span></p>
+                <p class="text-xs text-slate-400 mb-4 tracking-wide">Sebutkan warna asli teks dari <span class="text-amber-400 font-bold">Kiri ke Kanan!</span></p>
                 ${htmlGridContent}
             `;
 
@@ -413,9 +429,7 @@
             currentSequenceIndex++;
             if (currentSequenceIndex === 3) {
                 isWaitingForNextSoal = true;
-                if (peerConnection) {
-                    peerConnection.send({ type: 'ROUND_SUCCESS' });
-                }
+                if (peerConnection) { peerConnection.send({ type: 'ROUND_SUCCESS' }); }
             }
         }
 
@@ -469,8 +483,6 @@
 
         function playSound(type) {
             if (!audioCtx) return;
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
@@ -491,7 +503,6 @@
             clearInterval(gameTimer);
             isQuestionActive = false;
             if (peerConnection) { peerConnection.send({ type: 'LOCK_SYSTEM' }); }
-
             document.getElementById('timer-bar').style.width = "0%";
             let totalSkor = matchScores[selectedTim];
             document.getElementById('game-display').innerHTML = `
@@ -503,7 +514,7 @@
 
         function resetSystemMaster() {
             if (peerConnection) { peerConnection.send({ type: 'RESET' }); }
-            setTimeout(() => { location.reload(); }, 300);
+            setTimeout(() => { window.location.href = window.location.href.split('?')[0]; }, 300);
         }
     </script>
 </body>
