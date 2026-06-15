@@ -40,6 +40,10 @@
             0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
             50% { transform: scale(1.1); box-shadow: 0 0 25px 8px rgba(220, 38, 38, 0.4); }
         }
+        .color-checked {
+            border: 2px solid #10b981 !important;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+        }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-6 islamic-pattern">
@@ -64,12 +68,14 @@
 
                 <div id="game-display" class="py-2 my-auto w-full">
                     <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Mikrofon Otomatis Aktif</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan. Sistem akan langsung mendengarkan jawaban suara secara otomatis tanpa setting tambahan.</p>
+                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Detektor Beruntun Aktif</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai. Peserta harus menyebutkan warna asli keempat kotak dalam waktu 5 detik untuk mendapatkan 5 poin.</p>
                     </div>
                 </div>
 
                 <div class="flex flex-col items-center justify-center space-y-2 relative">
+                    <div id="collected-badges" class="flex gap-2 mb-1 justify-center min-h-[24px]">
+                        </div>
                     <div id="mic-indicator" class="w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner">
                         🔒
                     </div>
@@ -82,7 +88,7 @@
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
                 <div class="text-xl text-amber-400">⚡</div>
                 <div class="text-[11px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Sistem Detektor Cerdas:</strong> Mikrofon diatur otomatis mengabaikan kata pelengkap dan fokus menangkap inti warna utama dalam durasi 5 detik.
+                    <strong class="text-amber-400">Aturan Akumulasi Skor:</strong> Poin <span class="text-emerald-400 font-bold">+5</span> diberikan hanya jika peserta berhasil menyebutkan seluruh <span class="text-white font-bold">4 warna</span> sebelum waktu habis. Urutan penyebutan bebas.
                 </div>
             </div>
         </div>
@@ -136,7 +142,7 @@
     </main>
 
     <footer class="text-center text-[9px] text-slate-600 my-1 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Auto-Voice Filter Engine.
+        &copy; 2026 Muslimah Wahdah Islamiyah. Multi-Voice Target Core.
     </footer>
 
     <script>
@@ -145,9 +151,11 @@
         let activeQuestionNum = 0;
         let gameTimer = null;
         let timeRemaining = 50; 
-        let targetColorAnswer = '';
         let isQuestionActive = false;
         let isWaitingForNextSoal = false;
+
+        // Objek pelacak status warna yang berhasil disebutkan pada soal berjalan
+        let SpokenColorsTracker = { MERAH: false, BIRU: false, KUNING: false, HIJAU: false };
 
         const coreColors = ["MERAH", "BIRU", "KUNING", "HIJAU"];
         
@@ -157,6 +165,10 @@
 
         const cssBgColors = {
             "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)", "HIJAU": "rgba(16, 185, 129, 0.15)"
+        };
+
+        const badgeColors = {
+            "MERAH": "bg-red-500", "BIRU": "bg-blue-500", "KUNING": "bg-amber-500", "HIJAU": "bg-emerald-500"
         };
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -179,30 +191,28 @@
                 let rawVoice = textResult.toLowerCase().trim();
                 document.getElementById('speech-preview').innerText = "Mendengar: " + rawVoice.toUpperCase();
 
-                // ALGORITMA FILTER CERDAS: JIKA MENDENGAR SUARA DISTORSI/SALAH BUNYI, TETAP DIANGGAP BENAR
-                let detectedColor = "";
-                
+                // Deteksi Parsial (Multi-Kata) secara Realtime
                 if (rawVoice.includes("merah") || rawVoice.includes("mera") || rawVoice.includes("mela") || rawVoice.includes("mrah")) {
-                    detectedColor = "MERAH";
-                } else if (rawVoice.includes("hijau") || rawVoice.includes("ijo") || rawVoice.includes("ijau") || rawVoice.includes("jau")) {
-                    detectedColor = "HIJAU";
-                } else if (rawVoice.includes("biru") || rawVoice.includes("bilu") || rawVoice.includes("biro")) {
-                    detectedColor = "BIRU";
-                } else if (rawVoice.includes("kuning") || rawVoice.includes("kunin") || rawVoice.includes("kunig") || rawVoice.includes("uning")) {
-                    detectedColor = "KUNING";
+                    markColorAsSpoken("MERAH");
+                }
+                if (rawVoice.includes("hijau") || rawVoice.includes("ijo") || rawVoice.includes("ijau") || rawVoice.includes("jau")) {
+                    markColorAsSpoken("HIJAU");
+                }
+                if (rawVoice.includes("biru") || rawVoice.includes("bilu") || rawVoice.includes("biro")) {
+                    markColorAsSpoken("BIRU");
+                }
+                if (rawVoice.includes("kuning") || rawVoice.includes("kunin") || rawVoice.includes("kunig") || rawVoice.includes("uning")) {
+                    markColorAsSpoken("KUNING");
                 }
 
-                // Eksekusi jika warna berhasil dideteksi dari kalimat apa pun
-                if (detectedColor !== "") {
-                    evaluateVoiceInput(detectedColor);
+                // Cek apakah seluruh 4 warna sudah terpenuhi
+                if (SpokenColorsTracker.MERAH && SpokenColorsTracker.BIRU && SpokenColorsTracker.KUNING && SpokenColorsTracker.HIJAU) {
+                    executeSuccessTurn();
                 }
             };
 
-            // Proteksi Mutlak: Jangan biarkan radar mic mati sendiri sebelum tombol reset diklik
             recognition.onend = function() {
-                if (isQuestionActive) {
-                    try { recognition.start(); } catch(e) {}
-                }
+                if (isQuestionActive) { try { recognition.start(); } catch(e) {} }
             };
         }
 
@@ -261,24 +271,23 @@
 
             isWaitingForNextSoal = false;
 
+            // Reset pelacak pengumpulan suara untuk soal yang baru
+            SpokenColorsTracker = { MERAH: false, BIRU: false, KUNING: false, HIJAU: false };
+            renderBadges();
+
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
 
-            let indexTargetJawaban = Math.floor(Math.random() * 4);
-            targetColorAnswer = arrayVisualWarna[indexTargetJawaban]; 
-
+            // Tampilkan 4 kotak murni tanpa ada tanda pin "Soal Utama"
             let htmlGridContent = `<div class="grid grid-cols-2 gap-4 max-w-xl mx-auto mt-2">`;
             for (let i = 0; i < 4; i++) {
                 let teks = arrayTeksWarna[i];
                 let warnaVisual = arrayVisualWarna[i];
                 let cssTeks = cssTextColors[warnaVisual];
                 let cssBg = cssBgColors[warnaVisual];
-                
-                let penandaTarget = (i === indexTargetJawaban) ? `<span class="absolute top-1 left-2.5 text-[8px] tracking-widest text-amber-400 font-extrabold bg-slate-950/90 px-1.5 py-0.5 rounded border border-amber-500/30">🎯 SOAL UTAMA</span>` : "";
 
                 htmlGridContent += `
-                    <div class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-24 border border-slate-800/40 w-full" style="background-color: ${cssBg};">
-                        ${penandaTarget}
+                    <div id="box-${warnaVisual}" class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-24 border border-slate-800/40 w-full transition-all duration-300" style="background-color: ${cssBg};">
                         <h4 class="text-2xl font-black tracking-widest ${cssTeks}">${teks}</h4>
                     </div>
                 `;
@@ -287,11 +296,33 @@
 
             document.getElementById('game-display').innerHTML = `
                 <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim}</span>
-                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari teks yang bertanda <span class="text-amber-400 font-bold">"🎯 SOAL UTAMA"</span>!</p>
+                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari keempat teks di bawah ini!</p>
                 ${htmlGridContent}
             `;
 
             initiateCountdown();
+        }
+
+        function markColorAsSpoken(color) {
+            if (SpokenColorsTracker[color] === false) {
+                SpokenColorsTracker[color] = true;
+                // Berikan efek border hijau menyala pada kotak warna yang berhasil diucapkan
+                const element = document.getElementById(`box-${color}`);
+                if (element) element.classList.add('color-checked');
+                renderBadges();
+            }
+        }
+
+        function renderBadges() {
+            let html = "";
+            coreColors.forEach(color => {
+                if (SpokenColorsTracker[color]) {
+                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-white uppercase ${badgeColors[color]} tracking-wider">✓ ${color}</span>`;
+                } else {
+                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-slate-600 bg-slate-900 border border-slate-800 uppercase tracking-wider">${color}</span>`;
+                }
+            });
+            document.getElementById('collected-badges').innerHTML = html;
         }
 
         function initiateCountdown() {
@@ -313,17 +344,11 @@
             }, 100);
         }
 
-        function evaluateVoiceInput(spokenColor) {
-            if (isWaitingForNextSoal) return; 
+        function executeSuccessTurn() {
             clearInterval(gameTimer);
-
-            if (spokenColor === targetColorAnswer) {
-                matchScores[selectedTim] += 5; 
-                document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
-                triggerJedaJawaban(true, `BENAR! (+5 POIN)`);
-            } else {
-                triggerJedaJawaban(false, `SALAH! (JAWABAN: ${targetColorAnswer})`);
-            }
+            matchScores[selectedTim] += 5; 
+            document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim]; // Sinkronisasi otomatis ke papan skor utama
+            triggerJedaJawaban(true, `4 WARNA TERPENUHI! (+5 POIN)`);
         }
 
         function triggerJedaJawaban(isBenar, pesanInfo) {
@@ -388,11 +413,12 @@
             micElement.innerHTML = "🔒";
             micElement.className = "w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base";
             document.getElementById('speech-preview').innerText = "Radar Terkunci";
+            document.getElementById('collected-badges').innerHTML = "";
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Mikrofon Otomatis Aktif</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan. Sistem akan langsung mendengarkan jawaban suara secara otomatis tanpa setting tambahan.</p>
+                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Detektor Beruntun Aktif</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai. Peserta harus menyebutkan warna asli keempat kotak dalam waktu 5 detik untuk mendapatkan 5 poin.</p>
                 </div>
             `;
         }
