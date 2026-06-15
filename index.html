@@ -7,71 +7,84 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; }
-        .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #060b14; }
+        .glass-card { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+        .wall-score { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 2px solid #3730a3; }
+        .mic-active { animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
     </style>
 </head>
 <body class="text-slate-200 min-h-screen flex flex-col justify-between p-4 md:p-6">
 
-    <header class="text-center my-2">
+    <header class="text-center my-1">
         <h1 class="text-2xl font-extrabold text-amber-400 tracking-wider">PERMATA</h1>
         <p class="text-xs font-semibold text-emerald-400 uppercase tracking-widest mt-0.5">Muslimah Wahdah Islamiyah</p>
-        <div class="mt-2 max-w-md mx-auto text-[10px] text-slate-400 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">
-            <strong>Game Pengecoh 4 Warna:</strong> Lihat warna teks yang tertulis di monitor, lalu cocokkan dengan menekan tombol warna fisik yang benar secepat mungkin!
-        </div>
     </header>
 
-    <main class="w-full max-w-xl mx-auto my-auto space-y-5">
+    <main class="w-full max-w-4xl mx-auto my-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
         
-        <div class="glass-card rounded-2xl p-5 text-center shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
-            
-            <div class="flex justify-between items-center mb-3 text-xs text-slate-400 font-medium">
-                <span>SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> / 20</span>
-                <span class="bg-slate-900 px-2.5 py-1 rounded-full border border-slate-800">Sisa Waktu: <strong id="timer-text" class="text-amber-400">4</strong>s</span>
-            </div>
+        <div class="md:col-span-2 space-y-5">
+            <div class="glass-card rounded-2xl p-6 text-center shadow-2xl relative overflow-hidden h-80 flex flex-col justify-between">
+                <div class="absolute top-0 left-0 h-2 bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
+                
+                <div class="flex justify-between items-center text-xs text-slate-400 font-medium">
+                    <span>SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> / 20</span>
+                    <span class="bg-slate-900/80 px-2.5 py-1 rounded-full border border-slate-800">Sisa Waktu: <strong id="timer-text" class="text-amber-400">4</strong>s</span>
+                </div>
 
-            <div id="game-display" class="py-4 text-center">
-                <span class="text-sm font-semibold text-slate-300 block mb-1">Siapkan Mata & Fokus Anda</span>
-                <p class="text-xs text-slate-500">Klik salah satu Tim di bawah untuk memulai pertandingan resmi</p>
+                <div id="game-display" class="py-2">
+                    <span class="text-sm font-semibold text-slate-400 block mb-1">Sistem Sensor Suara Siap</span>
+                    <p class="text-xs text-slate-500">Klik salah satu Tim di kanan/bawah untuk mulai bertanding</p>
+                </div>
+
+                <div class="flex flex-col items-center justify-center space-y-2 mb-2">
+                    <div id="mic-indicator" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 transition-all">
+                        🎤
+                    </div>
+                    <div id="speech-preview" class="text-xs font-bold text-slate-400 tracking-wide bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800 min-h-[28px] min-w-[150px] flex items-center justify-center">
+                        Mikrofon Mati
+                    </div>
+                </div>
             </div>
             
-            <div id="color-grid" class="hidden grid grid-cols-2 gap-3 max-w-sm mx-auto mt-2">
-                <button onclick="checkColorChoice('MERAH')" id="btn-merah" class="h-20 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl transition-all active:scale-95 border-2 border-transparent hover:border-white shadow-lg flex items-center justify-center text-xs tracking-wider">MERAH</button>
-                <button onclick="checkColorChoice('HIJAU')" id="btn-hijau" class="h-20 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all active:scale-95 border-2 border-transparent hover:border-white shadow-lg flex items-center justify-center text-xs tracking-wider">HIJAU</button>
-                <button onclick="checkColorChoice('BIRU')" id="btn-biru" class="h-20 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all active:scale-95 border-2 border-transparent hover:border-white shadow-lg flex items-center justify-center text-xs tracking-wider">BIRU</button>
-                <button onclick="checkColorChoice('KUNING')" id="btn-kuning" class="h-20 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl transition-all active:scale-95 border-2 border-transparent hover:border-slate-900 shadow-lg flex items-center justify-center text-xs tracking-wider">KUNING</button>
+            <div class="bg-blue-950/40 border border-blue-900/50 rounded-xl p-3 text-center text-[11px] text-blue-300">
+                🔊 <strong>Cara Main:</strong> Peserta harus <strong>menyebutkan dengan lantang</strong> WARNA ASLI dari teks di atas ke arah laptop sebelum waktu habis! (Sistem mendengarkan kata: <em>Merah, Hijau, Biru, atau Kuning</em>).
             </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            <div onclick="startMatch('A')" class="glass-card p-2.5 rounded-xl text-center cursor-pointer hover:border-emerald-500/40 transition-all active:scale-95">
-                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">TIM A</div>
-                <div id="score-A" class="text-lg font-extrabold text-white mt-0.5">0</div>
+        <div class="space-y-4">
+            <h3 class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest">🏆 PAPAN DINDING SKOR TIM</h3>
+            <div class="grid grid-cols-1 gap-3">
+                <div onclick="startMatch('A')" id="card-A" class="wall-score p-4 rounded-xl flex justify-between items-center cursor-pointer hover:border-teal-500 transition-all active:scale-95">
+                    <div class="font-black text-slate-300 tracking-wide text-lg">TIM A</div>
+                    <div id="score-A" class="text-3xl font-black text-amber-400">0</div>
+                </div>
+                <div onclick="startMatch('B')" id="card-B" class="wall-score p-4 rounded-xl flex justify-between items-center cursor-pointer hover:border-teal-500 transition-all active:scale-95">
+                    <div class="font-black text-slate-300 tracking-wide text-lg">TIM B</div>
+                    <div id="score-B" class="text-3xl font-black text-amber-400">0</div>
+                </div>
+                <div onclick="startMatch('C')" id="card-C" class="wall-score p-4 rounded-xl flex justify-between items-center cursor-pointer hover:border-teal-500 transition-all active:scale-95">
+                    <div class="font-black text-slate-300 tracking-wide text-lg">TIM C</div>
+                    <div id="score-C" class="text-3xl font-black text-amber-400">0</div>
+                </div>
+                <div onclick="startMatch('D')" id="card-D" class="wall-score p-4 rounded-xl flex justify-between items-center cursor-pointer hover:border-teal-500 transition-all active:scale-95">
+                    <div class="font-black text-slate-300 tracking-wide text-lg">TIM D</div>
+                    <div id="score-D" class="text-3xl font-black text-amber-400">0</div>
+                </div>
             </div>
-            <div onclick="startMatch('B')" class="glass-card p-2.5 rounded-xl text-center cursor-pointer hover:border-emerald-500/40 transition-all active:scale-95">
-                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">TIM B</div>
-                <div id="score-B" class="text-lg font-extrabold text-white mt-0.5">0</div>
-            </div>
-            <div onclick="startMatch('C')" class="glass-card p-2.5 rounded-xl text-center cursor-pointer hover:border-emerald-500/40 transition-all active:scale-95">
-                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">TIM C</div>
-                <div id="score-C" class="text-lg font-extrabold text-white mt-0.5">0</div>
-            </div>
-            <div onclick="startMatch('D')" class="glass-card p-2.5 rounded-xl text-center cursor-pointer hover:border-emerald-500/40 transition-all active:scale-95">
-                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">TIM D</div>
-                <div id="score-D" class="text-lg font-extrabold text-white mt-0.5">0</div>
-            </div>
-        </div>
-
-        <div class="text-center">
-            <button onclick="resetSystem()" class="text-[9px] font-bold text-rose-400 bg-rose-500/10 border border-rose-500/20 px-3 py-1.5 rounded-lg hover:bg-rose-500/20 transition-all uppercase tracking-widest">
-                🔄 Reset Semua Papan Skor
+            
+            <button onclick="resetSystem()" class="w-full text-[10px] font-bold text-rose-400 bg-rose-500/10 border border-rose-500/20 py-2.5 rounded-xl hover:bg-rose-500/20 transition-all uppercase tracking-widest">
+                🔄 Reset Papan Skor Dinding
             </button>
         </div>
     </main>
 
-    <footer class="text-center text-[10px] text-slate-600 my-2">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Efek Suara Ting, Troot & Penilaian Suara Akhir.
+    <footer class="text-center text-[10px] text-slate-600 my-1">
+        &copy; 2026 Muslimah Wahdah Islamiyah. Fitur Voice Recognition & Sound Engine Instan Aktif.
     </footer>
 
     <script>
@@ -81,9 +94,9 @@
         let gameTimer = null;
         let timeRemaining = 40; 
         let targetColorAnswer = '';
+        let isQuestionActive = false;
 
         const coreColors = ["MERAH", "HIJAU", "BIRU", "KUNING"];
-        
         const cssTextColors = {
             "MERAH": "text-red-500",
             "HIJAU": "text-emerald-500",
@@ -91,13 +104,50 @@
             "KUNING": "text-amber-400"
         };
 
+        // INTEGRASI SPEECH RECOGNITION (SISTEM PENDENGAR SUARA)
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true; // Terus mendengarkan tanpa putus
+            recognition.interimResults = false;
+            recognition.lang = 'id-ID'; // Mengunci pendengaran ke Bahasa Indonesia
+
+            recognition.onresult = function(event) {
+                if (!isQuestionActive) return;
+                
+                let resultIndex = event.results.length - 1;
+                let kataSuara = event.results[resultIndex][0].transcript.toUpperCase().trim();
+                
+                // Tampilkan apa yang didengar sistem di layar bawah monitor
+                document.getElementById('speech-preview').innerText = "Mendengar: " + kataSuara;
+
+                // Cek apakah suara yang ditangkap mengandung kata kunci warna yang dicari
+                if (kataSuara.includes("MERAH") || kataSuara.includes("MERA")) {
+                    evaluateVoiceInput("MERAH");
+                } else if (kataSuara.includes("HIJAU") || kataSuara.includes("IJO")) {
+                    evaluateVoiceInput("HIJAU");
+                } else if (kataSuara.includes("BIRU")) {
+                    evaluateVoiceInput("BIRU");
+                } else if (kataSuara.includes("KUNING") || kataSuara.includes("KUNINGAN")) {
+                    evaluateVoiceInput("KUNING");
+                }
+            };
+
+            recognition.onend = function() {
+                // Otomatis menyala kembali jika mati mendadak saat pertandingan berjalan
+                if (isQuestionActive) recognition.start();
+            };
+        } else {
+            alert("Browser Anda tidak mendukung Sensor Suara. Gunakan Google Chrome versi terbaru di laptop Anda.");
+        }
+
+        // Web Audio API untuk efek suara Ting & Troot
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSoundEffect(type) {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
+            if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
@@ -108,57 +158,49 @@
                 osc.frequency.setValueAtTime(880, audioCtx.currentTime); 
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
             } else if (type === 'wrong') {
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(120, audioCtx.currentTime); 
                 gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
         }
 
         function playFinalCommentVoice(finalScore) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); 
-
-                let textToSpeak = "";
-                if (finalScore >= 70) {
-                    textToSpeak = "MasyaAllah Luar Biasa!";
-                } else {
-                    textToSpeak = "Semangat!";
-                }
-                
+                let textToSpeak = finalScore >= 70 ? "MasyaAllah Luar Biasa!" : "Semangat!";
                 let utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = 'id-ID'; 
+                utterance.lang = 'id-ID';
                 
                 let availableVoices = window.speechSynthesis.getVoices();
-                let femaleVoice = availableVoices.find(voice => 
-                    voice.lang.includes('id') && 
-                    (voice.name.toLowerCase().includes('female') || voice.name.toLowerCase().includes('wanita') || voice.name.toLowerCase().includes('google'))
-                );
+                let femaleVoice = availableVoices.find(voice => voice.lang.includes('id') && (voice.name.toLowerCase().includes('female') || voice.name.toLowerCase().includes('wanita')));
+                if (femaleVoice) utterance.voice = femaleVoice;
                 
-                if (femaleVoice) {
-                    utterance.voice = femaleVoice;
-                }
-                
-                utterance.pitch = 1.15; 
-                utterance.rate = 0.95;  
+                utterance.pitch = 1.15; utterance.rate = 0.95;
                 window.speechSynthesis.speak(utterance);
             }
         }
 
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.getVoices();
-        }
-
         function startMatch(tim) {
             clearInterval(gameTimer);
+            
+            // Tandai visual tim yang aktif di papan dinding
+            coreColors.forEach(t => document.getElementById(`card-${t}`)?.classList.remove('border-teal-500', 'bg-indigo-950'));
+            document.getElementById(`card-${tim}`).classList.add('border-teal-500', 'bg-indigo-950');
+
             selectedTim = tim;
             activeQuestionNum = 0;
-            document.getElementById('color-grid').classList.remove('hidden');
+            isQuestionActive = true;
+
+            // Nyalakan Indikator Mikrofon secara visual dan sistem
+            document.getElementById('mic-indicator').classList.add('bg-red-600', 'text-white', 'mic-active');
+            document.getElementById('speech-preview').innerText = "Mendengarkan...";
+            
+            try { recognition.start(); } catch(e) {}
+            
             generateNextSoal();
         }
 
@@ -177,9 +219,9 @@
             let cssClassWarna = cssTextColors[warnaTulisanDiLayar];
 
             document.getElementById('game-display').innerHTML = `
-                <span class="text-[10px] uppercase font-bold tracking-widest text-teal-400 block mb-1">TIM ${selectedTim} BERTANDING</span>
-                <p class="text-xs text-slate-300">Tekan tombol berdasarkan <strong>WARNA ASLI</strong> dari tulisan di bawah!</p>
-                <h2 class="text-4xl font-black mt-3 block tracking-wide ${cssClassWarna}">${teksYangTertulis}</h2>
+                <span class="text-[10px] uppercase font-bold tracking-widest text-teal-400 block mb-1">TIM ${selectedTim} SEDANG TANDING</span>
+                <p class="text-xs text-slate-300">Sebutkan Warna Asli Tulisan Di Bawah Ini!</p>
+                <h2 class="text-5xl font-black mt-3 block tracking-wide ${cssClassWarna}">${teksYangTertulis}</h2>
             `;
 
             initiateCountdown();
@@ -203,9 +245,10 @@
             }, 100);
         }
 
-        function checkColorChoice(chosenColor) {
+        // Fungsi penilai ketika sistem mendengarkan jawaban suara dari microphone
+        function evaluateVoiceInput(spokenColor) {
             clearInterval(gameTimer);
-            if (chosenColor === targetColorAnswer) {
+            if (spokenColor === targetColorAnswer) {
                 playSoundEffect('correct'); 
                 matchScores[selectedTim] += 5; 
                 document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
@@ -217,7 +260,13 @@
 
         function concludeMatch() {
             clearInterval(gameTimer);
-            document.getElementById('color-grid').classList.add('hidden');
+            isQuestionActive = false;
+            try { recognition.stop(); } catch(e) {}
+
+            // Matikan Indikator Mikrofon
+            document.getElementById('mic-indicator').classList.remove('bg-red-600', 'text-white', 'mic-active');
+            document.getElementById('mic-indicator').classList.add('bg-slate-800', 'text-slate-500');
+            document.getElementById('speech-preview').innerText = "Mikrofon Selesai";
             document.getElementById('timer-bar').style.width = "0%";
             
             let totalSkor = matchScores[selectedTim];
@@ -225,7 +274,7 @@
             document.getElementById('game-display').innerHTML = `
                 <span class="text-emerald-400 font-bold block text-base">🎉 PERTANDINGAN SELESAI</span>
                 Hasil Evaluasi Fokus Pikiran Tim ${selectedTim}: <br>
-                <span class="text-3xl font-extrabold text-white mt-2 block">${totalSkor} Poin</span>
+                <span class="text-4xl font-extrabold text-white mt-2 block">${totalSkor} Poin</span>
             `;
             
             playFinalCommentVoice(totalSkor);
@@ -233,24 +282,29 @@
 
         function resetSystem() {
             clearInterval(gameTimer);
+            isQuestionActive = false;
+            try { recognition.stop(); } catch(e) {}
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             
             selectedTim = '';
             activeQuestionNum = 0;
             matchScores = { A: 0, B: 0, C: 0, D: 0 };
             
-            document.getElementById('score-A').innerText = "0";
-            document.getElementById('score-B').innerText = "0";
-            document.getElementById('score-C').innerText = "0";
-            document.getElementById('score-D').innerText = "0";
+            coreColors.forEach(t => {
+                document.getElementById(`score-${t}`).innerText = "0";
+                document.getElementById(`card-${t}`).classList.remove('border-teal-500', 'bg-indigo-950');
+            });
+            
             document.getElementById('question-num').innerText = "0";
             document.getElementById('timer-text').innerText = "4";
             document.getElementById('timer-bar').style.width = "100%";
-            document.getElementById('color-grid').classList.add('hidden');
+            
+            document.getElementById('mic-indicator').className = "w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 transition-all";
+            document.getElementById('speech-preview').innerText = "Mikrofon Mati";
             
             document.getElementById('game-display').innerHTML = `
                 <span class="text-sm font-semibold text-slate-300 block mb-1">Siapkan Mata & Fokus Anda</span>
-                <p class="text-xs text-slate-500">Klik salah satu Tim di bawah untuk memulai pertandingan resmi</p>
+                <p class="text-xs text-slate-500">Klik salah satu Tim di kanan/bawah untuk memulai pertandingan resmi</p>
             `;
         }
     </script>
