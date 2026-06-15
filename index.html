@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PERMATA Premium - Multi Screen Dynamic System</title>
+    <title>PERMATA Premium - Multi Screen Fixed System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -85,7 +85,9 @@
                         <div id="sync-badge" class="bg-rose-950/40 text-rose-400 px-4 py-1.5 rounded-full border border-rose-900/50 flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> <span id="sync-text">BELUM TERKONEKSI</span>
                         </div>
-                        <span class="bg-slate-950/80 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider">WAKTU: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S</span>
+                        <span id="status-timer-container" class="bg-slate-950/80 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider">
+                            WAKTU: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S
+                        </span>
                     </div>
 
                     <div id="game-display" class="py-4 my-auto w-full flex flex-col items-center justify-center">
@@ -105,7 +107,7 @@
                 <div class="bg-slate-950/40 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3 shadow-xl">
                     <div class="text-xl text-amber-500">⚜️</div>
                     <div class="text-[10px] text-slate-400 leading-relaxed" id="system-instruction-note">
-                        Pastikan HP dan Laptop terhubung hijau sebelum menekan tombol nama Tim.
+                        Pastikan status di pojok atas sudah berubah warna HIJAU sebelum mengklik nama Tim di kanan.
                     </div>
                 </div>
             </div>
@@ -182,12 +184,10 @@
 
             try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
 
-            // Cek parameter URL untuk mendeteksi auto-room HP
             const urlParams = new URLSearchParams(window.location.search);
             const targetRoom = urlParams.get('room');
 
             if (deviceMode === 'laptop') {
-                // Generate ID acak 5 digit agar tidak crash di HTTPS
                 finalRoomID = "permata-" + Math.floor(10000 + Math.random() * 90000);
                 initPeerJSForLaptop();
             } else {
@@ -198,7 +198,7 @@
                 } else {
                     document.getElementById('game-display').innerHTML = `
                         <div class="p-6 text-center text-rose-400 font-bold">
-                            ⚠️ Silakan scan QR Code langsung dari layar laptop untuk masuk ke kontrol HP.
+                            ⚠️ Silakan scan QR Code langsung dari layar laptop menggunakan kamera HP Anda.
                         </div>
                     `;
                 }
@@ -210,7 +210,6 @@
             
             peer.on('open', (id) => {
                 updateSyncUI(false, "MENUNGGU HP...");
-                // Generate Link & QR Code otomatis
                 const currentBaseUrl = window.location.href.split('?')[0];
                 const targetConnectUrl = `${currentBaseUrl}?room=${id}`;
 
@@ -218,7 +217,7 @@
                     <div class="max-w-md mx-auto text-center space-y-4 py-4">
                         <span class="text-xs font-bold text-amber-400 tracking-widest uppercase block">PINDAI UNTUK HUBUNGKAN HANDPHONE</span>
                         <div id="qrcode" class="my-2 flex justify-center"></div>
-                        <p class="text-[11px] text-slate-400 leading-relaxed px-4">Scan QR di atas dengan HP Juri/Peserta, atau buka link di bawah ini di browser HP:</p>
+                        <p class="text-[11px] text-slate-400 leading-relaxed px-4">Scan QR di atas dengan HP Juri/Peserta, otomatis menyinkronkan sistem internal.</p>
                         <input type="text" value="${targetConnectUrl}" readonly class="w-full bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-[10px] text-teal-400 text-center select-all">
                     </div>
                 `;
@@ -244,13 +243,14 @@
             peer.on('open', () => {
                 updateSyncUI(false, "MENYAMBUNGKAN...");
                 let attempts = setInterval(() => {
+                    if (peer.destroyed) { clearInterval(attempts); return; }
                     peerConnection = peer.connect(finalRoomID);
                     peerConnection.on('open', () => {
                         clearInterval(attempts);
                         updateSyncUI(true, "TERKONEKSI LAPTOP");
                         listenToLaptopMessages();
                     });
-                }, 1000);
+                }, 1200);
             });
         }
 
@@ -262,6 +262,7 @@
                 <div class="text-center py-6">
                     <div class="text-3xl mb-2">📱</div>
                     <p class="text-xs text-slate-400">Smartphone aktif sebagai penerima ketukan mic suara.</p>
+                    <p class="text-[10px] text-amber-500 font-bold mt-1">Tunggu Juri memilih Tim di Laptop...</p>
                 </div>
             `;
 
@@ -316,6 +317,7 @@
         }
 
         function listenToHPMessages() {
+            if(!peerConnection) return;
             peerConnection.on('data', (data) => {
                 if (data.type === 'CORRECT_INDEX') {
                     const element = document.getElementById(`box-pos-${data.index}`);
@@ -328,6 +330,7 @@
         }
 
         function listenToLaptopMessages() {
+            if(!peerConnection) return;
             peerConnection.on('data', (data) => {
                 if (data.type === 'INIT_SOAL') {
                     currentTargetSequence = data.sequence;
@@ -358,15 +361,21 @@
         }
 
         function triggerSelectTim(tim) {
-            if (deviceMode !== 'laptop' || !peerConnection) return; 
+            if (deviceMode !== 'laptop') return; 
             
+            // Juri bisa memainkan game secara mandiri jika HP belum terhubung
             if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
 
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
             
-            ["Tarbiyah", "Tahsin", "Dirosa"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
-            document.getElementById(`card-${tim}`)?.classList.add('active-tim');
+            ["Tarbiyah", "Tahsin", "Dirosa"].forEach(t => {
+                const el = document.getElementById(`card-${t}`);
+                if(el) el.classList.remove('active-tim');
+            });
+            
+            const activeCard = document.getElementById(`card-${tim}`);
+            if(activeCard) activeCard.classList.add('active-tim');
 
             selectedTim = tim;
             activeQuestionNum = 0;
@@ -381,8 +390,14 @@
                 return;
             }
             activeQuestionNum++;
-            document.getElementById('question-num').innerText = activeQuestionNum;
-            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S`;
+            
+            const qNumEl = document.getElementById('question-num');
+            if(qNumEl) qNumEl.innerText = activeQuestionNum;
+            
+            const timerContainer = document.getElementById('status-timer-container');
+            if(timerContainer) {
+                timerContainer.innerHTML = `WAKTU: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S`;
+            }
 
             isWaitingForNextSoal = false;
 
@@ -436,13 +451,16 @@
         function initiateCountdownOnLaptop() {
             clearInterval(gameTimer);
             timeRemaining = 50; 
-            document.getElementById('timer-bar').style.width = "100%";
+            const bar = document.getElementById('timer-bar');
+            if(bar) bar.style.width = "100%";
             
             gameTimer = setInterval(() => {
                 if (isWaitingForNextSoal) return;
                 timeRemaining--;
-                document.getElementById('timer-text').innerText = Math.ceil(timeRemaining / 10);
-                document.getElementById('timer-bar').style.width = (timeRemaining * 2) + "%";
+                
+                const txt = document.getElementById('timer-text');
+                if(txt) txt.innerText = Math.ceil(timeRemaining / 10);
+                if(bar) bar.style.width = (timeRemaining * 2) + "%";
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
@@ -454,7 +472,9 @@
         function executeSuccessTurnOnLaptop() {
             clearInterval(gameTimer);
             matchScores[selectedTim] += 5; 
-            document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
+            
+            const scoreEl = document.getElementById(`score-${selectedTim}`);
+            if(scoreEl) scoreEl.innerText = matchScores[selectedTim];
             
             if (peerConnection) {
                 peerConnection.send({ type: 'SCORE_SYNC', tim: selectedTim, score: matchScores[selectedTim] });
@@ -467,11 +487,12 @@
             if (peerConnection) { peerConnection.send({ type: 'LOCK_SYSTEM' }); }
 
             playSound(isBenar ? 'correct' : 'wrong');
-            document.getElementById('timer-bar').style.width = "0%";
+            const bar = document.getElementById('timer-bar');
+            if(bar) bar.style.width = "0%";
             
             const overlayWarna = isBenar ? 'text-emerald-400' : 'text-rose-500';
             document.getElementById('game-display').innerHTML = `
-                <div class="flex flex-col items-center justify-center h-48 space-y-2 animate-fade-in">
+                <div class="flex flex-col items-center justify-center h-48 space-y-2">
                     <div class="text-5xl mb-2">${isBenar ? '✨' : '❌'}</div>
                     <h3 class="text-3xl font-black ${overlayWarna} tracking-wider">${pesanInfo}</h3>
                     <p class="text-[10px] text-slate-500 tracking-[0.3em] uppercase mt-2">MENG-ENKRIPSI LEMBAR SOAL BARU...</p>
@@ -483,27 +504,31 @@
 
         function playSound(type) {
             if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            if (type === 'correct') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, audioCtx.currentTime); 
-                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-            }
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                if (type === 'correct') {
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, audioCtx.currentTime); 
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                }
+            } catch(e) {}
         }
 
         function concludeMatchOnLaptop() {
             clearInterval(gameTimer);
             isQuestionActive = false;
             if (peerConnection) { peerConnection.send({ type: 'LOCK_SYSTEM' }); }
-            document.getElementById('timer-bar').style.width = "0%";
+            const bar = document.getElementById('timer-bar');
+            if(bar) bar.style.width = "0%";
             let totalSkor = matchScores[selectedTim];
             document.getElementById('game-display').innerHTML = `
                 <span class="text-emerald-400 font-bold block text-sm tracking-widest mb-1">🎉 MATCH SELESAI</span>
