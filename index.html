@@ -33,15 +33,12 @@
             transform: scale(1.02);
         }
         .glow-gold { text-shadow: 0 0 25px rgba(212, 163, 89, 0.5); }
-        .color-card-5d {
-            transition: all 0.3s ease;
-        }
         .mic-pulse {
-            animation: micGlow 1.4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+            animation: micGlow 1.2s infinite ease-in-out;
         }
         @keyframes micGlow {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
-            50% { transform: scale(1.08); box-shadow: 0 0 20px 6px rgba(239, 68, 68, 0.3); }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            50% { transform: scale(1.1); box-shadow: 0 0 25px 8px rgba(220, 38, 38, 0.4); }
         }
     </style>
 </head>
@@ -65,18 +62,18 @@
                     <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider" id="status-timer-container">Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik</span>
                 </div>
 
-                <div id="game-display" class="py-2 my-auto w-full transition-all duration-300">
+                <div id="game-display" class="py-2 my-auto w-full">
                     <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Sistem Akustik Sensor Siap</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Pilih salah satu Tim di papan skor sebelah kanan untuk mengaktifkan radar penangkap suara jernih berdurasi konsisten.</p>
+                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Mikrofon Otomatis Aktif</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan. Sistem akan langsung mendengarkan jawaban suara secara otomatis tanpa setting tambahan.</p>
                     </div>
                 </div>
 
                 <div class="flex flex-col items-center justify-center space-y-2 relative">
-                    <div id="mic-indicator" class="w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner transition-all duration-500">
+                    <div id="mic-indicator" class="w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner">
                         🔒
                     </div>
-                    <div id="speech-preview" class="text-[11px] font-bold text-slate-400 tracking-widest bg-slate-950/90 px-6 py-1.5 rounded-full border border-slate-800 min-h-[30px] min-w-[240px] flex items-center justify-center uppercase">
+                    <div id="speech-preview" class="text-[11px] font-bold text-slate-400 tracking-widest bg-slate-950/90 px-6 py-1.5 rounded-full border border-slate-800 min-h-[30px] min-w-[280px] flex items-center justify-center uppercase">
                         Radar Terkunci
                     </div>
                 </div>
@@ -85,7 +82,7 @@
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
                 <div class="text-xl text-amber-400">⚡</div>
                 <div class="text-[11px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Sistem Jeda Konsisten Aktif:</strong> Setiap soal berdurasi tetap <span class="text-white font-bold">5 detik</span>. Begitu terjawab, sistem akan berhenti sejenak selama 2 detik agar skor terhitung dengan stabil di papan pengumuman sebelum berpindah otomatis.
+                    <strong class="text-amber-400">Sistem Detektor Cerdas:</strong> Mikrofon diatur otomatis mengabaikan kata pelengkap dan fokus menangkap inti warna utama dalam durasi 5 detik.
                 </div>
             </div>
         </div>
@@ -94,7 +91,7 @@
             <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] text-center lg:text-left pl-1">🏆 PAPAN SKOR DIGITAL</h3>
             
             <div class="grid grid-cols-1 gap-3 flex-grow justify-center">
-                <div onclick="startMatch('A')" id="card-A" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
+                <div onclick="startMatch('A')" id="card-A" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-amber-500 rounded-full"></div>
                         <span class="font-bold text-slate-200 tracking-wider text-sm">TIM A</span>
@@ -103,7 +100,7 @@
                         <span id="score-A" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
-                <div onclick="startMatch('B')" id="card-B" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
+                <div onclick="startMatch('B')" id="card-B" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-teal-500 rounded-full"></div>
                         <span class="font-bold text-slate-200 tracking-wider text-sm">TIM B</span>
@@ -112,7 +109,7 @@
                         <span id="score-B" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
-                <div onclick="startMatch('C')" id="card-C" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
+                <div onclick="startMatch('C')" id="card-C" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-emerald-500 rounded-full"></div>
                         <span class="font-bold text-slate-200 tracking-wider text-sm">TIM C</span>
@@ -121,7 +118,7 @@
                         <span id="score-C" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
-                <div onclick="startMatch('D')" id="card-D" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:border-amber-500/40 duration-300">
+                <div onclick="startMatch('D')" id="card-D" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-rose-500 rounded-full"></div>
                         <span class="font-bold text-slate-200 tracking-wider text-sm">TIM D</span>
@@ -132,14 +129,14 @@
                 </div>
             </div>
             
-            <button onclick="resetSystem()" class="w-full text-[9px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800/80 py-2.5 rounded-xl hover:text-rose-400 hover:border-rose-500/20 transition-all duration-300 uppercase tracking-widest">
+            <button onclick="resetSystem()" class="w-full text-[9px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800/80 py-2.5 rounded-xl hover:text-rose-400 duration-300 uppercase tracking-widest">
                 Master Reset Seluruh Dinding
             </button>
         </div>
     </main>
 
     <footer class="text-center text-[9px] text-slate-600 my-1 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Anti-Drift Voice Processor Engine v6.2.
+        &copy; 2026 Muslimah Wahdah Islamiyah. Auto-Voice Filter Engine.
     </footer>
 
     <script>
@@ -147,76 +144,74 @@
         let matchScores = { A: 0, B: 0, C: 0, D: 0 };
         let activeQuestionNum = 0;
         let gameTimer = null;
-        let timeRemaining = 50; // Tetap 50 (artinya 5.0 detik) secara presisi
+        let timeRemaining = 50; 
         let targetColorAnswer = '';
         let isQuestionActive = false;
-        let isWaitingForNextSoal = false; // Kunci pengaman anti-lompat cepat
+        let isWaitingForNextSoal = false;
 
-        // Warna dibatasi hanya 4 sesuai permintaan
         const coreColors = ["MERAH", "BIRU", "KUNING", "HIJAU"];
         
         const cssTextColors = {
-            "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400",
-            "HIJAU": "text-emerald-500"
+            "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400", "HIJAU": "text-emerald-500"
         };
 
         const cssBgColors = {
-            "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)",
-            "HIJAU": "rgba(16, 185, 129, 0.15)"
+            "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)", "HIJAU": "rgba(16, 185, 129, 0.15)"
         };
 
-        // KONFIGURASI ULTRA-PRESERVED SPEECH RECOGNITION (TANGKAPAN SUARA JERNIH)
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
 
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
             recognition.continuous = true; 
-            recognition.interimResults = true; // Mengaktifkan pembacaan realtime sebelum peserta selesai berbicara
+            recognition.interimResults = true; 
             recognition.lang = 'id-ID';
 
             recognition.onresult = function(event) {
-                // Jangan terima suara jika sedang dalam masa jeda 2 detik atau game mati
                 if (!isQuestionActive || isWaitingForNextSoal) return;
                 
-                let hasilSuaraRealtime = "";
+                let textResult = "";
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    hasilSuaraRealtime += event.results[i][0].transcript;
+                    textResult += event.results[i][0].transcript;
                 }
                 
-                let kataKunci = hasilSuaraRealtime.toUpperCase().trim();
-                document.getElementById('speech-preview').innerText = "Mendengar: " + kataKunci;
+                let rawVoice = textResult.toLowerCase().trim();
+                document.getElementById('speech-preview').innerText = "Mendengar: " + rawVoice.toUpperCase();
 
-                // FILTER MULTI-DIALEK KATA JAWABAN (Meningkatkan Akurasi Kebisingan Ruangan)
-                if (kataKunci.includes("MERAH") || kataKunci.includes("MERA") || kataKunci.includes("MERAHAN")) {
-                    evaluateVoiceInput("MERAH");
-                } else if (kataKunci.includes("HIJAU") || kataKunci.includes("IJO") || kataKunci.includes("HIJAUAN")) {
-                    evaluateVoiceInput("HIJAU");
-                } else if (kataKunci.includes("BIRU") || kataKunci.includes("BIRUAN")) {
-                    evaluateVoiceInput("BIRU");
-                } else if (kataKunci.includes("KUNING") || kataKunci.includes("KUNINGAN")) {
-                    evaluateVoiceInput("KUNING");
+                // ALGORITMA FILTER CERDAS: JIKA MENDENGAR SUARA DISTORSI/SALAH BUNYI, TETAP DIANGGAP BENAR
+                let detectedColor = "";
+                
+                if (rawVoice.includes("merah") || rawVoice.includes("mera") || rawVoice.includes("mela") || rawVoice.includes("mrah")) {
+                    detectedColor = "MERAH";
+                } else if (rawVoice.includes("hijau") || rawVoice.includes("ijo") || rawVoice.includes("ijau") || rawVoice.includes("jau")) {
+                    detectedColor = "HIJAU";
+                } else if (rawVoice.includes("biru") || rawVoice.includes("bilu") || rawVoice.includes("biro")) {
+                    detectedColor = "BIRU";
+                } else if (rawVoice.includes("kuning") || rawVoice.includes("kunin") || rawVoice.includes("kunig") || rawVoice.includes("uning")) {
+                    detectedColor = "KUNING";
+                }
+
+                // Eksekusi jika warna berhasil dideteksi dari kalimat apa pun
+                if (detectedColor !== "") {
+                    evaluateVoiceInput(detectedColor);
                 }
             };
 
+            // Proteksi Mutlak: Jangan biarkan radar mic mati sendiri sebelum tombol reset diklik
             recognition.onend = function() {
-                // Pertahankan mikrofon tetap menyala jernih selama babak tanding aktif
                 if (isQuestionActive) {
                     try { recognition.start(); } catch(e) {}
                 }
             };
-        } else {
-            alert("Harap jalankan di Google Chrome Desktop demi stabilitas tangkapan mikrofon siber.");
         }
 
-        // GENERATOR AUDIO FEEDBACK (TING & TROOT)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSoundEffect(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-
             if (type === 'correct') {
                 osc.type = 'sine'; osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
@@ -230,24 +225,12 @@
             }
         }
 
-        function playFinalCommentVoice(finalScore) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); 
-                let textToSpeak = finalScore >= 70 ? "MasyaAllah Luar Biasa!" : "Semangat!";
-                let utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = 'id-ID';
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // MEMULAI PERTANDINGAN TIM
         function startMatch(tim) {
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
             
             ["A", "B", "C", "D"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
-            const activeCard = document.getElementById(`card-${tim}`);
-            if(activeCard) activeCard.classList.add('active-tim');
+            document.getElementById(`card-${tim}`)?.classList.add('active-tim');
 
             selectedTim = tim;
             activeQuestionNum = 0;
@@ -255,15 +238,18 @@
 
             let micElement = document.getElementById('mic-indicator');
             micElement.innerHTML = "🎙️";
-            micElement.className = "w-12 h-12 rounded-full bg-red-950 border border-red-500/50 flex items-center justify-center text-white text-base mic-pulse";
-            document.getElementById('speech-preview').innerText = "Mendengarkan...";
+            micElement.className = "w-12 h-12 rounded-full bg-red-600 border border-red-400 flex items-center justify-center text-white text-base mic-pulse";
+            document.getElementById('speech-preview').innerText = "RADAR OTOMATIS AKTIF...";
             
-            try { recognition.start(); } catch(e) {}
-            
+            try { 
+                recognition.stop();
+                setTimeout(() => { recognition.start(); }, 50);
+            } catch(e) {
+                try { recognition.start(); } catch(err) {}
+            }
             generateNextSoal();
         }
 
-        // GENERATOR FORMASI 4 WARNA ACAK SEKALIGUS
         function generateNextSoal() {
             if (activeQuestionNum >= 20) {
                 concludeMatch();
@@ -273,7 +259,7 @@
             document.getElementById('question-num').innerText = activeQuestionNum;
             document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
 
-            isWaitingForNextSoal = false; // Buka kunci interaksi suara
+            isWaitingForNextSoal = false;
 
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
@@ -308,14 +294,13 @@
             initiateCountdown();
         }
 
-        // TIMING KONSISTEN 5 DETIK (50 * 100 Ticks)
         function initiateCountdown() {
             clearInterval(gameTimer);
             timeRemaining = 50; 
             document.getElementById('timer-bar').style.width = "100%";
             
             gameTimer = setInterval(() => {
-                if (isWaitingForNextSoal) return; // Freeze timer jika sedang dalam masa jeda penampilan hasil
+                if (isWaitingForNextSoal) return;
                 
                 timeRemaining--;
                 document.getElementById('timer-text').innerText = Math.ceil(timeRemaining / 10);
@@ -328,45 +313,38 @@
             }, 100);
         }
 
-        // VALIDASI INPUTAN GELOMBANG SUARA PESERTA
         function evaluateVoiceInput(spokenColor) {
             if (isWaitingForNextSoal) return; 
             clearInterval(gameTimer);
 
             if (spokenColor === targetColorAnswer) {
                 matchScores[selectedTim] += 5; 
-                document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim]; // UPDATE REALTIME DI PAPAN DINDING SKOR KANAN
+                document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
                 triggerJedaJawaban(true, `BENAR! (+5 POIN)`);
             } else {
                 triggerJedaJawaban(false, `SALAH! (JAWABAN: ${targetColorAnswer})`);
             }
         }
 
-        // PENGENDALIAN JEDA 2 DETIK ANTI-LOMPAT CEPAT
         function triggerJedaJawaban(isBenar, pesanInfo) {
-            isWaitingForNextSoal = true; // Mengunci input suara agar tidak membaca double jawaban
+            isWaitingForNextSoal = true;
             playSoundEffect(isBenar ? 'correct' : 'wrong');
             
             document.getElementById('timer-bar').style.width = "0%";
-            document.getElementById('status-timer-container').innerHTML = `<span class="text-amber-400 font-bold animated pulse">MEMPERSIAPKAN SOAL BERIKUTNYA...</span>`;
+            document.getElementById('status-timer-container').innerHTML = `<span class="text-amber-400 font-bold">MEMPERSIAPKAN SOAL BERIKUTNYA...</span>`;
             
-            // Tampilkan Feedback Instan Menarik Di Tengah Layar
             const overlayWarna = isBenar ? 'text-emerald-400' : 'text-rose-500';
             document.getElementById('game-display').innerHTML = `
                 <div class="flex flex-col items-center justify-center h-48 space-y-2">
                     <div class="text-5xl">${isBenar ? '✨' : '❌'}</div>
                     <h3 class="text-2xl font-black ${overlayWarna} tracking-wider">${pesanInfo}</h3>
-                    <p class="text-xs text-slate-500 tracking-widest uppercase mt-2">Menyimpan nilai ke papan skor dinding...</p>
+                    <p class="text-xs text-slate-500 tracking-widest uppercase mt-2">Menyimpan otomatis ke papan skor dinding...</p>
                 </div>
             `;
 
-            // Tahan layar selama tepat 2 detik secara konsisten, lalu panggil soal baru
-            setTimeout(() => {
-                generateNextSoal();
-            }, 2000);
+            setTimeout(() => { generateNextSoal(); }, 2000);
         }
 
-        // AKHIR PERTANDINGAN TIM
         function concludeMatch() {
             clearInterval(gameTimer);
             isQuestionActive = false;
@@ -385,17 +363,13 @@
                 <span class="text-xs text-slate-400">Total Akumulasi Nilai Tim ${selectedTim}:</span>
                 <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400 glow-gold mt-3 block">${totalSkor} POIN</span>
             `;
-            
-            playFinalCommentVoice(totalSkor);
         }
 
-        // RESET MASTER TOTAL PERMAINAN
         function resetSystem() {
             clearInterval(gameTimer);
             isQuestionActive = false;
             isWaitingForNextSoal = false;
             try { recognition.stop(); } catch(e) {}
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             
             selectedTim = '';
             activeQuestionNum = 0;
@@ -417,8 +391,8 @@
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Sistem Akustik Sensor Siap</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Pilih salah satu Tim di papan skor sebelah kanan untuk mengaktifkan radar penangkap suara jernih berdurasi konsisten.</p>
+                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Mikrofon Otomatis Aktif</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan. Sistem akan langsung mendengarkan jawaban suara secara otomatis tanpa setting tambahan.</p>
                 </div>
             `;
         }
