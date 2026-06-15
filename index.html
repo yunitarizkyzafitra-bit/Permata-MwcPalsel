@@ -68,8 +68,8 @@
 
                 <div id="game-display" class="py-2 my-auto w-full">
                     <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Otomatis</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Mikrofon akan langsung menyala otomatis di setiap soal tanpa perlu menekan tombol tambahan.</p>
+                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Sekuensial Tri-Warna Aktif</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Peserta wajib menyebutkan ke-3 warna secara berurutan mulai dari kotak **Paling Kiri ➔ Tengah ➔ Paling Kanan**.</p>
                     </div>
                 </div>
 
@@ -86,9 +86,9 @@
             </div>
             
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
-                <div class="text-xl text-amber-400">⚡</div>
+                <div class="text-xl text-amber-400">⚠️</div>
                 <div class="text-[11px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Sistem Deteksi Instan:</strong> Begitu lembar soal berganti, pastikan peserta langsung membaca 3 warna dengan artikulasi jelas dan jeda tipis agar terbaca sempurna oleh radar AI.
+                    <strong class="text-amber-400">Aturan Urutan Ketat:</strong> Menyebutkan warna secara acak atau melompat tidak akan dihitung oleh radar sistem. Jawaban diproses wajib dari arah <span class="text-teal-400 font-bold">Kiri ke Kanan</span>.
                 </div>
             </div>
         </div>
@@ -133,7 +133,7 @@
     </main>
 
     <footer class="text-center text-[9px] text-slate-600 my-1 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Auto Tri-Color Engine.
+        &copy; 2026 Muslimah Wahdah Islamiyah. Sequential Tri-Color Engine.
     </footer>
 
     <script>
@@ -145,7 +145,10 @@
         let isQuestionActive = false;
         let isWaitingForNextSoal = false;
 
-        let collectedColorsUnique = new Set();
+        // Menyimpan urutan target warna soal (Indeks 0 = Kiri, Indeks 1 = Tengah, Indeks 2 = Kanan)
+        let currentTargetSequence = [];
+        let currentSequenceIndex = 0;
+
         const coreColors = ["MERAH", "BIRU", "KUNING"];
         
         const cssTextColors = { "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400" };
@@ -175,18 +178,24 @@
                 let kataKata = rawVoice.split(/\s+/);
                 
                 kataKata.forEach(kata => {
-                    if (kata.includes("merah") || kata.includes("mera") || kata.includes("mela") || kata.includes("mrah")) {
-                        pushUniqueColor("MERAH");
+                    if (currentSequenceIndex >= 3) return;
+
+                    // Ambil warna target yang harus ditebak berdasarkan index urutan berjalan
+                    let targetWarnaSekarang = currentTargetSequence[currentSequenceIndex];
+
+                    // COCOKKAN KATA BERDASARKAN WARNA TARGET SAAT INI SAJA (URUTAN DARI KIRI)
+                    if (targetWarnaSekarang === "MERAH" && (kata.includes("merah") || kata.includes("mera") || kata.includes("mela") || kata.includes("mrah"))) {
+                        verifySequentialColor("MERAH");
                     }
-                    if (kata.includes("biru") || kata.includes("bilu") || kata.includes("biro")) {
-                        pushUniqueColor("BIRU");
+                    else if (targetWarnaSekarang === "BIRU" && (kata.includes("biru") || kata.includes("bilu") || kata.includes("biro"))) {
+                        verifySequentialColor("BIRU");
                     }
-                    if (kata.includes("kuning") || kata.includes("kunin") || kata.includes("kunig") || kata.includes("uning")) {
-                        pushUniqueColor("KUNING");
+                    else if (targetWarnaSekarang === "KUNING" && (kata.includes("kuning") || kata.includes("kunin") || kata.includes("kunig") || kata.includes("uning"))) {
+                        verifySequentialColor("KUNING");
                     }
                 });
 
-                if (collectedColorsUnique.size === 3) {
+                if (currentSequenceIndex === 3) {
                     executeSuccessTurn();
                 }
             };
@@ -217,7 +226,6 @@
             }
         }
 
-        // PEMICU START GAME UTAMA (KLIK NAMA TIM)
         function startMatch(tim) {
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
@@ -229,7 +237,6 @@
             activeQuestionNum = 0;
             isQuestionActive = true;
 
-            // Efek UI Mic Menyala Otomatis
             triggerMicUI(true);
             
             try { 
@@ -251,26 +258,38 @@
             document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
 
             isWaitingForNextSoal = false;
-            collectedColorsUnique.clear();
-            renderBadges();
-            triggerMicUI(true); // Memastikan visual mic tetap menyala/pulse aktif di nomor baru
-
-            // Nyalakan mic kembali pasca jeda soal
-            try { recognition.start(); } catch(e) {}
+            
+            // Reset index pelacak urutan sekuensial
+            currentSequenceIndex = 0;
+            currentTargetSequence = [];
 
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
 
+            // Simpan susunan warna visual yang muncul dari kiri ke kanan sebagai kunci jawaban berurutan
+            currentTargetSequence = [...arrayVisualWarna]; 
+
+            renderSequentialBadges();
+            triggerMicUI(true);
+
+            try { recognition.start(); } catch(e) {}
+
             let htmlGridContent = `<div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-4">`;
             for (let i = 0; i < 3; i++) {
                 let teks = arrayTeksWarna[i];
-                let warnaVisual = arrayVisualWarna[i];
+                let warnaVisual = arrayVisualWarna[i]; // Urutan mutlak indeks ke 0 (kiri), 1 (tengah), 2 (kanan)
                 let cssTeks = cssTextColors[warnaVisual];
                 let cssBg = cssBgColors[warnaVisual];
 
+                // Menambahkan label penunjuk visual arah pengerjaan di atas kotak
+                let posisiLabel = i === 0 ? "1. KIRI" : i === 1 ? "2. TENGAH" : "3. KANAN";
+
                 htmlGridContent += `
-                    <div id="box-${warnaVisual}" class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-28 border border-slate-800/40 w-full transition-all duration-300" style="background-color: ${cssBg};">
-                        <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
+                    <div class="flex flex-col items-center">
+                        <span class="text-[9px] font-bold text-slate-500 mb-1 tracking-wider uppercase">${posisilabel}</span>
+                        <div id="box-pos-${i}" class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-28 border border-slate-800/40 w-full transition-all duration-300" style="background-color: ${cssBg};">
+                            <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
+                        </div>
                     </div>
                 `;
             }
@@ -278,32 +297,35 @@
 
             document.getElementById('game-display').innerHTML = `
                 <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim.toUpperCase()}</span>
-                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari ketiga teks di bawah ini!</p>
+                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari teks di bawah dari <strong class="text-amber-400">KIRI ke KANAN</strong> secara berurutan!</p>
                 ${htmlGridContent}
             `;
 
             initiateCountdown();
         }
 
-        function pushUniqueColor(color) {
-            if (!collectedColorsUnique.has(color)) {
-                collectedColorsUnique.add(color);
-                const element = document.getElementById(`box-${color}`);
-                if (element) element.classList.add('color-checked');
-                renderBadges();
-            }
+        // VALIDASI URUTAN KANAN KE KIRI
+        function verifySequentialColor(color) {
+            // Beri tanda checklist pada kotak di layar berdasarkan index urutannya
+            const element = document.getElementById(`box-pos-${currentSequenceIndex}`);
+            if (element) element.classList.add('color-checked');
+            
+            currentSequenceIndex++;
+            renderSequentialBadges();
         }
 
-        function renderBadges() {
+        function renderSequentialBadges() {
             let html = "";
-            coreColors.forEach(color => {
-                if (collectedColorsUnique.has(color)) {
-                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-white uppercase ${badgeColors[color]} tracking-wider">✓ ${color}</span>`;
+            for (let i = 0; i < 3; i++) {
+                let colorName = currentTargetSequence[i] || "STANDBY";
+                if (i < currentSequenceIndex) {
+                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-white uppercase ${badgeColors[colorName]} tracking-wider">✓ ${colorName}</span>`;
                 } else {
-                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-slate-600 bg-slate-900 border border-slate-800 uppercase tracking-wider">${color}</span>`;
+                    let displayLabel = currentTargetSequence.length > 0 ? currentTargetSequence[i] : "WARNA";
+                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-slate-600 bg-slate-900 border border-slate-800 uppercase tracking-wider">${displayLabel}</span>`;
                 }
-            });
-            html += `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-extrabold text-amber-400 bg-slate-950 border border-amber-500/30 tracking-widest">${collectedColorsUnique.size} / 3</span>`;
+            }
+            html += `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-extrabold text-amber-400 bg-slate-950 border border-amber-500/30 tracking-widest">${currentSequenceIndex} / 3</span>`;
             document.getElementById('collected-badges').innerHTML = html;
         }
 
@@ -321,7 +343,7 @@
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
-                    triggerJedaJawaban(false, "WAKTU HABIS! (BELUM LENGKAP)"); 
+                    triggerJedaJawaban(false, "WAKTU HABIS! (URUTAN SALAH/BELUM SELESAI)"); 
                 }
             }, 100);
         }
@@ -330,14 +352,13 @@
             clearInterval(gameTimer);
             matchScores[selectedTim] += 5; 
             document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
-            triggerJedaJawaban(true, `LENGKAP 3 WARNA! (+5 POIN)`);
+            triggerJedaJawaban(true, `URUTAN BENAR & LENGKAP! (+5 POIN)`);
         }
 
         function triggerJedaJawaban(isBenar, pesanInfo) {
             isWaitingForNextSoal = true;
             playSoundEffect(isBenar ? 'correct' : 'wrong');
             
-            // Matikan engine mic secara aman selama masa jeda soal agar suara sisa tidak bocor ke soal berikutnya
             try { recognition.stop(); } catch(e) {}
             triggerMicUI(false); 
 
@@ -361,7 +382,7 @@
             if (isActive) {
                 micElement.innerHTML = "🎙️";
                 micElement.className = "w-12 h-12 rounded-full bg-red-600 border border-red-400 flex items-center justify-center text-white text-base mic-pulse";
-                document.getElementById('speech-preview').innerText = "RADAR OTOMATIS AKTIF...";
+                document.getElementById('speech-preview').innerText = "RADAR SEKUENSIAL AKTIF...";
             } else {
                 micElement.innerHTML = "🔒";
                 micElement.className = "w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner";
@@ -406,13 +427,14 @@
             document.getElementById('timer-bar').style.width = "100%";
             
             triggerMicUI(false);
-            collectedColorsUnique.clear();
+            currentTargetSequence = [];
+            currentSequenceIndex = 0;
             document.getElementById('collected-badges').innerHTML = "";
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Otomatis</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Mikrofon akan langsung menyala otomatis di setiap soal tanpa perlu menekan tombol tambahan.</p>
+                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Sekuensial</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Peserta wajib menyebutkan ke-3 warna secara berurutan mulai dari kotak **Paling Kiri ➔ Tengah ➔ Paling Kanan**.</p>
                 </div>
             `;
         }
