@@ -3,489 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game PERMATA - Muslimah Wahdah Palu</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>PERMATA - Muslimah Wahdah Palu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --tosca-deep: #0f4c4a;
-            --tosca-bg: #146c69;
-            --tosca-light: #20b2aa;
-            --gold: #d4af37;
-            --gold-bright: #ffd700;
-            --cream: #fffdf9;
-            --text-dark: #0b2928;
-            
-            /* Warna Pilihan Game */
-            --merah: #e63946;
-            --putih: #ffffff;
-            --kuning: #ffb703;
-            --biru: #1d3557;
-            --hijau: #52b788;
-            --ungu: #7209b7;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background-color: var(--tosca-deep);
-            color: var(--text-dark);
-            font-family: 'Montserrat', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40 Z' fill='none' stroke='%23146c69' stroke-width='1.5'/%3E%3Cpath d='M40 15 L65 40 L40 65 L15 40 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.25'/%3E%3C/svg%3E");
-            padding: 30px;
-        }
-
-        .game-container {
-            background: var(--cream);
-            width: 100%;
-            max-width: 950px;
-            border-radius: 32px;
-            padding: 50px 40px;
-            box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.6);
-            border: 6px solid var(--gold);
-            position: relative;
-            text-align: center;
-        }
-
-        .game-container::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 16px;
-            background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
-        }
-
-        h1 {
-            font-family: 'Cinzel', serif;
-            color: var(--tosca-deep);
-            font-size: 3.8rem;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            color: var(--gold);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 35px;
-        }
-
-        .description {
-            color: #475569;
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-
-        /* Panel Pilihan Akses Tim */
-        .teams-control-panel {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .team-card {
-            background: #ffffff;
-            border: 3px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 25px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-            transition: all 0.2s;
-        }
-
-        .team-card.active-border {
-            border-color: var(--gold);
-            background: #f0fdfa;
-        }
-
-        .team-card h3 {
-            font-size: 1.6rem;
-            color: var(--tosca-deep);
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        .team-score {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--gold);
-            margin: 15px 0;
-        }
-
-        .team-status-badge {
-            font-size: 1rem;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            background: #f1f5f9;
-            color: #64748b;
-            margin-bottom: 15px;
-        }
-
-        .team-status-badge.done {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        /* Kontrol Arena */
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .badge {
-            background: var(--tosca-deep);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-size: 1.4rem;
-            font-weight: 800;
-            border: 2px solid var(--gold);
-        }
-
-        .timer-box {
-            width: 100%;
-            height: 20px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            margin-bottom: 35px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .timer-bar {
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, var(--tosca-light), var(--gold));
-            border-radius: 10px;
-            transition: width 0.1s linear;
-        }
-
-        .instruction {
-            font-size: 1.4rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #475569;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .word-container {
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #092625;
-            border-radius: 24px;
-            margin-bottom: 35px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-            border: 3px solid var(--gold);
-            padding: 20px;
-        }
-
-        .word-text {
-            font-size: 6rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-        }
-
-        .mic-status {
-            margin-top: 10px;
-            font-size: 1.2rem;
-            color: #ffd700;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mic-dot {
-            width: 12px; height: 12px; background-color: #ef4444; border-radius: 50%;
-            animation: pulse 1s infinite alternate;
-        }
-
-        @keyframes pulse { from { opacity: 0.3; } to { opacity: 1; } }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-
-        .btn {
-            background: #ffffff;
-            color: var(--text-dark);
-            border: 3px solid #cbd5e1;
-            padding: 24px 30px;
-            font-size: 1.8rem;
-            font-weight: 800;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-        }
-
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
-            border-color: var(--gold);
-            background: #f8fafc;
-        }
-
-        .btn-play-team {
-            background: linear-gradient(135deg, var(--tosca-deep), var(--tosca-bg));
-            color: var(--cream);
-            border: 2px solid var(--gold);
-            padding: 12px 20px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s;
-        }
-
-        .btn-play-team:hover {
-            background: linear-gradient(135deg, var(--tosca-bg), var(--tosca-deep));
-            color: var(--gold-bright);
-            transform: translateY(-2px);
-        }
-
-        .btn-reset {
-            background: #cbd5e1;
-            color: #334155;
-            border: none;
-            padding: 16px 30px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            border-radius: 14px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background 0.2s;
-        }
-
-        .btn-reset:hover {
-            background: #94a3b8;
-            color: #ffffff;
-        }
-
-        .hidden { display: none !important; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; }
+        .game-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
-<body>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-8">
 
-    <div class="game-container">
-        <div id="lobby-screen">
-            <h1>PERMATA</h1>
-            <div class="tagline">Muslimah Wahdah Palu</div>
-            <p class="description">
-                Kompetisi Fokus Pikiran 20 Soal (4 Detik/Soal). Total Nilai Maksimal: 100 Poin.<br>
-                <strong>Fleksibilitas Panggung:</strong> Pilih dan klik tombol tim mana saja di bawah ini untuk memulai tanding secara bebas!
-            </p>
-
-            <div class="teams-control-panel" id="teams-panel-container">
-                </div>
-
-            <button class="btn-reset" onclick="resetAllData()">RESET SEMUA SKOR TIM</button>
+    <header class="text-center my-4">
+        <h1 class="text-3xl font-extrabold text-amber-400 tracking-wider">PERMATA</h1>
+        <p class="text-xs font-semibold text-teal-400 uppercase tracking-widest mt-1">Muslimah Wahdah Cabang Palu</p>
+        <div class="mt-4 max-w-md mx-auto text-[11px] text-slate-400 bg-slate-900/50 p-3 rounded-xl border border-slate-800">
+            <strong>Aturan Kompetisi:</strong> Fokus Pikiran 20 Soal (4 Detik/Soal). <br>
+            <span class="text-teal-400">Fleksibilitas Panggung:</span> Klik tombol tim untuk tanding bebas!
         </div>
+    </header>
 
-        <div id="arena-screen" class="hidden">
-            <div class="game-header">
-                <span id="team-badge" class="badge">TIM -</span>
-                <span id="question-badge" class="badge">SOAL: 1 / 20</span>
-            </div>
-
-            <div class="timer-box">
-                <div id="timer-bar" class="timer-bar"></div>
-            </div>
-
-            <div class="instruction">Sebutkan atau Pilih Warna Asli Tulisan:</div>
-            <div class="word-container">
-                <div id="word-box" class="word-text">TAHSIN</div>
-                <div class="mic-status">
-                    <div class="mic-dot"></div>
-                    <span id="speech-log">Mikrofon Mendengarkan Suara...</span>
-                </div>
-            </div>
-
-            <div class="options-grid" id="options-container">
-                </div>
-        </div>
-    </div>
-
-<script>
-    const colorData = [
-        { name: "Merah", hex: "var(--merah)", voiceTriggers: ["merah", "merah.", "mela"] },
-        { name: "Putih", hex: "var(--putih)", voiceTriggers: ["putih", "putih.", "patih"] },
-        { name: "Kuning", hex: "var(--kuning)", voiceTriggers: ["kuning", "kuning.", "koneng"] },
-        { name: "Biru", hex: "var(--biru)", voiceTriggers: ["biru", "biru.", "biro"] },
-        { name: "Hijau", hex: "var(--hijau)", voiceTriggers: ["hijau", "hijau.", "ijau"] },
-        { name: "Ungu", hex: "var(--ungu)", voiceTriggers: ["ungu", "ungu."] }
-    ];
-
-    // Data Tim Tetap Tersimpan
-    let teams = [
-        { id: 0, name: "Tim Dirosa", score: null, done: false },
-        { id: 1, name: "Tim Tahsin", score: null, done: false },
-        { id: 2, name: "Tim Tarbiyah", score: null, done: false }
-    ];
-
-    let currentTeamIdx = -1;
-    let questionCount = 0;
-    let correctCount = 0;
-    let targetHex = "";
-    let gameTimer;
-    const timeLimit = 4000; 
-    let timeRemaining = timeLimit;
-
-    let audioCtx;
-    let recognition;
-    let isSpeechActive = false;
-
-    function initAudioAndPlay(teamId) {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        setupSpeechRecognition();
-        launchActiveTeam(teamId);
-    }
-
-    function setupSpeechRecognition() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (SpeechRecognition && !recognition) {
-            recognition = new SpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = false;
-            recognition.lang = 'id-ID';
-
-            recognition.onresult = (event) => {
-                if(!isSpeechActive) return;
-                const lastResultIdx = event.results.length - 1;
-                const spokenText = event.results[lastResultIdx][0].transcript.trim().toLowerCase();
-                document.getElementById("speech-log").innerText = `Mendengar ucapan: "${spokenText}"`;
-                
-                const matchedColor = colorData.find(c => c.voiceTriggers.some(trigger => spokenText.includes(trigger)));
-                if (matchedColor) {
-                    verifyAnswer(matchedColor.hex);
-                }
-            };
-
-            recognition.onerror = () => {
-                if(isSpeechActive) { try { recognition.start(); } catch(e){} }
-            };
-        }
-    }
-
-    function playSfxTing() {
-        if(!audioCtx) return;
-        let osc = audioCtx.createOscillator();
-        let biquadFilter = audioCtx.createBiquadFilter();
-        let gain = audioCtx.createGain();
+    <main class="w-full max-w-2xl mx-auto my-auto space-y-6">
         
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime); 
-        osc.frequency.exponentialRampToValueAtTime(987.77, audioCtx.currentTime + 0.08); 
-        
-        biquadFilter.type = "highpass"; 
-        biquadFilter.frequency.setValueAtTime(400, audioCtx.currentTime);
-
-        gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-        
-        osc.connect(biquadFilter);
-        biquadFilter.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-    }
-
-    function playSfxTreet() {
-        if(!audioCtx) return;
-        let osc = audioCtx.createOscillator();
-        let biquadFilter = audioCtx.createBiquadFilter();
-        let gain = audioCtx.createGain();
-        
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(135, audioCtx.currentTime); 
-        osc.frequency.linearRampToValueAtTime(95, audioCtx.currentTime + 0.25);
-        
-        biquadFilter.type = "lowpass"; 
-        biquadFilter.frequency.setValueAtTime(800, audioCtx.currentTime);
-
-        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-        
-        osc.connect(biquadFilter);
-        biquadFilter.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-    }
-
-    function speakMuslimah(text) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'id-ID';
-            msg.pitch = 1.1; 
-            msg.rate = 0.95; 
-
-            const voices = window.speechSynthesis.getVoices();
-            const fVoice = voices.find(v => v.lang.includes('id') && v.name.toLowerCase().includes('female'));
-            if(fVoice) msg.voice = fVoice;
-
-            window.speechSynthesis.speak(msg);
-        }
-    }
-
-    // Render Lobby dengan Sistem Tombol Akses Bebas Bersamaan
-    function renderLobbyPanel() {
-        const panelContainer = document.getElementById("teams-control-panel");
-        const container = document.getElementById("teams-panel-container");
-        container.innerHTML = "";
-
-        teams.forEach((t) => {
-            let statusClass = t.done ? "team-status-badge done" : "team-status-badge";
-            let statusText = t.done ? "✅ Selesai Tanding" : "⏳ Siap Dimainkan";
-            let scoreText = t.score !== null ? `${t.score} Poin` : "-";
+        <div class="game-card rounded-2xl p-6 text-center shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 h-1.5 bg-amber-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
             
-            // Tombol play selalu tersedia dan bisa diklik kapan saja tanpa urutan lock
-            let actionBtnText = t.done ? "Main Ulang Sesi" : "Mulai Main";
+            <div class="flex justify-between items-center mb-4 text-xs text-slate-400 font-medium">
+                <span>SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> / 20</span>
+                <span class="bg-slate-900 px-2.5 py-1 rounded-full border border-slate-800">Waktu: <strong id="timer-text" class="text-amber-400">4</strong>s</span>
+            </div>
 
-            container.innerHTML += `
-                <div class="team-card ${t.done ? '' : 'active-border'}">
-                    <div>
-                        <div class="${statusClass}">${statusText}</div>
-                        <h3>${t.name}</h3>
-                    </div>
-                    <div class="team-score">${scoreText}</div>
-                    <button class="btn-play-team" onclick="initAudioAndPlay(${t.id})">${actionBtnText}</button>
-                </div>
+            <div id="game-display" class="text-2xl font-bold py-8 text-white tracking-wide">
+                Silakan Pilih Tim di Bawah untuk Memulai Game
+            </div>
+            
+            <div id="action-zone" class="hidden grid grid-cols-2 gap-4 mt-4">
+                <button onclick="submitAnswer(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg active:scale-95">BENAR</button>
+                <button onclick="submitAnswer(false)" class="bg-rose-600 hover:bg-rose-500 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-lg active:scale-95">SALAH</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div onclick="initGame('A')" class="game-card p-3 rounded-xl text-center cursor-pointer hover:border-teal-500/50 transition-all active:scale-95">
+                <div class="text-[10px] uppercase font-bold text-slate-400">TIM A</div>
+                <div id="score-A" class="text-xl font-extrabold text-white mt-1">0</div>
+            </div>
+            <div onclick="initGame('B')" class="game-card p-3 rounded-xl text-center cursor-pointer hover:border-teal-500/50 transition-all active:scale-95">
+                <div class="text-[10px] uppercase font-bold text-slate-400">TIM B</div>
+                <div id="score-B" class="text-xl font-extrabold text-white mt-1">0</div>
+            </div>
+            <div onclick="initGame('C')" class="game-card p-3 rounded-xl text-center cursor-pointer hover:border-teal-500/50 transition-all active:scale-95">
+                <div class="text-[10px] uppercase font-bold text-slate-400">TIM C</div>
+                <div id="score-C" class="text-xl font-extrabold text-white mt-1">0</div>
+            </div>
+            <div onclick="initGame('D')" class="game-card p-3 rounded-xl text-center cursor-pointer hover:border-teal-500/50 transition-all active:scale-95">
+                <div class="text-[10px] uppercase font-bold text-slate-400">TIM D</div>
+                <div id="score-D" class="text-xl font-extrabold text-white mt-1">0</div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button onclick="resetAllScores()" class="text-[10px] font-bold text-rose-400 bg-rose-500/10 border border-rose-500/20 px-4 py-2 rounded-lg hover:bg-rose-500/20 transition-all uppercase tracking-wider">
+                🔄 Reset Semua Skor Tim
+            </button>
+        </div>
+    </main>
+
+    <footer class="text-center text-[10px] text-slate-500 my-4">
+        &copy; 2026 Muslimah Wahdah Palu. Terintegrasi Cloud Server Aman.
+    </footer>
+
+    <script>
+        let currentTim = '';
+        let scores = { A: 0, B: 0, C: 0, D: 0 };
+        let currentQuestion = 0;
+        let timer = null;
+        let timeLeft = 40; // 4 detik disetel 40 untuk kelancaran progress bar deduksi per 100ms
+        let correctAnswer = true;
+
+        // Data Bank Soal Acak untuk melatih konsentrasi / mengecoh peserta
+        const warnaKecohan = ["MERAH", "HIJAU", "BIRU", "KUNING", "HITAM", "PUTIH"];
+        
+        function initGame(tim) {
+            clearInterval(timer);
+            currentTim = tim;
+            currentQuestion = 0;
+            document.getElementById('action-zone').classList.remove('hidden');
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion >= 20) {
+                endGame();
+                return;
+            }
+            currentQuestion++;
+            document.getElementById('question-num').innerText = currentQuestion;
+            
+            // Logika Membuat Soal Kecohan Konsentrasi (Teks dan Arti berbeda)
+            let teksWarna = warnaKecohan[Math.floor(Math.random() * warnaKecohan.length)];
+            let artiWarna = warnaKecohan[Math.floor(Math.random() * warnaKecohan.length)];
+            
+            correctAnswer = (teksWarna === artiWarna);
+            
+            // Tampilkan ke layar monitor game
+            document.getElementById('game-display').innerHTML = `
+                <span class="text-xs uppercase tracking-widest text-slate-400 block mb-2">Tanding Aktif: TIM ${currentTim}</span>
+                Apakah Arti Kata Ini Sama Dengan Tulisannya? <br>
+                <span class="text-4xl font-black mt-4 block tracking-wide text-amber-400">${teksWarna}</span>
             `;
-        });
-    }
 
-    function launchActiveTeam(teamId) {
-        currentTeamIdx = teams.findIndex(x => x.id === teamId);
-        if (currentTeamIdx === -1) return;
+            startTimer();
+        }
 
-        questionCount = 0;
-        correctCount = 0;
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 40; 
+            document.getElementById('timer-bar').style.width = "100%";
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer-text').innerText = (timeLeft / 10).toFixed(0);
+                document.getElementById('timer-bar').style.width = (timeLeft * 2.5) + "%";
 
-        document.getElementById("lobby-screen").classList.add("hidden");
-        document.getElementById("arena-screen").classList.remove("hidden");
-        document.getElementById("team-badge").innerText = teams
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    // Jika waktu habis dianggap salah, lanjut soal berikutnya
+                    nextQuestion();
+                }
+            }, 100);
+        }
+
+        function submitAnswer(userAns) {
+            clearInterval(timer);
+            if (userAns === correctAnswer) {
+                scores[currentTim] += 5; // Benar dapat 5 poin (Total Maksimal 20 Soal x 5 = 100 Poin)
+                document.getElementById(`score-${currentTim}`).innerText = scores[currentTim];
+            }
+            nextQuestion();
+        }
+
+        function endGame() {
+            clearInterval(timer);
+            document.getElementById('action-zone').classList.add('hidden');
+            document.getElementById('timer-bar').style.width = "0%";
+            document.getElementById('game-display').innerHTML = `
+                <span class="text-emerald-400 font-bold block text-lg">🎉 PERTANDINGAN SELESAI!</span>
+                Tim ${currentTim} Berhasil Memperoleh Total Nilai: <br>
+                <span class="text-4xl font-extrabold text-white mt-2 block">${scores[currentTim]} Poin</span>
+            `;
+        }
+
+        function resetAllScores() {
+            clearInterval(timer);
+            currentTim = '';
+            currentQuestion = 0;
+            scores = { A: 0, B: 0, C: 0, D: 0 };
+            document.getElementById('score-A').innerText = "0";
+            document.getElementById('score-B').innerText = "0";
+            document.getElementById('score-C').innerText = "0";
+            document.getElementById('score-D').innerText = "0";
+            document.getElementById('question-num').innerText = "0";
+            document.getElementById('timer-text').innerText = "4";
+            document.getElementById('timer-bar').style.width = "100%";
+            document.getElementById('action-zone').classList.add('hidden');
+            document.getElementById('game-display').innerText = "Silakan Pilih Tim di Bawah untuk Memulai Game";
+        }
+    </script>
+</body>
+</html>
