@@ -17,7 +17,7 @@
         <h1 class="text-2xl font-extrabold text-amber-400 tracking-wider">PERMATA - EMAS</h1>
         <p class="text-xs font-semibold text-emerald-400 uppercase tracking-widest mt-0.5">Muslimah Wahdah Cabang Palu</p>
         <div class="mt-2 max-w-md mx-auto text-[10px] text-slate-400 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">
-            <strong>Game Pengecoh 4 Warna:</strong> Dengarkan instruksi suara wanita, lihat teksnya, lalu klik kotak fisik warna yang tepat sebelum waktu habis!
+            <strong>Game Pengecoh 4 Warna:</strong> Dengarkan langsung nama warna yang diucapkan, abaikan tulisan di layar, lalu klik tombol fisik warna yang tepat!
         </div>
     </header>
 
@@ -82,10 +82,8 @@
         let timeRemaining = 40; 
         let targetColorAnswer = '';
 
-        // Daftar nama warna asli
         const coreColors = ["MERAH", "HIJAU", "BIRU", "KUNING"];
         
-        // Daftar warna teks css penipu mata
         const cssTextColors = {
             "MERAH": "text-red-500",
             "HIJAU": "text-emerald-500",
@@ -93,16 +91,14 @@
             "KUNING": "text-amber-400"
         };
 
-        // Fungsi Memanggil Suara Wanita Muslimah (Indonesian Female Voice)
+        // Fungsi Suara Hanya Mengucapkan Nama Warna Saja (Tanpa Awalan kalimat)
         function playMuslimahVoice(textToSpeak) {
             if ('speechSynthesis' in window) {
-                // Batalkan suara sebelumnya agar tidak bertumpuk jika klik cepat
                 window.speechSynthesis.cancel(); 
                 
                 let utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = 'id-ID'; // Mengunci aksen Bahasa Indonesia resmi
+                utterance.lang = 'id-ID'; 
                 
-                // Mencari database jenis suara wanita bawaan browser
                 let availableVoices = window.speechSynthesis.getVoices();
                 let femaleVoice = availableVoices.find(voice => 
                     voice.lang.includes('id') && 
@@ -113,13 +109,12 @@
                     utterance.voice = femaleVoice;
                 }
                 
-                utterance.pitch = 1.1; // Sedikit menaikkan nada suara agar terdengar ramah & sopan
-                utterance.rate = 1.0;  // Kecepatan membaca normal
+                utterance.pitch = 1.1; 
+                utterance.rate = 1.0;  
                 window.speechSynthesis.speak(utterance);
             }
         }
 
-        // Memancing browser agar menyiapkan daftar suara saat pertama dibuka
         if ('speechSynthesis' in window) {
             window.speechSynthesis.getVoices();
         }
@@ -140,23 +135,22 @@
             activeQuestionNum++;
             document.getElementById('question-num').innerText = activeQuestionNum;
 
-            // 1. Tentukan apa warna asli yang harus dicari (Jawaban Benar)
+            // Target Jawaban Benar
             targetColorAnswer = coreColors[Math.floor(Math.random() * coreColors.length)];
 
-            // 2. Acak teks pengecoh dan warna tulisan pengecoh di layar
+            // Variabel Pengacak Layar Visual
             let teksYangTertulis = coreColors[Math.floor(Math.random() * coreColors.length)];
             let warnaTulisanDiLayar = coreColors[Math.floor(Math.random() * coreColors.length)];
             let cssClassWarna = cssTextColors[warnaTulisanDiLayar];
 
-            // 3. Tampilkan struktur teks kecohan di layar monitor
             document.getElementById('game-display').innerHTML = `
                 <span class="text-[10px] uppercase font-bold tracking-widest text-teal-400 block mb-1">TIM ${selectedTim} BERTANDING</span>
-                <p class="text-xs text-slate-300">Dengarkan Suara Ustadzah Panitia!</p>
+                <p class="text-xs text-slate-300">Dengarkan Suara dan Klik Tombol yang Tepat!</p>
                 <h2 class="text-4xl font-black mt-3 block tracking-wide ${cssClassWarna}">${teksYangTertulis}</h2>
             `;
 
-            // 4. Jalankan instruksi suara wanita pendikte soal
-            playMuslimahVoice("Cari warna " + targetColorAnswer.toLowerCase());
+            // Mengucapkan nama warnanya secara langsung (contoh: "hijau")
+            playMuslimahVoice(targetColorAnswer.toLowerCase());
 
             initiateCountdown();
         }
@@ -173,7 +167,7 @@
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
-                    generateNextSoal(); // Waktu habis dianggap salah, ganti soal berikutnya
+                    generateNextSoal(); 
                 }
             }, 100);
         }
@@ -181,7 +175,7 @@
         function checkColorChoice(chosenColor) {
             clearInterval(gameTimer);
             if (chosenColor === targetColorAnswer) {
-                matchScores[selectedTim] += 5; // Dapat 5 poin per soal jika benar
+                matchScores[selectedTim] += 5; 
                 document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
             }
             generateNextSoal();
@@ -198,7 +192,7 @@
                 <span class="text-3xl font-extrabold text-white mt-2 block">${matchScores[selectedTim]} Poin</span>
             `;
             
-            playMuslimahVoice("Pertandingan selesai. Skor Tim " + selectedTim + " adalah " + matchScores[selectedTim] + " poin.");
+            playMuslimahVoice("Selesai. Skor Tim " + selectedTim + " adalah " + matchScores[selectedTim] + " poin.");
         }
 
         function resetSystem() {
