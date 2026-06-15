@@ -97,40 +97,31 @@
             <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] text-center lg:text-left pl-1">🏆 PAPAN SKOR DIGITAL</h3>
             
             <div class="grid grid-cols-1 gap-3 flex-grow justify-center">
-                <div onclick="startMatch('A')" id="card-A" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
+                <div onclick="startMatch('Tarbiyah')" id="card-Tarbiyah" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-amber-500 rounded-full"></div>
-                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM A</span>
+                        <span class="font-bold text-slate-200 tracking-wider text-sm">TARBIYAH</span>
                     </div>
                     <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
-                        <span id="score-A" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                        <span id="score-Tarbiyah" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
-                <div onclick="startMatch('B')" id="card-B" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
+                <div onclick="startMatch('Tahsin')" id="card-Tahsin" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-teal-500 rounded-full"></div>
-                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM B</span>
+                        <span class="font-bold text-slate-200 tracking-wider text-sm">TAHSIN</span>
                     </div>
                     <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
-                        <span id="score-B" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                        <span id="score-Tahsin" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
-                <div onclick="startMatch('C')" id="card-C" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
+                <div onclick="startMatch('Dirosa')" id="card-Dirosa" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-emerald-500 rounded-full"></div>
-                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM C</span>
+                        <span class="font-bold text-slate-200 tracking-wider text-sm">DIROSA</span>
                     </div>
                     <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
-                        <span id="score-C" class="text-2xl font-black text-amber-400 font-sans">0</span>
-                    </div>
-                </div>
-                <div onclick="startMatch('D')" id="card-D" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-1.5 h-7 bg-rose-500 rounded-full"></div>
-                        <span class="font-bold text-slate-200 tracking-wider text-sm">TIM D</span>
-                    </div>
-                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
-                        <span id="score-D" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                        <span id="score-Dirosa" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
             </div>
@@ -147,14 +138,13 @@
 
     <script>
         let selectedTim = '';
-        let matchScores = { A: 0, B: 0, C: 0, D: 0 };
+        let matchScores = { Tarbiyah: 0, Tahsin: 0, Dirosa: 0 };
         let activeQuestionNum = 0;
         let gameTimer = null;
         let timeRemaining = 50; 
         let isQuestionActive = false;
         let isWaitingForNextSoal = false;
 
-        // MENGGUNAKAN SET AGAR WARNA YANG DISIMPAN BENAR-BENAR UNIK (ANTI DOUBLE HIT)
         let collectedColorsUnique = new Set();
 
         const coreColors = ["MERAH", "BIRU", "KUNING", "HIJAU"];
@@ -191,7 +181,6 @@
                 let rawVoice = textResult.toLowerCase().trim();
                 document.getElementById('speech-preview').innerText = "Mendengar: " + rawVoice.toUpperCase();
 
-                // Analisis kata per kata untuk mencegah bentrokan akumulasi teks browser
                 let kataKata = rawVoice.split(/\s+/);
                 
                 kataKata.forEach(kata => {
@@ -209,7 +198,6 @@
                     }
                 });
 
-                // KUNCI ABSOLUT: Hanya bisa lolos jika isi ukuran set warna unik sudah genap 4 item!
                 if (collectedColorsUnique.size === 4) {
                     executeSuccessTurn();
                 }
@@ -243,7 +231,7 @@
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
             
-            ["A", "B", "C", "D"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
+            ["Tarbiyah", "Tahsin", "Dirosa"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
             document.getElementById(`card-${tim}`)?.classList.add('active-tim');
 
             selectedTim = tim;
@@ -274,8 +262,6 @@
             document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
 
             isWaitingForNextSoal = false;
-
-            // Bersihkan keranjang warna unik untuk babak baru
             collectedColorsUnique.clear();
             renderBadges();
 
@@ -298,7 +284,7 @@
             htmlGridContent += `</div>`;
 
             document.getElementById('game-display').innerHTML = `
-                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim}</span>
+                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim.toUpperCase()}</span>
                 <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari keempat teks di bawah ini!</p>
                 ${htmlGridContent}
             `;
@@ -309,7 +295,6 @@
         function pushUniqueColor(color) {
             if (!collectedColorsUnique.has(color)) {
                 collectedColorsUnique.add(color);
-                // Nyalakan border hijau pada kotak di layar
                 const element = document.getElementById(`box-${color}`);
                 if (element) element.classList.add('color-checked');
                 renderBadges();
@@ -325,7 +310,6 @@
                     html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-slate-600 bg-slate-900 border border-slate-800 uppercase tracking-wider">${color}</span>`;
                 }
             });
-            // Tampilkan status jumlah target (contoh: 2/4 WARNA TERKUMPUL)
             html += `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-extrabold text-amber-400 bg-slate-950 border border-amber-500/30 tracking-widest">${collectedColorsUnique.size} / 4</span>`;
             document.getElementById('collected-badges').innerHTML = html;
         }
@@ -390,7 +374,7 @@
             let totalSkor = matchScores[selectedTim];
             document.getElementById('game-display').innerHTML = `
                 <span class="text-emerald-400 font-bold block text-sm tracking-widest mb-1">🎉 PERTANDINGAN SELESAI</span>
-                <span class="text-xs text-slate-400">Total Akumulasi Nilai Tim ${selectedTim}:</span>
+                <span class="text-xs text-slate-400">Total Akumulasi Nilai Tim ${selectedTim.toUpperCase()}:</span>
                 <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400 glow-gold mt-3 block">${totalSkor} POIN</span>
             `;
         }
@@ -403,9 +387,9 @@
             
             selectedTim = '';
             activeQuestionNum = 0;
-            matchScores = { A: 0, B: 0, C: 0, D: 0 };
+            matchScores = { Tarbiyah: 0, Tahsin: 0, Dirosa: 0 };
             
-            ["A", "B", "C", "D"].forEach(t => {
+            ["Tarbiyah", "Tahsin", "Dirosa"].forEach(t => {
                 document.getElementById(`score-${t}`).innerText = "0";
                 document.getElementById(`card-${t}`).classList.remove('active-tim');
             });
