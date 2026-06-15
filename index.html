@@ -9,14 +9,14 @@
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at 50% 50%, #060e1a 0%, #010408 100%);
+            background: radial-gradient(circle at 50% 50%, #050c16 0%, #010306 100%);
             overflow-x: hidden;
         }
         .islamic-pattern {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%231e293b' fill-opacity='0.12'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l6-6h2l-8 8V8zm0 4l8-8h2l-10 10v-2zm0 4l10-10h2L40 28v-2zm0 4l12-12h2L40 36v-2zm0 4l14-14h2L40 44v-2zm0 4l16-16h2L40 52v-2zm0 4l18-18h2L40 60v-2zm0 4l20-20h2L40 68v-2zm0 4l22-22h2L40 76v-2zm0 4l24-24h2L40 84v-2z'/%3E%3C/g%3E%3C/svg%3E");
         }
         .layer-5d-panel {
-            background: linear-gradient(135deg, rgba(11, 25, 54, 0.75) 0%, rgba(5, 11, 24, 0.95) 100%);
+            background: linear-gradient(135deg, rgba(9, 21, 46, 0.8) 0%, rgba(4, 9, 20, 0.98) 100%);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(212, 163, 89, 0.2);
             box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.05);
@@ -25,18 +25,17 @@
         }
         .layer-5d-panel:hover {
             border-color: rgba(212, 163, 89, 0.4);
-            box-shadow: 0 40px 70px -8px rgba(212, 163, 89, 0.1), inset 0 1px 0 rgba(255,255,255,0.08);
             transform: perspective(1200px) translateZ(30px);
         }
         .wall-score-premium {
-            background: linear-gradient(145deg, #0a142c 0%, #03060f 100%);
+            background: linear-gradient(145deg, #081126 0%, #02040a 100%);
             border: 1px solid rgba(255, 255, 255, 0.04);
             box-shadow: 0 12px 24px -6px rgba(0,0,0,0.6);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .wall-score-premium.active-tim {
             border: 1px solid #d4a359;
-            background: linear-gradient(145deg, #122248 0%, #050b1a 100%);
+            background: linear-gradient(145deg, #101d3d 0%, #040814 100%);
             box-shadow: 0 0 30px rgba(212, 163, 89, 0.2);
             transform: scale(1.02);
         }
@@ -46,12 +45,12 @@
         .color-card-5d {
             background: rgba(4, 8, 16, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             animation: floatCard 3s infinite ease-in-out;
         }
         @keyframes floatCard {
-            0%, 100% { transform: translateY(0px) translateZ(5px); }
-            50% { transform: translateY(-4px) translateZ(15px); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
         }
         .mic-pulse {
             animation: micGlow 1.6s infinite cubic-bezier(0.4, 0, 0.6, 1);
@@ -75,7 +74,7 @@
     <main class="w-full max-w-6xl mx-auto my-auto grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch relative z-10">
         
         <div class="lg:col-span-3 flex flex-col justify-between space-y-4">
-            <div class="layer-5d-panel rounded-3xl p-6 text-center min-h-[460px] flex flex-col justify-between relative overflow-hidden">
+            <div class="layer-5d-panel rounded-3xl p-6 text-center min-h-[480px] flex flex-col justify-between relative overflow-hidden">
                 
                 <div class="absolute top-0 left-0 w-6 h-6 border-t border-l border-amber-500/30 rounded-tl-lg"></div>
                 <div class="absolute top-0 right-0 w-6 h-6 border-t border-r border-amber-500/30 rounded-tr-lg"></div>
@@ -86,13 +85,13 @@
                 
                 <div class="flex justify-between items-center text-xs text-slate-400 font-semibold tracking-wide">
                     <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 text-[11px]">BABAK SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> <span class="text-slate-700">/</span> 20</span>
-                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 text-[11px]">SISA DURASI: <strong id="timer-text" class="text-amber-400 text-sm">6</strong>s</span>
+                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 text-[11px]">SISA DURASI: <strong id="timer-text" class="text-amber-400 text-sm">7</strong>s</span>
                 </div>
 
-                <div id="game-display" class="py-4 my-auto">
+                <div id="game-display" class="py-4 my-auto w-full">
                     <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">SISTEM MULTI-MATRIX SUARA AKTIF</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Pilih salah satu Tim peserta di samping untuk mengaktifkan radar sensor tangkapan suara 4 dimensi sekaligus.</p>
+                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">SISTEM PENTAMATRIX SUARA AKTIF</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">Silakan pilih salah satu Tim di papan kanan untuk mengaktifkan sensor mikrofon penangkap 5 warna.</p>
                     </div>
                 </div>
 
@@ -109,7 +108,7 @@
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
                 <div class="text-xl text-amber-400 select-none">🎯</div>
                 <div class="text-[10.5px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Aturan Multi-Matrix:</strong> Layar menampilkan 4 kotak warna acak. Peserta wajib menyebutkan warna asli dari teks yang berada di posisi paling atas (atau sebutkan warna dominan yang diminta) secepat mungkin melalui suara!
+                    <strong class="text-amber-400">Aturan Pentamatrix (5 Warna):</strong> Layar menampilkan 5 kotak warna acak (Merah, Biru, Kuning, Putih, Hijau). Peserta wajib fokus mencari kotak bertanda <span class="text-amber-400 font-bold">"🎯 SOAL UTAMA"</span> lalu sebutkan warna aslinya secara lisan!
                 </div>
             </div>
         </div>
@@ -118,28 +117,28 @@
             <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] pl-1 text-center lg:text-left">🏆 PAPAN DINDING SKOR</h3>
             
             <div class="grid grid-cols-1 gap-3 flex-grow justify-center">
-                <div onclick="startMatch('A')" id="card-A" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('A')" id="card-A" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-amber-500 rounded-full"></div>
                         <span class="font-bold text-slate-300 text-sm">TIM A</span>
                     </div>
                     <div id="score-A" class="text-2xl font-black text-amber-400 font-sans">0</div>
                 </div>
-                <div onclick="startMatch('B')" id="card-B" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('B')" id="card-B" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-teal-500 rounded-full"></div>
                         <span class="font-bold text-slate-300 text-sm">TIM B</span>
                     </div>
                     <div id="score-B" class="text-2xl font-black text-amber-400 font-sans">0</div>
                 </div>
-                <div onclick="startMatch('C')" id="card-C" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('C')" id="card-C" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-emerald-500 rounded-full"></div>
                         <span class="font-bold text-slate-300 text-sm">TIM C</span>
                     </div>
                     <div id="score-C" class="text-2xl font-black text-amber-400 font-sans">0</div>
                 </div>
-                <div onclick="startMatch('D')" id="card-D" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
+                <div onclick="startMatch('D')" id="card-D" class="wall-score-premium p-4 rounded-2xl flex justify-between items-center cursor-pointer transform hover:-translate-x-1 duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-rose-500 rounded-full"></div>
                         <span class="font-bold text-slate-300 text-sm">TIM D</span>
@@ -155,7 +154,7 @@
     </main>
 
     <footer class="text-center text-[9px] text-slate-600 my-2 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Premium Sound Matrix Core v5.0.
+        &copy; 2026 Muslimah Wahdah Islamiyah. Pentamatrix Voice Module Active.
     </footer>
 
     <script>
@@ -163,25 +162,32 @@
         let matchScores = { A: 0, B: 0, C: 0, D: 0 };
         let activeQuestionNum = 0;
         let gameTimer = null;
-        let timeRemaining = 60; // Waktu ditingkatkan ke 6 detik karena ada 4 warna sekaligus di layar
+        let timeRemaining = 70; // 7 detik agar peserta leluasa membaca formasi 5 kotak acak
         let targetColorAnswer = '';
         let isQuestionActive = false;
 
-        const coreColors = ["MERAH", "HIJAU", "BIRU", "KUNING"];
+        // Ditambahkan opsi warna "PUTIH" sesuai permintaan
+        const coreColors = ["MERAH", "BIRE", "KUNING", "PUTIH", "HIJAU"];
+        
+        // Pemetaan warna teks Tailwind CSS
         const cssTextColors = {
             "MERAH": "text-red-500",
-            "HIJAU": "text-emerald-500",
             "BIRU": "text-blue-500",
-            "KUNING": "text-amber-400"
-        };
-        const cssBgColors = {
-            "MERAH": "rgba(220, 38, 38, 0.15)",
-            "HIJAU": "rgba(16, 185, 129, 0.15)",
-            "BIRU": "rgba(59, 130, 246, 0.15)",
-            "KUNING": "rgba(245, 158, 11, 0.15)"
+            "KUNING": "text-amber-400",
+            "PUTIH": "text-slate-100",
+            "HIJAU": "text-emerald-500"
         };
 
-        // KONEKSI SPEECH RECOGNITION INTERFACES
+        // Pemetaan warna background kotak transparan
+        const cssBgColors = {
+            "MERAH": "rgba(220, 38, 38, 0.12)",
+            "BIRU": "rgba(59, 130, 246, 0.12)",
+            "KUNING": "rgba(245, 158, 11, 0.12)",
+            "PUTIH": "rgba(255, 255, 255, 0.08)",
+            "HIJAU": "rgba(16, 185, 129, 0.12)"
+        };
+
+        // SENSOR SUARA SPEECH RECOGNITION INTERFACE
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
 
@@ -205,8 +211,10 @@
                     evaluateVoiceInput("HIJAU");
                 } else if (kataSuara.includes("BIRU")) {
                     evaluateVoiceInput("BIRU");
-                } else if (kataSuara.includes("KUNING") || kataSuara.includes("KUNINGAN")) {
+                } else if (kataSuara.includes("KUNING")) {
                     evaluateVoiceInput("KUNING");
+                } else if (kataSuara.includes("PUTIH") || kataSuara.includes("PUTI")) {
+                    evaluateVoiceInput("PUTIH");
                 }
             };
 
@@ -216,10 +224,9 @@
                 }
             };
         } else {
-            alert("Sistem Google Chrome Terkini Diperlukan Untuk Fitur Sensor Tangkapan Suara.");
+            alert("Browser Google Chrome versi Desktop direkomendasikan untuk mengaktifkan sensor mikrofon.");
         }
 
-        // Web Audio API untuk Efek Mekanis Ting & Troot
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSoundEffect(type) {
@@ -231,13 +238,13 @@
 
             if (type === 'correct') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); // Nada C6 jernih (Ting)
+                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.2);
             } else if (type === 'wrong') {
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(100, audioCtx.currentTime); // Troot berat
+                osc.frequency.setValueAtTime(100, audioCtx.currentTime); 
                 gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.4);
@@ -263,7 +270,8 @@
         function startMatch(tim) {
             clearInterval(gameTimer);
             
-            coreColors.forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
+            // Set warna tim aktif di dinding skor
+            ["A", "B", "C", "D"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
             document.getElementById(`card-${tim}`).classList.add('active-tim');
 
             selectedTim = tim;
@@ -288,30 +296,32 @@
             activeQuestionNum++;
             document.getElementById('question-num').innerText = activeQuestionNum;
 
-            // Membuat Salinan Data Warna Untuk Diacak Sebanyak 4 Baris Sekaligus
-            let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
-            let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
+            // Penulisan array warna murni (diperbaiki teks "BIRU")
+            const colorsList = ["MERAH", "BIRU", "KUNING", "PUTIH", "HIJAU"];
 
-            // Menentukan Baris Mana Yang Menjadi Kunci Jawaban Utama (Acak antara Baris 1-4)
-            let indexTargetJawaban = Math.floor(Math.random() * 4);
+            // Mengacak urutan teks dan urutan warna visual secara independen
+            let arrayTeksWarna = [...colorsList].sort(() => Math.random() - 0.5);
+            let arrayVisualWarna = [...colorsList].sort(() => Math.random() - 0.5);
+
+            // Pilih baris target (0 sampai 4) sebagai kunci jawaban
+            let indexTargetJawaban = Math.floor(Math.random() * 5);
             targetColorAnswer = arrayVisualWarna[indexTargetJawaban]; 
 
-            // Bangun Struktur Visual Grid 4 Warna Sekaligus Secara Simetris & Mewah
-            let htmlGridContent = `<div class="grid grid-cols-2 gap-4 max-w-xl mx-auto mt-2">`;
+            // Bangun layout grid asimetris 5 dimensi mewah (3 kolom di baris atas, 2 kolom di baris bawah)
+            let htmlGridContent = `<div class="flex flex-wrap justify-center gap-3.5 max-w-2xl mx-auto mt-2">`;
             
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 5; i++) {
                 let teks = arrayTeksWarna[i];
                 let warnaVisual = arrayVisualWarna[i];
                 let cssTeks = cssTextColors[warnaVisual];
                 let cssBg = cssBgColors[warnaVisual];
                 
-                // Berikan penanda khusus yang anggun jika baris ini adalah kunci jawabannya
-                let penandaTarget = (i === indexTargetJawaban) ? `<span class="absolute top-1 left-2 text-[8px] tracking-widest text-amber-400 font-extrabold uppercase">🎯 SOAL UTAMA</span>` : "";
+                let penandaTarget = (i === indexTargetJawaban) ? `<span class="absolute top-1 left-2.5 text-[8px] tracking-widest text-amber-400 font-extrabold uppercase">🎯 SOAL UTAMA</span>` : "";
 
                 htmlGridContent += `
-                    <div class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-20 border border-slate-800/40" style="background-color: ${cssBg};">
+                    <div class="color-card-5d p-3.5 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-20 border border-slate-800/40 w-[30%] min-w-[130px] flex-grow" style="background-color: ${cssBg};">
                         ${penandaTarget}
-                        <h4 class="text-2xl font-black tracking-widest ${cssTeks}">${teks}</h4>
+                        <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
                     </div>
                 `;
             }
@@ -319,7 +329,7 @@
 
             let displayArea = document.getElementById('game-display');
             displayArea.innerHTML = `
-                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim}</span>
+                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">PENTAMATRIX TIM ${selectedTim}</span>
                 <p class="text-[11px] text-slate-300 mb-3">Sebutkan warna asli dari teks yang bertanda <span class="text-amber-400 font-bold">"🎯 SOAL UTAMA"</span>!</p>
                 ${htmlGridContent}
             `;
@@ -329,13 +339,13 @@
 
         function initiateCountdown() {
             clearInterval(gameTimer);
-            timeRemaining = 60; // 6.0 Detik agar peserta sempat memindai 4 warna di layar
+            timeRemaining = 70; // 7.0 detik
             document.getElementById('timer-bar').style.width = "100%";
             
             gameTimer = setInterval(() => {
                 timeRemaining--;
                 document.getElementById('timer-text').innerText = (timeRemaining / 10).toFixed(0);
-                document.getElementById('timer-bar').style.width = (timeRemaining * 1.66) + "%";
+                document.getElementById('timer-bar').style.width = (timeRemaining * 1.42) + "%";
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
@@ -389,13 +399,13 @@
             activeQuestionNum = 0;
             matchScores = { A: 0, B: 0, C: 0, D: 0 };
             
-            coreColors.forEach(t => {
+            ["A", "B", "C", "D"].forEach(t => {
                 document.getElementById(`score-${t}`).innerText = "0";
                 document.getElementById(`card-${t}`).classList.remove('active-tim');
             });
             
             document.getElementById('question-num').innerText = "0";
-            document.getElementById('timer-text').innerText = "6";
+            document.getElementById('timer-text').innerText = "7";
             document.getElementById('timer-bar').style.width = "100%";
             
             let micElement = document.getElementById('mic-indicator');
@@ -405,8 +415,8 @@
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">SISTEM MULTI-MATRIX SUARA AKTIF</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Pilih salah satu Tim peserta di samping untuk mengaktifkan radar sensor tangkapan suara 4 dimensi sekaligus.</p>
+                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">SISTEM PENTAMATRIX SUARA AKTIF</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Silakan pilih salah satu Tim di papan kanan untuk mengaktifkan sensor mikrofon penangkap 5 warna.</p>
                 </div>
             `;
         }
