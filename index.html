@@ -3,140 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PERMATA - Muslimah Wahdah Islamiyah</title>
+    <title>PERMATA Premium - Multi Screen System</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at 50% 50%, #050c16 0%, #010306 100%);
+            background: radial-gradient(circle at 50% 50%, #040a14 0%, #010205 100%);
             overflow-x: hidden;
         }
         .islamic-pattern {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%231e293b' fill-opacity='0.12'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l6-6h2l-8 8V8zm0 4l8-8h2l-10 10v-2zm0 4l10-10h2L40 28v-2zm0 4l12-12h2L40 36v-2zm0 4l14-14h2L40 44v-2zm0 4l16-16h2L40 52v-2zm0 4l18-18h2L40 60v-2zm0 4l20-20h2L40 68v-2zm0 4l22-22h2L40 76v-2zm0 4l24-24h2L40 84v-2z'/%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 80 80'%3E%3Cg fill='%231e293b' fill-opacity='0.08'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l6-6h2l-8 8V8zm0 4l8-8h2l-10 10v-2zm0 4l10-10h2L40 28v-2zm0 4l12-12h2L40 36v-2zm0 4l14-14h2L40 44v-2zm0 4l16-16h2L40 52v-2zm0 4l18-18h2L40 60v-2zm0 4l20-20h2L40 68v-2zm0 4l22-22h2L40 76v-2zm0 4l24-24h2L40 84v-2z'/%3E%3C/g%3E%3C/svg%3E");
         }
-        .layer-5d-panel {
-            background: linear-gradient(135deg, rgba(9, 21, 46, 0.8) 0%, rgba(4, 9, 20, 0.98) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 163, 89, 0.2);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+        .premium-panel {
+            background: linear-gradient(135deg, rgba(10, 25, 50, 0.5) 0%, rgba(2, 6, 12, 0.95) 100%);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(212, 163, 89, 0.15);
+            box-shadow: 0 40px 70px -15px rgba(0, 0, 0, 0.9);
         }
-        .wall-score-premium {
-            background: linear-gradient(145deg, #081126 0%, #02040a 100%);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .score-card {
+            background: linear-gradient(145deg, #060f22 0%, #010307 100%);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .wall-score-premium.active-tim {
+        .score-card.active-tim {
             border: 1px solid #d4a359;
-            background: linear-gradient(145deg, #101d3d 0%, #040814 100%);
-            box-shadow: 0 0 30px rgba(212, 163, 89, 0.2);
-            transform: scale(1.02);
+            background: linear-gradient(145deg, #0f244d 0%, #02050f 100%);
+            box-shadow: 0 0 40px rgba(212, 163, 89, 0.25);
+            transform: translateY(-4px);
         }
-        .glow-gold { text-shadow: 0 0 25px rgba(212, 163, 89, 0.5); }
-        .mic-pulse {
-            animation: micGlow 1.2s infinite ease-in-out;
+        .glow-text { text-shadow: 0 0 30px rgba(212, 163, 89, 0.6); }
+        .color-active-border {
+            border: 3px solid #10b981 !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
         }
-        @keyframes micGlow {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-            50% { transform: scale(1.1); box-shadow: 0 0 25px 8px rgba(220, 38, 38, 0.4); }
-        }
-        .color-checked {
-            border: 2px solid #10b981 !important;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        .pulse-mic { animation: micAnimate 1.5s infinite ease-in-out; }
+        @keyframes micAnimate {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px 10px rgba(239, 68, 68, 0.3); }
         }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-6 islamic-pattern">
+<body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-8 islamic-pattern">
 
-    <header class="text-center my-2 relative z-10">
-        <div class="font-['Amiri'] text-2xl font-bold text-amber-500/20 tracking-widest mb-0.5 select-none">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        <h1 class="text-3xl font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 glow-gold">PERMATA</h1>
-        <p class="text-[11px] font-bold text-teal-400 uppercase tracking-[0.3em] mt-1">Muslimah Wahdah Islamiyah</p>
-    </header>
-
-    <main class="w-full max-w-6xl mx-auto my-auto grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch relative z-10">
-        
-        <div class="lg:col-span-3 flex flex-col justify-between space-y-4">
-            <div class="layer-5d-panel rounded-3xl p-6 text-center min-h-[490px] flex flex-col justify-between relative overflow-hidden">
-                
-                <div class="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
-                
-                <div class="flex justify-between items-center text-xs text-slate-400 font-semibold tracking-wide">
-                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80">SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> <span class="text-slate-700">/</span> 20</span>
-                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider" id="status-timer-container">Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik</span>
-                </div>
-
-                <div id="game-display" class="py-2 my-auto w-full">
-                    <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Sekuensial Tri-Warna Aktif</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Peserta wajib menyebutkan ke-3 warna secara berurutan mulai dari kotak **Paling Kiri ➔ Tengah ➔ Paling Kanan**.</p>
-                    </div>
-                </div>
-
-                <div class="flex flex-col items-center justify-center space-y-2 relative">
-                    <div id="collected-badges" class="flex gap-2 mb-1 justify-center min-h-[24px]">
-                        </div>
-                    <div id="mic-indicator" class="w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner">
-                        🔒
-                    </div>
-                    <div id="speech-preview" class="text-[11px] font-bold text-slate-400 tracking-widest bg-slate-950/90 px-6 py-1.5 rounded-full border border-slate-800 min-h-[30px] min-w-[280px] flex items-center justify-center uppercase">
-                        Radar Terkunci
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
-                <div class="text-xl text-amber-400">⚠️</div>
-                <div class="text-[11px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Aturan Urutan Ketat:</strong> Menyebutkan warna secara acak atau melompat tidak akan dihitung oleh radar sistem. Jawaban diproses wajib dari arah <span class="text-teal-400 font-bold">Kiri ke Kanan</span>.
-                </div>
-            </div>
-        </div>
-
-        <div class="flex flex-col justify-between space-y-4">
-            <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] text-center lg:text-left pl-1">🏆 PAPAN SKOR DIGITAL</h3>
-            
-            <div class="grid grid-cols-1 gap-3 flex-grow justify-center">
-                <div onclick="startMatch('Tarbiyah')" id="card-Tarbiyah" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-1.5 h-7 bg-amber-500 rounded-full"></div>
-                        <span class="font-bold text-slate-200 tracking-wider text-sm">TARBIYAH</span>
-                    </div>
-                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
-                        <span id="score-Tarbiyah" class="text-2xl font-black text-amber-400 font-sans">0</span>
-                    </div>
-                </div>
-                <div onclick="startMatch('Tahsin')" id="card-Tahsin" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-1.5 h-7 bg-teal-500 rounded-full"></div>
-                        <span class="font-bold text-slate-200 tracking-wider text-sm">TAHSIN</span>
-                    </div>
-                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
-                        <span id="score-Tahsin" class="text-2xl font-black text-amber-400 font-sans">0</span>
-                    </div>
-                </div>
-                <div onclick="startMatch('Dirosa')" id="card-Dirosa" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-1.5 h-7 bg-emerald-500 rounded-full"></div>
-                        <span class="font-bold text-slate-200 tracking-wider text-sm">DIROSA</span>
-                    </div>
-                    <div class="bg-slate-950/60 px-4 py-1.5 rounded-xl border border-slate-800/60">
-                        <span id="score-Dirosa" class="text-2xl font-black text-amber-400 font-sans">0</span>
-                    </div>
-                </div>
-            </div>
-            
-            <button onclick="resetSystem()" class="w-full text-[9px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800/80 py-2.5 rounded-xl hover:text-rose-400 duration-300 uppercase tracking-widest">
-                Master Reset Seluruh Dinding
+    <div id="mode-selector" class="fixed inset-0 bg-slate-950 z-50 flex flex-col items-center justify-center p-6 text-center">
+        <h2 class="font-['Amiri'] text-4xl text-amber-500 mb-2">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
+        <h1 class="text-2xl font-extrabold tracking-widest text-amber-300 mb-8">PILIH MODE PERANGKAT</h1>
+        <div class="flex flex-col sm:flex-row gap-6 w-full max-w-md">
+            <button onclick="initMode('laptop')" class="flex-1 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 p-6 rounded-2xl hover:border-amber-500 duration-300 group">
+                <span class="text-4xl block mb-2">💻</span>
+                <span class="font-bold block text-sm group-hover:text-amber-400">LAYAR LAPTOP</span>
+                <span class="text-[11px] text-slate-500 block mt-1">Display utama panggung & skor</span>
+            </button>
+            <button onclick="initMode('hp')" class="flex-1 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 p-6 rounded-2xl hover:border-teal-500 duration-300 group">
+                <span class="text-4xl block mb-2">📱</span>
+                <span class="font-bold block text-sm group-hover:text-teal-400">KONTROL HP</span>
+                <span class="text-[11px] text-slate-500 block mt-1">Alat pemicu mic & validasi AI</span>
             </button>
         </div>
-    </main>
+    </div>
 
-    <footer class="text-center text-[9px] text-slate-600 my-1 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Sequential Tri-Color Engine.
-    </footer>
+    <div id="main-app" class="hidden flex-grow flex flex-col justify-between w-full">
+        <header class="text-center mb-4 relative z-10">
+            <div class="font-['Amiri'] text-2xl font-bold text-amber-500/10 tracking-widest mb-0.5 select-none">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <h1 class="text-3xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-200 glow-text">PERMATA</h1>
+            <p class="text-[10px] font-bold text-teal-400 uppercase tracking-[0.4em] mt-1">Muslimah Wahdah Islamiyah</p>
+        </header>
+
+        <main class="w-full max-w-6xl mx-auto my-auto grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch relative z-10">
+            
+            <div class="lg:col-span-3 flex flex-col justify-between space-y-4">
+                <div class="premium-panel rounded-3xl p-6 md:p-8 text-center min-h-[460px] flex flex-col justify-between relative overflow-hidden">
+                    
+                    <div class="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
+                    
+                    <div class="flex justify-between items-center text-xs text-slate-400 font-semibold tracking-wide">
+                        <span class="bg-slate-950/80 px-4 py-1.5 rounded-full border border-slate-800/80">SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> / 20</span>
+                        <div id="sync-badge" class="bg-rose-950/40 text-rose-400 px-4 py-1.5 rounded-full border border-rose-900/50 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> <span id="sync-text">BELUM TERKONEKSI</span>
+                        </div>
+                        <span class="bg-slate-950/80 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider">WAKTU: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S</span>
+                    </div>
+
+                    <div id="game-display" class="py-4 my-auto w-full">
+                        </div>
+
+                    <div id="hp-control-deck" class="hidden bg-slate-950/80 border border-slate-800 rounded-2xl p-4 mt-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <div id="mic-status-badge" class="text-[10px] font-bold px-3 py-1 bg-slate-900 rounded-full border border-slate-800 text-slate-500 uppercase">MIC OFF</div>
+                            <div class="text-[11px] font-bold text-amber-400">RADAR KONTROL HP AKTIF</div>
+                        </div>
+                        <div id="speech-preview" class="text-xs font-bold text-slate-400 bg-black/50 py-2.5 px-4 rounded-xl min-h-[36px] flex items-center justify-center border border-slate-900 uppercase tracking-wider">
+                            Menunggu instruksi laptop...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-950/40 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3 shadow-xl">
+                    <div class="text-xl text-amber-500">⚜️</div>
+                    <div class="text-[10px] text-slate-400 leading-relaxed" id="system-instruction-note">
+                        Pilih tim pada Papan Skor di sebelah kanan untuk mendistribusikan enkripsi soal ke dalam sistem.
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-between space-y-4">
+                <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] text-center lg:text-left pl-1">🏆 PAPAN SKOR DIGITAL</h3>
+                
+                <div class="grid grid-cols-1 gap-3 flex-grow justify-center">
+                    <div onclick="triggerSelectTim('Tarbiyah')" id="card-Tarbiyah" class="score-card p-4 rounded-2xl flex justify-between items-center cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-1.5 h-7 bg-amber-500 rounded-full"></div>
+                            <span class="font-bold text-slate-200 tracking-wider text-xs md:text-sm">TARBIYAH</span>
+                        </div>
+                        <div class="bg-slate-950/80 px-4 py-1.5 rounded-xl border border-slate-800/60">
+                            <span id="score-Tarbiyah" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                        </div>
+                    </div>
+                    <div onclick="triggerSelectTim('Tahsin')" id="card-Tahsin" class="score-card p-4 rounded-2xl flex justify-between items-center cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-1.5 h-7 bg-teal-500 rounded-full"></div>
+                            <span class="font-bold text-slate-200 tracking-wider text-xs md:text-sm">TAHSIN</span>
+                        </div>
+                        <div class="bg-slate-950/80 px-4 py-1.5 rounded-xl border border-slate-800/60">
+                            <span id="score-Tahsin" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                        </div>
+                    </div>
+                    <div onclick="triggerSelectTim('Dirosa')" id="card-Dirosa" class="score-card p-4 rounded-2xl flex justify-between items-center cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-1.5 h-7 bg-emerald-500 rounded-full"></div>
+                            <span class="font-bold text-slate-200 tracking-wider text-xs md:text-sm">DIROSA</span>
+                        </div>
+                        <div class="bg-slate-950/80 px-4 py-1.5 rounded-xl border border-slate-800/60">
+                            <span id="score-Dirosa" class="text-2xl font-black text-amber-400 font-sans">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="resetSystemMaster()" id="btn-master-reset" class="w-full text-[9px] font-bold text-slate-500 bg-slate-950/80 border border-slate-900 py-3 rounded-xl hover:text-rose-400 hover:border-rose-950 duration-300 uppercase tracking-widest">
+                    Master Reset Seluruh Sistem
+                </button>
+            </div>
+        </main>
+
+        <footer class="text-center text-[9px] text-slate-700 my-2 tracking-widest">
+            &copy; 2026 Muslimah Wahdah Islamiyah. Professional Wireless Engine.
+        </footer>
+    </div>
 
     <script>
+        // --- DATA UTAMA PERMAINAN ---
+        let deviceMode = ''; // 'laptop' atau 'hp'
+        let peer = null;
+        let peerConnection = null;
+        const PEER_ROOM_ID = "permata-wahdah-islamiyah-room-2026"; // ID Jembatan Udara Room
+
         let selectedTim = '';
         let matchScores = { Tarbiyah: 0, Tahsin: 0, Dirosa: 0 };
         let activeQuestionNum = 0;
@@ -149,81 +171,185 @@
         let currentSequenceIndex = 0;
 
         const coreColors = ["MERAH", "BIRU", "KUNING"];
-        
         const cssTextColors = { "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400" };
-        const cssBgColors = { "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)" };
-        const badgeColors = { "MERAH": "bg-red-500", "BIRU": "bg-blue-500", "KUNING": "bg-amber-500" };
+        const cssBgColors = { "MERAH": "rgba(220, 38, 38, 0.12)", "BIRU": "rgba(59, 130, 246, 0.12)", "KUNING": "rgba(245, 158, 11, 0.12)" };
 
+        // --- ENGINE SUARA HP ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
 
-        if (SpeechRecognition) {
-            recognition = new SpeechRecognition();
-            recognition.continuous = true; 
-            recognition.interimResults = true; 
-            recognition.lang = 'id-ID';
+        // --- SISTEM INISIALISASI MODE ---
+        function initMode(mode) {
+            deviceMode = mode;
+            document.getElementById('mode-selector').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
 
-            recognition.onresult = function(event) {
-                if (!isQuestionActive || isWaitingForNextSoal) return;
-                
-                let textResult = "";
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    textResult += event.results[i][0].transcript;
-                }
-                
-                let rawVoice = textResult.toLowerCase().trim();
-                document.getElementById('speech-preview').innerText = "Mendengar: " + rawVoice.toUpperCase();
-
-                let kataKata = rawVoice.split(/\s+/);
-                
-                kataKata.forEach(kata => {
-                    if (currentSequenceIndex >= 3) return;
-
-                    let targetWarnaSekarang = currentTargetSequence[currentSequenceIndex];
-
-                    if (targetWarnaSekarang === "MERAH" && (kata.includes("merah") || kata.includes("mera") || kata.includes("mela") || kata.includes("mrah"))) {
-                        verifySequentialColor("MERAH");
-                    }
-                    else if (targetWarnaSekarang === "BIRU" && (kata.includes("biru") || kata.includes("bilu") || kata.includes("biro"))) {
-                        verifySequentialColor("BIRU");
-                    }
-                    else if (targetWarnaSekarang === "KUNING" && (kata.includes("kuning") || kata.includes("kunin") || kata.includes("kunig") || kata.includes("uning"))) {
-                        verifySequentialColor("KUNING");
-                    }
-                });
-
-                if (currentSequenceIndex === 3) {
-                    executeSuccessTurn();
-                }
-            };
-
-            recognition.onend = function() {
-                if (isQuestionActive && !isWaitingForNextSoal) { 
-                    try { recognition.start(); } catch(e) {} 
-                }
-            };
-        }
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSoundEffect(type) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            if (type === 'correct') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(95, audioCtx.currentTime); 
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+            if (deviceMode === 'laptop') {
+                setupLaptopScreen();
+                initPeerJSForLaptop();
+            } else {
+                setupHPScreen();
+                initPeerJSForHP();
             }
         }
 
-        function startMatch(tim) {
+        // --- KUSTOMISASI LAYAR LAPTOP ---
+        function setupLaptopScreen() {
+            document.getElementById('game-display').innerHTML = `
+                <div class="max-w-md mx-auto text-center space-y-3 py-6">
+                    <div class="text-4xl animate-pulse">📡</div>
+                    <span class="text-xs font-bold text-amber-500 tracking-widest uppercase block">Sinkronisasi Jaringan Nirkabel</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Sistem siap. Sekarang silakan buka file HTML ini di <strong>Handphone Juri/Peserta</strong> dan pilih <strong class="text-teal-400">MODE KONTROL HP</strong> untuk menghubungkan layar.</p>
+                </div>
+            `;
+        }
+
+        // --- KUSTOMISASI LAYAR HP ---
+        function setupHPScreen() {
+            document.getElementById('hp-control-deck').classList.remove('hidden');
+            document.getElementById('btn-master-reset').classList.add('hidden');
+            document.getElementById('system-instruction-note').innerText = "MODE HP AKTIF: Letakkan smartphone ini dekat dengan mic atau posisi berdiri peserta untuk menangkap artikulasi warna secara jernih.";
+            
+            document.getElementById('game-display').innerHTML = `
+                <div class="max-w-sm mx-auto text-center py-6">
+                    <div class="text-3xl mb-2">📱</div>
+                    <p class="text-xs text-slate-400">Handphone berhasil diatur sebagai kontroler input mic suara.</p>
+                </div>
+            `;
+
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'id-ID';
+
+                recognition.onresult = function(event) {
+                    if (!isQuestionActive || isWaitingForNextSoal) return;
+                    let textResult = "";
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        textResult += event.results[i][0].transcript;
+                    }
+                    let rawVoice = textResult.toLowerCase().trim();
+                    document.getElementById('speech-preview').innerText = "Mendengar: " + rawVoice.toUpperCase();
+
+                    let kataKata = rawVoice.split(/\s+/);
+                    kataKata.forEach(kata => {
+                        if (currentSequenceIndex >= 3) return;
+                        let targetWarnaSekarang = currentTargetSequence[currentSequenceIndex];
+
+                        if (targetWarnaSekarang === "MERAH" && (kata.includes("merah") || kata.includes("mera") || kata.includes("mela") || kata.includes("mrah"))) {
+                            validateSequentialColorOnHP();
+                        }
+                        else if (targetWarnaSekarang === "BIRU" && (kata.includes("biru") || kata.includes("bilu") || kata.includes("biro"))) {
+                            validateSequentialColorOnHP();
+                        }
+                        else if (targetWarnaSekarang === "KUNING" && (kata.includes("kuning") || kata.includes("kunin") || kata.includes("kunig") || kata.includes("uning"))) {
+                            validateSequentialColorOnHP();
+                        }
+                    });
+                };
+
+                recognition.onend = function() {
+                    if (isQuestionActive && !isWaitingForNextSoal) { try { recognition.start(); } catch(e) {} }
+                };
+            }
+        }
+
+        // --- PEERJS JEMBATAN KONEKSI UDARA (LAPTOP ENGINE) ---
+        function initPeerJSForLaptop() {
+            peer = new Peer(PEER_ROOM_ID);
+            peer.on('open', () => { updateSyncUI(false, "MENUNGGU HP..."); });
+            peer.on('connection', (conn) => {
+                peerConnection = conn;
+                updateSyncUI(true, "TERINTEGRASI");
+                listenToHPMessages();
+            });
+            peer.on('error', (err) => {
+                // Jika ID Room bentrok/sudah ada, buat ID random (opsi fallback lokal)
+                console.log("Peer error, reconnecting fallback...");
+            });
+        }
+
+        // --- PEERJS JEMBATAN KONEKSI UDARA (HP ENGINE) ---
+        function initPeerJSForHP() {
+            peer = new Peer(); // HP generate ID random bebas
+            peer.on('open', () => {
+                updateSyncUI(false, "MENYAMBUNGKAN...");
+                let connectAttempts = setInterval(() => {
+                    peerConnection = peer.connect(PEER_ROOM_ID);
+                    peerConnection.on('open', () => {
+                        clearInterval(connectAttempts);
+                        updateSyncUI(true, "TERKONEKSI LAPTOP");
+                        listenToLaptopMessages();
+                    });
+                }, 1500);
+            });
+        }
+
+        function updateSyncUI(connected, text) {
+            const badge = document.getElementById('sync-badge');
+            const txtEl = document.getElementById('sync-text');
+            txtEl.innerText = text;
+            if (connected) {
+                badge.className = "bg-emerald-950/50 text-emerald-400 px-4 py-1.5 rounded-full border border-emerald-900 flex items-center gap-2 text-[10px]";
+                badge.querySelector('span').className = "w-2 h-2 rounded-full bg-emerald-400";
+            } else {
+                badge.className = "bg-rose-950/40 text-rose-400 px-4 py-1.5 rounded-full border border-rose-900/50 flex items-center gap-2 text-[10px]";
+                badge.querySelector('span').className = "w-2 h-2 rounded-full bg-rose-500 animate-pulse";
+            }
+        }
+
+        // --- DATA RECEIVER LAPTOP (Menerima sinyal dari HP) ---
+        function listenToHPMessages() {
+            peerConnection.on('data', (data) => {
+                if (data.type === 'CORRECT_INDEX') {
+                    // Beri border hijau sukses pada kotak di layar laptop berdasarkan index yang dikirim HP
+                    const element = document.getElementById(`box-pos-${data.index}`);
+                    if (element) element.classList.add('color-active-border');
+                }
+                if (data.type === 'ROUND_SUCCESS') {
+                    executeSuccessTurnOnLaptop();
+                }
+            });
+        }
+
+        // --- DATA RECEIVER HP (Menerima sinyal kuis dari Laptop) ---
+        function listenToLaptopMessages() {
+            peerConnection.on('data', (data) => {
+                if (data.type === 'INIT_SOAL') {
+                    currentTargetSequence = data.sequence;
+                    currentSequenceIndex = 0;
+                    isQuestionActive = true;
+                    isWaitingForNextSoal = false;
+                    
+                    document.getElementById('question-num').innerText = data.qNum;
+                    document.getElementById('mic-status-badge').innerText = "🎙️ MIC ON";
+                    document.getElementById('mic-status-badge').className = "text-[10px] font-bold px-3 py-1 bg-red-950 text-red-400 rounded-full border border-red-900 pulse-mic";
+                    document.getElementById('speech-preview').innerText = "SILAKAN BICARA (KIRI KE KANAN)...";
+
+                    try { recognition.stop(); setTimeout(() => { recognition.start(); }, 40); } catch(e) { try{recognition.start();}catch(x){} }
+                }
+                if (data.type === 'LOCK_SYSTEM') {
+                    isQuestionActive = false;
+                    isWaitingForNextSoal = true;
+                    try { recognition.stop(); } catch(e) {}
+                    document.getElementById('mic-status-badge').innerText = "🔒 MIC LOCK";
+                    document.getElementById('mic-status-badge').className = "text-[10px] font-bold px-3 py-1 bg-slate-900 text-slate-500 rounded-full border border-slate-800";
+                    document.getElementById('speech-preview').innerText = "Memproses transisi babak...";
+                }
+                if (data.type === 'SCORE_SYNC') {
+                    document.getElementById(`score-${data.tim}`).innerText = data.score;
+                }
+                if (data.type === 'RESET') {
+                    location.reload();
+                }
+            });
+        }
+
+        // --- LOGIKA EMIT DATA / OPERASIONAL GAME ---
+        function triggerSelectTim(tim) {
+            if (deviceMode !== 'laptop') return; // Hanya laptop juri yang berhak memicu inisiasi tim
+            
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
             
@@ -234,198 +360,161 @@
             activeQuestionNum = 0;
             isQuestionActive = true;
 
-            triggerMicUI(true);
-            
-            try { 
-                recognition.stop();
-                setTimeout(() => { recognition.start(); }, 50);
-            } catch(e) {
-                try { recognition.start(); } catch(err) {}
-            }
-            generateNextSoal();
+            generateNextSoalOnLaptop();
         }
 
-        function generateNextSoal() {
+        function generateNextSoalOnLaptop() {
             if (activeQuestionNum >= 20) {
-                concludeMatch();
+                concludeMatchOnLaptop();
                 return;
             }
             activeQuestionNum++;
             document.getElementById('question-num').innerText = activeQuestionNum;
-            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
+            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S`;
 
             isWaitingForNextSoal = false;
-            currentSequenceIndex = 0;
 
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
-
             currentTargetSequence = [...arrayVisualWarna]; 
 
-            renderSequentialBadges();
-            triggerMicUI(true);
+            // Kirim kunci enkripsi soal dari Laptop ke HP via Udara secara instan
+            if (peerConnection) {
+                peerConnection.send({
+                    type: 'INIT_SOAL',
+                    sequence: currentTargetSequence,
+                    qNum: activeQuestionNum
+                });
+            }
 
-            try { recognition.start(); } catch(e) {}
-
-            let htmlGridContent = `<div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-4">`;
+            // Render Kotak Bersih & Profesional di Laptop (SAMA SEKALI TANPA KUNCI/LABEL DI BAWAHNYA)
+            let htmlGridContent = `<div class="grid grid-cols-3 gap-6 max-w-3xl mx-auto mt-4">`;
             for (let i = 0; i < 3; i++) {
                 let teks = arrayTeksWarna[i];
                 let warnaVisual = arrayVisualWarna[i]; 
                 let cssTeks = cssTextColors[warnaVisual];
                 let cssBg = cssBgColors[warnaVisual];
-                let posisiLabel = i === 0 ? "1. KIRI" : i === 1 ? "2. TENGAH" : "3. KANAN";
 
                 htmlGridContent += `
-                    <div class="flex flex-col items-center">
-                        <span class="text-[9px] font-bold text-slate-500 mb-1 tracking-wider uppercase">${posisiLabel}</span>
-                        <div id="box-pos-${i}" class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-28 border border-slate-800/40 w-full transition-all duration-300" style="background-color: ${cssBg};">
-                            <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
-                        </div>
+                    <div id="box-pos-${i}" class="premium-panel p-6 rounded-2xl flex flex-col items-center justify-center h-32 border border-slate-800/60 w-full transition-all duration-300" style="background-color: ${cssBg};">
+                        <h4 class="text-2xl md:text-3xl font-black tracking-widest ${cssTeks}">${teks}</h4>
                     </div>
                 `;
             }
             htmlGridContent += `</div>`;
 
             document.getElementById('game-display').innerHTML = `
-                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim.toUpperCase()}</span>
-                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari teks di bawah dari <strong class="text-amber-400">KIRI ke KANAN</strong> secara berurutan!</p>
+                <span class="text-[11px] font-bold text-teal-400 tracking-[0.25em] uppercase block mb-1">GILIRAN TIM: ${selectedTim.toUpperCase()}</span>
+                <p class="text-xs text-slate-400 mb-4 tracking-wide">Fokus & sebutkan warna aslinya dari arah Kiri ke Kanan!</p>
                 ${htmlGridContent}
             `;
 
-            initiateCountdown();
+            initiateCountdownOnLaptop();
         }
 
-        function verifySequentialColor(color) {
-            const element = document.getElementById(`box-pos-${currentSequenceIndex}`);
-            if (element) element.classList.add('color-checked');
-            
+        // --- VALIDASI SISI HP ---
+        function validateSequentialColorOnHP() {
+            if (peerConnection) {
+                peerConnection.send({ type: 'CORRECT_INDEX', index: currentSequenceIndex });
+            }
             currentSequenceIndex++;
-            renderSequentialBadges();
-        }
-
-        function renderSequentialBadges() {
-            let html = "";
-            for (let i = 0; i < 3; i++) {
-                let colorName = currentTargetSequence[i] || "STANDBY";
-                if (i < currentSequenceIndex) {
-                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-white uppercase ${badgeColors[colorName]} tracking-wider">✓ ${colorName}</span>`;
-                } else {
-                    let displayLabel = currentTargetSequence.length > 0 ? currentTargetSequence[i] : "WARNA";
-                    html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-slate-600 bg-slate-900 border border-slate-800 uppercase tracking-wider">${displayLabel}</span>`;
+            if (currentSequenceIndex === 3) {
+                isWaitingForNextSoal = true;
+                if (peerConnection) {
+                    peerConnection.send({ type: 'ROUND_SUCCESS' });
                 }
             }
-            html += `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-extrabold text-amber-400 bg-slate-950 border border-amber-500/30 tracking-widest">${currentSequenceIndex} / 3</span>`;
-            document.getElementById('collected-badges').innerHTML = html;
         }
 
-        function initiateCountdown() {
+        // --- TIMER LAPTOP ---
+        function initiateCountdownOnLaptop() {
             clearInterval(gameTimer);
             timeRemaining = 50; 
             document.getElementById('timer-bar').style.width = "100%";
             
             gameTimer = setInterval(() => {
                 if (isWaitingForNextSoal) return;
-                
                 timeRemaining--;
                 document.getElementById('timer-text').innerText = Math.ceil(timeRemaining / 10);
                 document.getElementById('timer-bar').style.width = (timeRemaining * 2) + "%";
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
-                    triggerJedaJawaban(false, "WAKTU HABIS! (URUTAN SALAH/BELUM SELESAI)"); 
+                    triggerJedaJawabanOnLaptop(false, "WAKTU HABIS!"); 
                 }
             }, 100);
         }
 
-        function executeSuccessTurn() {
+        // --- EKSEKUSI SKOR DI LAPTOP ---
+        function executeSuccessTurnOnLaptop() {
             clearInterval(gameTimer);
             matchScores[selectedTim] += 5; 
             document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
-            triggerJedaJawaban(true, `URUTAN BENAR & LENGKAP! (+5 POIN)`);
+            
+            // Sinkronisasi nilai papan skor terupdate ke layar HP
+            if (peerConnection) {
+                peerConnection.send({ type: 'SCORE_SYNC', tim: selectedTim, score: matchScores[selectedTim] });
+            }
+            triggerJedaJawabanOnLaptop(true, "URUTAN LENGKAP & BENAR! (+5)");
         }
 
-        function triggerJedaJawaban(isBenar, pesanInfo) {
+        // --- TRANSISI SOAL LAPTOP ---
+        function triggerJedaJawabanOnLaptop(isBenar, pesanInfo) {
             isWaitingForNextSoal = true;
-            playSoundEffect(isBenar ? 'correct' : 'wrong');
-            
-            try { recognition.stop(); } catch(e) {}
-            triggerMicUI(false); 
+            if (peerConnection) { peerConnection.send({ type: 'LOCK_SYSTEM' }); }
 
+            playSound(isBenar ? 'correct' : 'wrong');
             document.getElementById('timer-bar').style.width = "0%";
-            document.getElementById('status-timer-container').innerHTML = `<span class="text-amber-400 font-bold">MEMPERSIAPKAN SOAL BERIKUTNYA...</span>`;
             
             const overlayWarna = isBenar ? 'text-emerald-400' : 'text-rose-500';
             document.getElementById('game-display').innerHTML = `
-                <div class="flex flex-col items-center justify-center h-48 space-y-2">
-                    <div class="text-5xl">${isBenar ? '✨' : '❌'}</div>
-                    <h3 class="text-2xl font-black ${overlayWarna} tracking-wider">${pesanInfo}</h3>
-                    <p class="text-xs text-slate-500 tracking-widest uppercase mt-2">Memproses nilai papan skor...</p>
+                <div class="flex flex-col items-center justify-center h-48 space-y-2 animate-fade-in">
+                    <div class="text-5xl mb-2">${isBenar ? '✨' : '❌'}</div>
+                    <h3 class="text-3xl font-black ${overlayWarna} tracking-wider">${pesanInfo}</h3>
+                    <p class="text-[10px] text-slate-500 tracking-[0.3em] uppercase mt-2">MENG-ENKRIPSI LEMBAR SOAL BARU...</p>
                 </div>
             `;
 
-            setTimeout(() => { generateNextSoal(); }, 2000);
+            setTimeout(() => { generateNextSoalOnLaptop(); }, 2200);
         }
 
-        function triggerMicUI(isActive) {
-            let micElement = document.getElementById('mic-indicator');
-            if (isActive) {
-                micElement.innerHTML = "🎙️";
-                micElement.className = "w-12 h-12 rounded-full bg-red-600 border border-red-400 flex items-center justify-center text-white text-base mic-pulse";
-                document.getElementById('speech-preview').innerText = "RADAR SEKUENSIAL AKTIF...";
-            } else {
-                micElement.innerHTML = "🔒";
-                micElement.className = "w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner";
-                document.getElementById('speech-preview').innerText = "Radar Terkunci";
+        // --- AUDIO GENERATOR ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            if (type === 'correct') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.4);
             }
         }
 
-        function concludeMatch() {
+        function concludeMatchOnLaptop() {
             clearInterval(gameTimer);
             isQuestionActive = false;
-            isWaitingForNextSoal = false;
-            try { recognition.stop(); } catch(e) {}
-            triggerMicUI(false);
+            if (peerConnection) { peerConnection.send({ type: 'LOCK_SYSTEM' }); }
 
             document.getElementById('timer-bar').style.width = "0%";
-            
             let totalSkor = matchScores[selectedTim];
             document.getElementById('game-display').innerHTML = `
-                <span class="text-emerald-400 font-bold block text-sm tracking-widest mb-1">🎉 PERTANDINGAN SELESAI</span>
-                <span class="text-xs text-slate-400">Total Akumulasi Nilai Tim ${selectedTim.toUpperCase()}:</span>
-                <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400 glow-gold mt-3 block">${totalSkor} POIN</span>
+                <span class="text-emerald-400 font-bold block text-sm tracking-widest mb-1">🎉 MATCH SELESAI</span>
+                <span class="text-xs text-slate-500 uppercase tracking-widest">Akumulasi Nilai Akhir Tim ${selectedTim.toUpperCase()}:</span>
+                <span class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400 glow-text mt-4 block">${totalSkor} POIN</span>
             `;
         }
 
-        function resetSystem() {
-            clearInterval(gameTimer);
-            isQuestionActive = false;
-            isWaitingForNextSoal = false;
-            try { recognition.stop(); } catch(e) {}
-            
-            selectedTim = '';
-            activeQuestionNum = 0;
-            matchScores = { Tarbiyah: 0, Tahsin: 0, Dirosa: 0 };
-            
-            ["Tarbiyah", "Tahsin", "Dirosa"].forEach(t => {
-                document.getElementById(`score-${t}`).innerText = "0";
-                document.getElementById(`card-${t}`).classList.remove('active-tim');
-            });
-            
-            document.getElementById('question-num').innerText = "0";
-            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
-            document.getElementById('timer-bar').style.width = "100%";
-            
-            triggerMicUI(false);
-            currentTargetSequence = [];
-            currentSequenceIndex = 0;
-            document.getElementById('collected-badges').innerHTML = "";
-            
-            document.getElementById('game-display').innerHTML = `
-                <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Sekuensial</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Peserta wajib menyebutkan ke-3 warna secara berurutan mulai dari kotak **Paling Kiri ➔ Tengah ➔ Paling Kanan**.</p>
-                </div>
-            `;
+        function resetSystemMaster() {
+            if (peerConnection) { peerConnection.send({ type: 'RESET' }); }
+            setTimeout(() => { location.reload(); }, 300);
         }
     </script>
 </body>
