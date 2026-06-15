@@ -68,8 +68,8 @@
 
                 <div id="game-display" class="py-2 my-auto w-full">
                     <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Multi-Warna Aktif</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai. Peserta wajib menyebutkan ke-4 warna secara lengkap dalam waktu 5 detik untuk mendapatkan 5 poin.</p>
+                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Aktif</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai. Peserta wajib menyebutkan ke-3 warna secara lengkap dalam waktu 5 detik untuk mendapatkan 5 poin.</p>
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
                 <div class="text-xl text-amber-400">⚡</div>
                 <div class="text-[11px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Sistem Validasi Ketat:</strong> Skor <span class="text-emerald-400 font-bold">+5 Poin</span> hanya akan cair jika indikator menunjukkan angka <span class="text-white font-bold">4/4 Warna</span> yang berhasil ditangkap sebelum waktu habis.
+                    <strong class="text-amber-400">Sistem Validasi Ketat:</strong> Skor <span class="text-emerald-400 font-bold">+5 Poin</span> hanya akan cair jika indikator menunjukkan angka <span class="text-white font-bold">3/3 Warna</span> yang berhasil ditangkap sebelum waktu habis.
                 </div>
             </div>
         </div>
@@ -133,7 +133,7 @@
     </main>
 
     <footer class="text-center text-[9px] text-slate-600 my-1 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Strict Quad-Color Engine.
+        &copy; 2026 Muslimah Wahdah Islamiyah. Strict Tri-Color Engine.
     </footer>
 
     <script>
@@ -147,18 +147,19 @@
 
         let collectedColorsUnique = new Set();
 
-        const coreColors = ["MERAH", "BIRU", "KUNING", "HIJAU"];
+        // HANYA 3 WARNA UTAMA SEKARANG
+        const coreColors = ["MERAH", "BIRU", "KUNING"];
         
         const cssTextColors = {
-            "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400", "HIJAU": "text-emerald-500"
+            "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400"
         };
 
         const cssBgColors = {
-            "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)", "HIJAU": "rgba(16, 185, 129, 0.15)"
+            "MERAH": "rgba(220, 38, 38, 0.15)", "BIRU": "rgba(59, 130, 246, 0.15)", "KUNING": "rgba(245, 158, 11, 0.15)"
         };
 
         const badgeColors = {
-            "MERAH": "bg-red-500", "BIRU": "bg-blue-500", "KUNING": "bg-amber-500", "HIJAU": "bg-emerald-500"
+            "MERAH": "bg-red-500", "BIRU": "bg-blue-500", "KUNING": "bg-amber-500"
         };
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -187,9 +188,6 @@
                     if (kata.includes("merah") || kata.includes("mera") || kata.includes("mela") || kata.includes("mrah")) {
                         pushUniqueColor("MERAH");
                     }
-                    if (kata.includes("hijau") || kata.includes("ijo") || kata.includes("ijau") || kata.includes("jau")) {
-                        pushUniqueColor("HIJAU");
-                    }
                     if (kata.includes("biru") || kata.includes("bilu") || kata.includes("biro")) {
                         pushUniqueColor("BIRU");
                     }
@@ -198,7 +196,8 @@
                     }
                 });
 
-                if (collectedColorsUnique.size === 4) {
+                // KUNCI ABSOLUT: Wajib genap 3 warna unik terkumpul!
+                if (collectedColorsUnique.size === 3) {
                     executeSuccessTurn();
                 }
             };
@@ -268,16 +267,17 @@
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
 
-            let htmlGridContent = `<div class="grid grid-cols-2 gap-4 max-w-xl mx-auto mt-2">`;
-            for (let i = 0; i < 4; i++) {
+            // Grid disesuaikan menjadi 3 kolom sejajar secara proporsional
+            let htmlGridContent = `<div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-4">`;
+            for (let i = 0; i < 3; i++) {
                 let teks = arrayTeksWarna[i];
                 let warnaVisual = arrayVisualWarna[i];
                 let cssTeks = cssTextColors[warnaVisual];
                 let cssBg = cssBgColors[warnaVisual];
 
                 htmlGridContent += `
-                    <div id="box-${warnaVisual}" class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-24 border border-slate-800/40 w-full transition-all duration-300" style="background-color: ${cssBg};">
-                        <h4 class="text-2xl font-black tracking-widest ${cssTeks}">${teks}</h4>
+                    <div id="box-${warnaVisual}" class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-28 border border-slate-800/40 w-full transition-all duration-300" style="background-color: ${cssBg};">
+                        <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
                     </div>
                 `;
             }
@@ -285,7 +285,7 @@
 
             document.getElementById('game-display').innerHTML = `
                 <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim.toUpperCase()}</span>
-                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari keempat teks di bawah ini!</p>
+                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari ketiga teks di bawah ini!</p>
                 ${htmlGridContent}
             `;
 
@@ -310,7 +310,7 @@
                     html += `<span class="px-2.5 py-0.5 rounded text-[9px] font-bold text-slate-600 bg-slate-900 border border-slate-800 uppercase tracking-wider">${color}</span>`;
                 }
             });
-            html += `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-extrabold text-amber-400 bg-slate-950 border border-amber-500/30 tracking-widest">${collectedColorsUnique.size} / 4</span>`;
+            html += `<span class="ml-2 px-2 py-0.5 rounded text-[9px] font-extrabold text-amber-400 bg-slate-950 border border-amber-500/30 tracking-widest">${collectedColorsUnique.size} / 3</span>`;
             document.getElementById('collected-badges').innerHTML = html;
         }
 
@@ -337,7 +337,7 @@
             clearInterval(gameTimer);
             matchScores[selectedTim] += 5; 
             document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
-            triggerJedaJawaban(true, `LENGKAP 4 WARNA! (+5 POIN)`);
+            triggerJedaJawaban(true, `LENGKAP 3 WARNA! (+5 POIN)`);
         }
 
         function triggerJedaJawaban(isBenar, pesanInfo) {
@@ -407,8 +407,8 @@
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Multi-Warna Aktif</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai. Peserta wajib menyebutkan ke-4 warna secara lengkap dalam waktu 5 detik untuk mendapatkan 5 poin.</p>
+                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Aktif</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai. Peserta wajib menyebutkan ke-3 warna secara lengkap dalam waktu 5 detik untuk mendapatkan 5 poin.</p>
                 </div>
             `;
         }
