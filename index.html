@@ -145,7 +145,6 @@
         let isQuestionActive = false;
         let isWaitingForNextSoal = false;
 
-        // Menyimpan urutan target warna soal (Indeks 0 = Kiri, Indeks 1 = Tengah, Indeks 2 = Kanan)
         let currentTargetSequence = [];
         let currentSequenceIndex = 0;
 
@@ -180,10 +179,8 @@
                 kataKata.forEach(kata => {
                     if (currentSequenceIndex >= 3) return;
 
-                    // Ambil warna target yang harus ditebak berdasarkan index urutan berjalan
                     let targetWarnaSekarang = currentTargetSequence[currentSequenceIndex];
 
-                    // COCOKKAN KATA BERDASARKAN WARNA TARGET SAAT INI SAJA (URUTAN DARI KIRI)
                     if (targetWarnaSekarang === "MERAH" && (kata.includes("merah") || kata.includes("mera") || kata.includes("mela") || kata.includes("mrah"))) {
                         verifySequentialColor("MERAH");
                     }
@@ -258,15 +255,11 @@
             document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
 
             isWaitingForNextSoal = false;
-            
-            // Reset index pelacak urutan sekuensial
             currentSequenceIndex = 0;
-            currentTargetSequence = [];
 
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
 
-            // Simpan susunan warna visual yang muncul dari kiri ke kanan sebagai kunci jawaban berurutan
             currentTargetSequence = [...arrayVisualWarna]; 
 
             renderSequentialBadges();
@@ -277,16 +270,14 @@
             let htmlGridContent = `<div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-4">`;
             for (let i = 0; i < 3; i++) {
                 let teks = arrayTeksWarna[i];
-                let warnaVisual = arrayVisualWarna[i]; // Urutan mutlak indeks ke 0 (kiri), 1 (tengah), 2 (kanan)
+                let warnaVisual = arrayVisualWarna[i]; 
                 let cssTeks = cssTextColors[warnaVisual];
                 let cssBg = cssBgColors[warnaVisual];
-
-                // Menambahkan label penunjuk visual arah pengerjaan di atas kotak
                 let posisiLabel = i === 0 ? "1. KIRI" : i === 1 ? "2. TENGAH" : "3. KANAN";
 
                 htmlGridContent += `
                     <div class="flex flex-col items-center">
-                        <span class="text-[9px] font-bold text-slate-500 mb-1 tracking-wider uppercase">${posisilabel}</span>
+                        <span class="text-[9px] font-bold text-slate-500 mb-1 tracking-wider uppercase">${posisiLabel}</span>
                         <div id="box-pos-${i}" class="color-card-5d p-4 rounded-xl relative overflow-hidden flex flex-col items-center justify-center h-28 border border-slate-800/40 w-full transition-all duration-300" style="background-color: ${cssBg};">
                             <h4 class="text-xl font-black tracking-widest ${cssTeks}">${teks}</h4>
                         </div>
@@ -304,9 +295,7 @@
             initiateCountdown();
         }
 
-        // VALIDASI URUTAN KANAN KE KIRI
         function verifySequentialColor(color) {
-            // Beri tanda checklist pada kotak di layar berdasarkan index urutannya
             const element = document.getElementById(`box-pos-${currentSequenceIndex}`);
             if (element) element.classList.add('color-checked');
             
