@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PERMATA 4 Warna - Muslimah Wahdah Palu</title>
+    <title>PERMATA - Muslimah Wahdah Islamiyah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -14,10 +14,10 @@
 <body class="text-slate-200 min-h-screen flex flex-col justify-between p-4 md:p-6">
 
     <header class="text-center my-2">
-        <h1 class="text-2xl font-extrabold text-amber-400 tracking-wider">PERMATA - EMAS</h1>
-        <p class="text-xs font-semibold text-emerald-400 uppercase tracking-widest mt-0.5">Muslimah Wahdah Cabang Palu</p>
+        <h1 class="text-2xl font-extrabold text-amber-400 tracking-wider">PERMATA</h1>
+        <p class="text-xs font-semibold text-emerald-400 uppercase tracking-widest mt-0.5">Muslimah Wahdah Islamiyah</p>
         <div class="mt-2 max-w-md mx-auto text-[10px] text-slate-400 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80">
-            <strong>Game Pengecoh 4 Warna:</strong> Dengarkan langsung nama warna yang diucapkan, abaikan tulisan di layar, lalu klik tombol fisik warna yang tepat!
+            <strong>Game Pengecoh 4 Warna:</strong> Lihat warna teks yang tertulis di monitor, lalu cocokkan dengan menekan tombol warna fisik yang benar secepat mungkin!
         </div>
     </header>
 
@@ -32,7 +32,7 @@
             </div>
 
             <div id="game-display" class="py-4 text-center">
-                <span class="text-sm font-semibold text-slate-300 block mb-1">Siapkan Pendengaran & Fokus Anda</span>
+                <span class="text-sm font-semibold text-slate-300 block mb-1">Siapkan Mata & Fokus Anda</span>
                 <p class="text-xs text-slate-500">Klik salah satu Tim di bawah untuk memulai pertandingan resmi</p>
             </div>
             
@@ -71,7 +71,7 @@
     </main>
 
     <footer class="text-center text-[10px] text-slate-600 my-2">
-        &copy; 2026 Muslimah Wahdah Palu. Fitur Smart Voice Terintegrasi.
+        &copy; 2026 Muslimah Wahdah Islamiyah. Efek Suara Ting, Troot & Penilaian Suara Akhir.
     </footer>
 
     <script>
@@ -91,10 +91,45 @@
             "KUNING": "text-amber-400"
         };
 
-        // Fungsi Suara Hanya Mengucapkan Nama Warna Saja (Tanpa Awalan kalimat)
-        function playMuslimahVoice(textToSpeak) {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSoundEffect(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.2);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime); 
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            }
+        }
+
+        function playFinalCommentVoice(finalScore) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); 
+
+                let textToSpeak = "";
+                if (finalScore >= 70) {
+                    textToSpeak = "MasyaAllah Luar Biasa!";
+                } else {
+                    textToSpeak = "Semangat!";
+                }
                 
                 let utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = 'id-ID'; 
@@ -109,8 +144,8 @@
                     utterance.voice = femaleVoice;
                 }
                 
-                utterance.pitch = 1.1; 
-                utterance.rate = 1.0;  
+                utterance.pitch = 1.15; 
+                utterance.rate = 0.95;  
                 window.speechSynthesis.speak(utterance);
             }
         }
@@ -135,22 +170,17 @@
             activeQuestionNum++;
             document.getElementById('question-num').innerText = activeQuestionNum;
 
-            // Target Jawaban Benar
-            targetColorAnswer = coreColors[Math.floor(Math.random() * coreColors.length)];
-
-            // Variabel Pengacak Layar Visual
-            let teksYangTertulis = coreColors[Math.floor(Math.random() * coreColors.length)];
             let warnaTulisanDiLayar = coreColors[Math.floor(Math.random() * coreColors.length)];
+            targetColorAnswer = warnaTulisanDiLayar; 
+
+            let teksYangTertulis = coreColors[Math.floor(Math.random() * coreColors.length)];
             let cssClassWarna = cssTextColors[warnaTulisanDiLayar];
 
             document.getElementById('game-display').innerHTML = `
                 <span class="text-[10px] uppercase font-bold tracking-widest text-teal-400 block mb-1">TIM ${selectedTim} BERTANDING</span>
-                <p class="text-xs text-slate-300">Dengarkan Suara dan Klik Tombol yang Tepat!</p>
+                <p class="text-xs text-slate-300">Tekan tombol berdasarkan <strong>WARNA ASLI</strong> dari tulisan di bawah!</p>
                 <h2 class="text-4xl font-black mt-3 block tracking-wide ${cssClassWarna}">${teksYangTertulis}</h2>
             `;
-
-            // Mengucapkan nama warnanya secara langsung (contoh: "hijau")
-            playMuslimahVoice(targetColorAnswer.toLowerCase());
 
             initiateCountdown();
         }
@@ -167,6 +197,7 @@
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
+                    playSoundEffect('wrong'); 
                     generateNextSoal(); 
                 }
             }, 100);
@@ -175,8 +206,11 @@
         function checkColorChoice(chosenColor) {
             clearInterval(gameTimer);
             if (chosenColor === targetColorAnswer) {
+                playSoundEffect('correct'); 
                 matchScores[selectedTim] += 5; 
                 document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
+            } else {
+                playSoundEffect('wrong'); 
             }
             generateNextSoal();
         }
@@ -186,13 +220,15 @@
             document.getElementById('color-grid').classList.add('hidden');
             document.getElementById('timer-bar').style.width = "0%";
             
+            let totalSkor = matchScores[selectedTim];
+            
             document.getElementById('game-display').innerHTML = `
                 <span class="text-emerald-400 font-bold block text-base">🎉 PERTANDINGAN SELESAI</span>
                 Hasil Evaluasi Fokus Pikiran Tim ${selectedTim}: <br>
-                <span class="text-3xl font-extrabold text-white mt-2 block">${matchScores[selectedTim]} Poin</span>
+                <span class="text-3xl font-extrabold text-white mt-2 block">${totalSkor} Poin</span>
             `;
             
-            playMuslimahVoice("Selesai. Skor Tim " + selectedTim + " adalah " + matchScores[selectedTim] + " poin.");
+            playFinalCommentVoice(totalSkor);
         }
 
         function resetSystem() {
@@ -213,7 +249,7 @@
             document.getElementById('color-grid').classList.add('hidden');
             
             document.getElementById('game-display').innerHTML = `
-                <span class="text-sm font-semibold text-slate-300 block mb-1">Siapkan Pendengaran & Fokus Anda</span>
+                <span class="text-sm font-semibold text-slate-300 block mb-1">Siapkan Mata & Fokus Anda</span>
                 <p class="text-xs text-slate-500">Klik salah satu Tim di bawah untuk memulai pertandingan resmi</p>
             `;
         }
