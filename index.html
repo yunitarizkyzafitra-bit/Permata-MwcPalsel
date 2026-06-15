@@ -35,8 +35,8 @@
         }
         .glow-text { text-shadow: 0 0 30px rgba(212, 163, 89, 0.6); }
         .color-active-border {
-            border: 3px solid #10b981 !important;
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+            border: 4px solid #10b981 !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
         }
         .pulse-mic { animation: micAnimate 1.5s infinite ease-in-out; }
         @keyframes micAnimate {
@@ -153,11 +153,10 @@
     </div>
 
     <script>
-        // --- DATA UTAMA PERMAINAN ---
-        let deviceMode = ''; // 'laptop' atau 'hp'
+        let deviceMode = ''; 
         let peer = null;
         let peerConnection = null;
-        const PEER_ROOM_ID = "permata-wahdah-islamiyah-room-2026"; // ID Jembatan Udara Room
+        const PEER_ROOM_ID = "permata-wahdah-islamiyah-room-2026"; 
 
         let selectedTim = '';
         let matchScores = { Tarbiyah: 0, Tahsin: 0, Dirosa: 0 };
@@ -174,15 +173,19 @@
         const cssTextColors = { "MERAH": "text-red-500", "BIRU": "text-blue-500", "KUNING": "text-amber-400" };
         const cssBgColors = { "MERAH": "rgba(220, 38, 38, 0.12)", "BIRU": "rgba(59, 130, 246, 0.12)", "KUNING": "rgba(245, 158, 11, 0.12)" };
 
-        // --- ENGINE SUARA HP ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
+        let audioCtx = null; // Diinisialisasi saat interaksi pengguna
 
-        // --- SISTEM INISIALISASI MODE ---
         function initMode(mode) {
             deviceMode = mode;
             document.getElementById('mode-selector').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
+
+            // Inisialisasi Audio Context dengan aman setelah tombol ditekan
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch(e) { console.log("AudioContext tidak didukung"); }
 
             if (deviceMode === 'laptop') {
                 setupLaptopScreen();
@@ -193,27 +196,25 @@
             }
         }
 
-        // --- KUSTOMISASI LAYAR LAPTOP ---
         function setupLaptopScreen() {
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-3 py-6">
                     <div class="text-4xl animate-pulse">📡</div>
                     <span class="text-xs font-bold text-amber-500 tracking-widest uppercase block">Sinkronisasi Jaringan Nirkabel</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Sistem siap. Sekarang silakan buka file HTML ini di <strong>Handphone Juri/Peserta</strong> dan pilih <strong class="text-teal-400">MODE KONTROL HP</strong> untuk menghubungkan layar.</p>
+                    <p class="text-xs text-slate-400 leading-relaxed">Sistem siap. Silakan klik salah satu nama <strong class="text-amber-400">TIM</strong> di sebelah kanan untuk memunculkan kotak soal pertama!</p>
                 </div>
             `;
         }
 
-        // --- KUSTOMISASI LAYAR HP ---
         function setupHPScreen() {
             document.getElementById('hp-control-deck').classList.remove('hidden');
             document.getElementById('btn-master-reset').classList.add('hidden');
-            document.getElementById('system-instruction-note').innerText = "MODE HP AKTIF: Letakkan smartphone ini dekat dengan mic atau posisi berdiri peserta untuk menangkap artikulasi warna secara jernih.";
+            document.getElementById('system-instruction-note').innerText = "MODE HP AKTIF: Letakkan smartphone ini dekat dengan mic peserta untuk menangkap artikulasi warna secara jernih.";
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-sm mx-auto text-center py-6">
                     <div class="text-3xl mb-2">📱</div>
-                    <p class="text-xs text-slate-400">Handphone berhasil diatur sebagai kontroler input mic suara.</p>
+                    <p class="text-xs text-slate-400">Handphone siap digunakan sebagai penerima input suara nirkabel.</p>
                 </div>
             `;
 
@@ -255,7 +256,6 @@
             }
         }
 
-        // --- PEERJS JEMBATAN KONEKSI UDARA (LAPTOP ENGINE) ---
         function initPeerJSForLaptop() {
             peer = new Peer(PEER_ROOM_ID);
             peer.on('open', () => { updateSyncUI(false, "MENUNGGU HP..."); });
@@ -264,15 +264,10 @@
                 updateSyncUI(true, "TERINTEGRASI");
                 listenToHPMessages();
             });
-            peer.on('error', (err) => {
-                // Jika ID Room bentrok/sudah ada, buat ID random (opsi fallback lokal)
-                console.log("Peer error, reconnecting fallback...");
-            });
         }
 
-        // --- PEERJS JEMBATAN KONEKSI UDARA (HP ENGINE) ---
         function initPeerJSForHP() {
-            peer = new Peer(); // HP generate ID random bebas
+            peer = new Peer(); 
             peer.on('open', () => {
                 updateSyncUI(false, "MENYAMBUNGKAN...");
                 let connectAttempts = setInterval(() => {
@@ -299,11 +294,9 @@
             }
         }
 
-        // --- DATA RECEIVER LAPTOP (Menerima sinyal dari HP) ---
         function listenToHPMessages() {
             peerConnection.on('data', (data) => {
                 if (data.type === 'CORRECT_INDEX') {
-                    // Beri border hijau sukses pada kotak di layar laptop berdasarkan index yang dikirim HP
                     const element = document.getElementById(`box-pos-${data.index}`);
                     if (element) element.classList.add('color-active-border');
                 }
@@ -313,7 +306,6 @@
             });
         }
 
-        // --- DATA RECEIVER HP (Menerima sinyal kuis dari Laptop) ---
         function listenToLaptopMessages() {
             peerConnection.on('data', (data) => {
                 if (data.type === 'INIT_SOAL') {
@@ -346,10 +338,14 @@
             });
         }
 
-        // --- LOGIKA EMIT DATA / OPERASIONAL GAME ---
         function triggerSelectTim(tim) {
-            if (deviceMode !== 'laptop') return; // Hanya laptop juri yang berhak memicu inisiasi tim
+            if (deviceMode !== 'laptop') return; 
             
+            // Aktifkan Audio Context jika status ter-suspend oleh browser
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
             
@@ -378,7 +374,6 @@
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
             currentTargetSequence = [...arrayVisualWarna]; 
 
-            // Kirim kunci enkripsi soal dari Laptop ke HP via Udara secara instan
             if (peerConnection) {
                 peerConnection.send({
                     type: 'INIT_SOAL',
@@ -387,7 +382,6 @@
                 });
             }
 
-            // Render Kotak Bersih & Profesional di Laptop (SAMA SEKALI TANPA KUNCI/LABEL DI BAWAHNYA)
             let htmlGridContent = `<div class="grid grid-cols-3 gap-6 max-w-3xl mx-auto mt-4">`;
             for (let i = 0; i < 3; i++) {
                 let teks = arrayTeksWarna[i];
@@ -405,14 +399,13 @@
 
             document.getElementById('game-display').innerHTML = `
                 <span class="text-[11px] font-bold text-teal-400 tracking-[0.25em] uppercase block mb-1">GILIRAN TIM: ${selectedTim.toUpperCase()}</span>
-                <p class="text-xs text-slate-400 mb-4 tracking-wide">Fokus & sebutkan warna aslinya dari arah Kiri ke Kanan!</p>
+                <p class="text-xs text-slate-400 mb-4 tracking-wide">Sebutkan warna asli dari teks di bawah dari arah <span class="text-amber-400 font-bold">Kiri ke Kanan!</span></p>
                 ${htmlGridContent}
             `;
 
             initiateCountdownOnLaptop();
         }
 
-        // --- VALIDASI SISI HP ---
         function validateSequentialColorOnHP() {
             if (peerConnection) {
                 peerConnection.send({ type: 'CORRECT_INDEX', index: currentSequenceIndex });
@@ -426,7 +419,6 @@
             }
         }
 
-        // --- TIMER LAPTOP ---
         function initiateCountdownOnLaptop() {
             clearInterval(gameTimer);
             timeRemaining = 50; 
@@ -445,20 +437,17 @@
             }, 100);
         }
 
-        // --- EKSEKUSI SKOR DI LAPTOP ---
         function executeSuccessTurnOnLaptop() {
             clearInterval(gameTimer);
             matchScores[selectedTim] += 5; 
             document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
             
-            // Sinkronisasi nilai papan skor terupdate ke layar HP
             if (peerConnection) {
                 peerConnection.send({ type: 'SCORE_SYNC', tim: selectedTim, score: matchScores[selectedTim] });
             }
-            triggerJedaJawabanOnLaptop(true, "URUTAN LENGKAP & BENAR! (+5)");
+            triggerJedaJawabanOnLaptop(true, "BENAR & BERURUTAN! (+5)");
         }
 
-        // --- TRANSISI SOAL LAPTOP ---
         function triggerJedaJawabanOnLaptop(isBenar, pesanInfo) {
             isWaitingForNextSoal = true;
             if (peerConnection) { peerConnection.send({ type: 'LOCK_SYSTEM' }); }
@@ -478,10 +467,10 @@
             setTimeout(() => { generateNextSoalOnLaptop(); }, 2200);
         }
 
-        // --- AUDIO GENERATOR ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
+            if (!audioCtx) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
+            
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
