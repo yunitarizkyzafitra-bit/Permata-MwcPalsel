@@ -57,24 +57,21 @@
     <main class="w-full max-w-6xl mx-auto my-auto grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch relative z-10">
         
         <div class="lg:col-span-3 flex flex-col justify-between space-y-4">
-            <div class="layer-5d-panel rounded-3xl p-6 text-center min-h-[510px] flex flex-col justify-between relative overflow-hidden">
+            <div class="layer-5d-panel rounded-3xl p-6 text-center min-h-[490px] flex flex-col justify-between relative overflow-hidden">
                 
                 <div class="absolute top-0 left-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-emerald-500 transition-all duration-100" id="timer-bar" style="width: 100%"></div>
                 
                 <div class="flex justify-between items-center text-xs text-slate-400 font-semibold tracking-wide">
                     <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80">SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> <span class="text-slate-700">/</span> 20</span>
-                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider" id="status-timer-container">Status: <strong id="timer-text" class="text-amber-400 text-sm">SIAP</strong></span>
+                    <span class="bg-slate-950/60 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider" id="status-timer-container">Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik</span>
                 </div>
 
                 <div id="game-display" class="py-2 my-auto w-full">
                     <div class="max-w-md mx-auto text-center space-y-2">
-                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Sistem Tombol Manual Aktif</span>
-                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memicu soal. Ketika peserta sudah siap membaca, tekan tombol <strong>"MULAI JAWAB"</strong> untuk membuka kunci mikrofon dan memulai hitung mundur.</p>
+                        <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Otomatis</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Mikrofon akan langsung menyala otomatis di setiap soal tanpa perlu menekan tombol tambahan.</p>
                     </div>
                 </div>
-
-                <div class="my-2" id="action-btn-container">
-                    </div>
 
                 <div class="flex flex-col items-center justify-center space-y-2 relative">
                     <div id="collected-badges" class="flex gap-2 mb-1 justify-center min-h-[24px]">
@@ -91,7 +88,7 @@
             <div class="bg-slate-950/60 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3.5 shadow-xl">
                 <div class="text-xl text-amber-400">⚡</div>
                 <div class="text-[11px] text-slate-400 leading-relaxed">
-                    <strong class="text-amber-400">Mekanisme Kontrol Baru:</strong> Soal tidak akan berjalan sebelum panitia/peserta menekan tombol jawab. Ini memberikan waktu bagi peserta untuk memantapkan nafas dan fokus sebelum mic merekam.
+                    <strong class="text-amber-400">Sistem Deteksi Instan:</strong> Begitu lembar soal berganti, pastikan peserta langsung membaca 3 warna dengan artikulasi jelas dan jeda tipis agar terbaca sempurna oleh radar AI.
                 </div>
             </div>
         </div>
@@ -100,7 +97,7 @@
             <h3 class="text-xs font-bold text-amber-500/80 uppercase tracking-[0.2em] text-center lg:text-left pl-1">🏆 PAPAN SKOR DIGITAL</h3>
             
             <div class="grid grid-cols-1 gap-3 flex-grow justify-center">
-                <div onclick="selectTimMatch('Tarbiyah')" id="card-Tarbiyah" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
+                <div onclick="startMatch('Tarbiyah')" id="card-Tarbiyah" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-amber-500 rounded-full"></div>
                         <span class="font-bold text-slate-200 tracking-wider text-sm">TARBIYAH</span>
@@ -109,7 +106,7 @@
                         <span id="score-Tarbiyah" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
-                <div onclick="selectTimMatch('Tahsin')" id="card-Tahsin" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
+                <div onclick="startMatch('Tahsin')" id="card-Tahsin" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-teal-500 rounded-full"></div>
                         <span class="font-bold text-slate-200 tracking-wider text-sm">TAHSIN</span>
@@ -118,7 +115,7 @@
                         <span id="score-Tahsin" class="text-2xl font-black text-amber-400 font-sans">0</span>
                     </div>
                 </div>
-                <div onclick="selectTimMatch('Dirosa')" id="card-Dirosa" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
+                <div onclick="startMatch('Dirosa')" id="card-Dirosa" class="wall-score-premium p-4.5 rounded-2xl flex justify-between items-center cursor-pointer transform duration-300">
                     <div class="flex items-center space-x-3">
                         <div class="w-1.5 h-7 bg-emerald-500 rounded-full"></div>
                         <span class="font-bold text-slate-200 tracking-wider text-sm">DIROSA</span>
@@ -136,7 +133,7 @@
     </main>
 
     <footer class="text-center text-[9px] text-slate-600 my-1 tracking-widest">
-        &copy; 2026 Muslimah Wahdah Islamiyah. Controlled Tri-Color Engine.
+        &copy; 2026 Muslimah Wahdah Islamiyah. Auto Tri-Color Engine.
     </footer>
 
     <script>
@@ -146,7 +143,6 @@
         let gameTimer = null;
         let timeRemaining = 50; 
         let isQuestionActive = false;
-        let isListeningActive = false; // Status apakah mic sedang merekam aktif
         let isWaitingForNextSoal = false;
 
         let collectedColorsUnique = new Set();
@@ -166,7 +162,7 @@
             recognition.lang = 'id-ID';
 
             recognition.onresult = function(event) {
-                if (!isListeningActive || isWaitingForNextSoal) return;
+                if (!isQuestionActive || isWaitingForNextSoal) return;
                 
                 let textResult = "";
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -196,7 +192,9 @@
             };
 
             recognition.onend = function() {
-                if (isListeningActive) { try { recognition.start(); } catch(e) {} }
+                if (isQuestionActive && !isWaitingForNextSoal) { 
+                    try { recognition.start(); } catch(e) {} 
+                }
             };
         }
 
@@ -219,12 +217,10 @@
             }
         }
 
-        // 1. MEMILIH TIM (SOAL MUNCUL TAPI BELUM BERJALAN/TERKUNCI)
-        function selectTimMatch(tim) {
+        // PEMICU START GAME UTAMA (KLIK NAMA TIM)
+        function startMatch(tim) {
             clearInterval(gameTimer);
             isWaitingForNextSoal = false;
-            isListeningActive = false;
-            try { recognition.stop(); } catch(e) {}
             
             ["Tarbiyah", "Tahsin", "Dirosa"].forEach(t => document.getElementById(`card-${t}`)?.classList.remove('active-tim'));
             document.getElementById(`card-${tim}`)?.classList.add('active-tim');
@@ -233,11 +229,18 @@
             activeQuestionNum = 0;
             isQuestionActive = true;
 
-            lockRadarUI("READY - TEKAN TOMBOL JAWAB");
+            // Efek UI Mic Menyala Otomatis
+            triggerMicUI(true);
+            
+            try { 
+                recognition.stop();
+                setTimeout(() => { recognition.start(); }, 50);
+            } catch(e) {
+                try { recognition.start(); } catch(err) {}
+            }
             generateNextSoal();
         }
 
-        // 2. GENERATE SOAL (POSISI STANDBY MENUNGGU KLIK TOMBOL JAWAB)
         function generateNextSoal() {
             if (activeQuestionNum >= 20) {
                 concludeMatch();
@@ -245,18 +248,15 @@
             }
             activeQuestionNum++;
             document.getElementById('question-num').innerText = activeQuestionNum;
-            
-            // Set UI ke posisi Siap Mulai
-            document.getElementById('status-timer-container').innerHTML = `Status: <span class="text-yellow-400 font-bold animate-pulse">MENUNGGU TOMBOL JAWAB</span>`;
-            document.getElementById('timer-bar').style.width = "100%";
+            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
 
             isWaitingForNextSoal = false;
-            isListeningActive = false;
-            try { recognition.stop(); } catch(e) {}
-
             collectedColorsUnique.clear();
             renderBadges();
-            lockRadarUI("Standby (Mic Mati)");
+            triggerMicUI(true); // Memastikan visual mic tetap menyala/pulse aktif di nomor baru
+
+            // Nyalakan mic kembali pasca jeda soal
+            try { recognition.start(); } catch(e) {}
 
             let arrayTeksWarna = [...coreColors].sort(() => Math.random() - 0.5);
             let arrayVisualWarna = [...coreColors].sort(() => Math.random() - 0.5);
@@ -277,42 +277,11 @@
             htmlGridContent += `</div>`;
 
             document.getElementById('game-display').innerHTML = `
-                <span class="text-[10px] font-bold text-amber-400 tracking-[0.2em] uppercase block mb-1">SOAL TIM ${selectedTim.toUpperCase()} READY</span>
-                <p class="text-[11px] text-slate-300 mb-2">Perhatikan kotak di bawah ini, klik tombol JAWAB jika peserta sudah siap membaca!</p>
+                <span class="text-[10px] font-bold text-teal-400 tracking-[0.2em] uppercase block mb-1">KONSENTRASI TIM ${selectedTim.toUpperCase()}</span>
+                <p class="text-[11px] text-slate-300 mb-2">Sebutkan warna asli dari ketiga teks di bawah ini!</p>
                 ${htmlGridContent}
             `;
 
-            // Tampilkan Tombol Utama Pemicu Jawaban
-            document.getElementById('action-btn-container').innerHTML = `
-                <button onclick="activateSpeechAndTimer()" class="w-full max-w-xs mx-auto bg-gradient-to-r from-red-600 via-amber-600 to-red-600 hover:from-red-500 hover:to-amber-500 border border-red-400/40 text-white font-extrabold text-xs py-3 px-6 rounded-2xl transition-all duration-300 shadow-lg tracking-widest uppercase block animate-bounce">
-                    🎙️ MULAI JAWAB (5 DETIK)
-                </button>
-            `;
-        }
-
-        // 3. TOMBOL DIKLIK: MIC DAN TIMER BERJALAN BERSAMAAN
-        function activateSpeechAndTimer() {
-            // Sembunyikan tombol setelah diklik agar tidak ditekan double
-            document.getElementById('action-btn-container').innerHTML = "";
-            
-            isListeningActive = true;
-            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-red-500 text-sm">5</strong> Detik`;
-
-            // Aktifkan Efek Nyala Mic
-            let micElement = document.getElementById('mic-indicator');
-            micElement.innerHTML = "🎙️";
-            micElement.className = "w-12 h-12 rounded-full bg-red-600 border border-red-400 flex items-center justify-center text-white text-base mic-pulse";
-            document.getElementById('speech-preview').innerText = "MENDENGARKAN... SILAKAN BICARA";
-
-            // Jalankan Engine Suara
-            try { 
-                recognition.stop();
-                setTimeout(() => { recognition.start(); }, 30);
-            } catch(e) {
-                try { recognition.start(); } catch(err) {}
-            }
-
-            // Jalankan Hitung Mundur 5 Detik
             initiateCountdown();
         }
 
@@ -352,63 +321,61 @@
 
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
-                    executeFailTurn(); 
+                    triggerJedaJawaban(false, "WAKTU HABIS! (BELUM LENGKAP)"); 
                 }
             }, 100);
         }
 
         function executeSuccessTurn() {
             clearInterval(gameTimer);
-            isListeningActive = false;
-            try { recognition.stop(); } catch(e) {}
-
             matchScores[selectedTim] += 5; 
             document.getElementById(`score-${selectedTim}`).innerText = matchScores[selectedTim];
             triggerJedaJawaban(true, `LENGKAP 3 WARNA! (+5 POIN)`);
         }
 
-        function executeFailTurn() {
-            isListeningActive = false;
-            try { recognition.stop(); } catch(e) {}
-            triggerJedaJawaban(false, "WAKTU HABIS! (BELUM LENGKAP)");
-        }
-
         function triggerJedaJawaban(isBenar, pesanInfo) {
             isWaitingForNextSoal = true;
             playSoundEffect(isBenar ? 'correct' : 'wrong');
-            lockRadarUI("Memproses");
             
+            // Matikan engine mic secara aman selama masa jeda soal agar suara sisa tidak bocor ke soal berikutnya
+            try { recognition.stop(); } catch(e) {}
+            triggerMicUI(false); 
+
             document.getElementById('timer-bar').style.width = "0%";
-            document.getElementById('status-timer-container').innerHTML = `<span class="text-amber-400 font-bold">SOAL BERIKUTNYA...</span>`;
+            document.getElementById('status-timer-container').innerHTML = `<span class="text-amber-400 font-bold">MEMPERSIAPKAN SOAL BERIKUTNYA...</span>`;
             
             const overlayWarna = isBenar ? 'text-emerald-400' : 'text-rose-500';
             document.getElementById('game-display').innerHTML = `
                 <div class="flex flex-col items-center justify-center h-48 space-y-2">
                     <div class="text-5xl">${isBenar ? '✨' : '❌'}</div>
                     <h3 class="text-2xl font-black ${overlayWarna} tracking-wider">${pesanInfo}</h3>
-                    <p class="text-xs text-slate-500 tracking-widest uppercase mt-2">Menyiapkan lembar soal baru...</p>
+                    <p class="text-xs text-slate-500 tracking-widest uppercase mt-2">Memproses nilai papan skor...</p>
                 </div>
             `;
 
-            setTimeout(() => { generateNextSoal(); }, 2200);
+            setTimeout(() => { generateNextSoal(); }, 2000);
         }
 
-        function lockRadarUI(msg) {
+        function triggerMicUI(isActive) {
             let micElement = document.getElementById('mic-indicator');
-            micElement.innerHTML = "🔒";
-            micElement.className = "w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner";
-            document.getElementById('speech-preview').innerText = msg.toUpperCase();
+            if (isActive) {
+                micElement.innerHTML = "🎙️";
+                micElement.className = "w-12 h-12 rounded-full bg-red-600 border border-red-400 flex items-center justify-center text-white text-base mic-pulse";
+                document.getElementById('speech-preview').innerText = "RADAR OTOMATIS AKTIF...";
+            } else {
+                micElement.innerHTML = "🔒";
+                micElement.className = "w-12 h-12 rounded-full bg-slate-950 border border-slate-800/80 flex items-center justify-center text-slate-600 text-base shadow-inner";
+                document.getElementById('speech-preview').innerText = "Radar Terkunci";
+            }
         }
 
         function concludeMatch() {
             clearInterval(gameTimer);
             isQuestionActive = false;
-            isListeningActive = false;
             isWaitingForNextSoal = false;
             try { recognition.stop(); } catch(e) {}
+            triggerMicUI(false);
 
-            lockRadarUI("Sistem Selesai");
-            document.getElementById('action-btn-container').innerHTML = "";
             document.getElementById('timer-bar').style.width = "0%";
             
             let totalSkor = matchScores[selectedTim];
@@ -422,7 +389,6 @@
         function resetSystem() {
             clearInterval(gameTimer);
             isQuestionActive = false;
-            isListeningActive = false;
             isWaitingForNextSoal = false;
             try { recognition.stop(); } catch(e) {}
             
@@ -436,18 +402,17 @@
             });
             
             document.getElementById('question-num').innerText = "0";
-            document.getElementById('status-timer-container').innerHTML = `Status: <strong id="timer-text" class="text-amber-400 text-sm">SIAP</strong>`;
+            document.getElementById('status-timer-container').innerHTML = `Sisa Waktu: <strong id="timer-text" class="text-amber-400 text-sm">5</strong> Detik`;
             document.getElementById('timer-bar').style.width = "100%";
-            document.getElementById('action-btn-container').innerHTML = "";
             
-            lockRadarUI("Radar Terkunci");
+            triggerMicUI(false);
             collectedColorsUnique.clear();
             document.getElementById('collected-badges').innerHTML = "";
             
             document.getElementById('game-display').innerHTML = `
                 <div class="max-w-md mx-auto text-center space-y-2">
-                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Sistem Tombol Manual Aktif</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memicu soal. Ketika peserta sudah siap membaca, tekan tombol <strong>"MULAI JAWAB"</strong> untuk membuka kunci mikrofon dan memulai hitung mundur.</p>
+                    <span class="text-xs font-bold text-amber-500/80 tracking-widest uppercase block">Radar Analisis Tri-Warna Otomatis</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">Klik salah satu nama TIM di sebelah kanan untuk memulai game. Mikrofon akan langsung menyala otomatis di setiap soal tanpa perlu menekan tombol tambahan.</p>
                 </div>
             `;
         }
