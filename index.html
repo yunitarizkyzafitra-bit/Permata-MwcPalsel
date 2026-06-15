@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PERMATA Premium - Multi Screen Fixed System</title>
+    <title>PERMATA Premium - Fixed Connection System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -44,7 +43,6 @@
             0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
             50% { transform: scale(1.05); box-shadow: 0 0 30px 10px rgba(239, 68, 68, 0.3); }
         }
-        #qrcode img { margin: 0 auto; border: 8px solid white; border-radius: 12px; }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 md:p-8 islamic-pattern">
@@ -56,12 +54,10 @@
             <button onclick="initMode('laptop')" class="flex-1 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 p-6 rounded-2xl hover:border-amber-500 duration-300 group">
                 <span class="text-4xl block mb-2">💻</span>
                 <span class="font-bold block text-sm group-hover:text-amber-400">LAYAR LAPTOP</span>
-                <span class="text-[11px] text-slate-500 block mt-1">Display utama panggung & skor</span>
             </button>
             <button onclick="initMode('hp')" class="flex-1 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 p-6 rounded-2xl hover:border-teal-500 duration-300 group">
                 <span class="text-4xl block mb-2">📱</span>
                 <span class="font-bold block text-sm group-hover:text-teal-400">KONTROL HP</span>
-                <span class="text-[11px] text-slate-500 block mt-1">Alat pemicu mic & validasi AI</span>
             </button>
         </div>
     </div>
@@ -83,7 +79,7 @@
                     <div class="flex justify-between items-center text-xs text-slate-400 font-semibold tracking-wide">
                         <span class="bg-slate-950/80 px-4 py-1.5 rounded-full border border-slate-800/80">SOAL: <strong id="question-num" class="text-amber-400 text-sm">0</strong> / 20</span>
                         <div id="sync-badge" class="bg-rose-950/40 text-rose-400 px-4 py-1.5 rounded-full border border-rose-900/50 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> <span id="sync-text">BELUM TERKONEKSI</span>
+                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> <span id="sync-text">MENGHUBUNGKAN...</span>
                         </div>
                         <span id="status-timer-container" class="bg-slate-950/80 px-4 py-1.5 rounded-full border border-slate-800/80 uppercase tracking-wider">
                             WAKTU: <strong id="timer-text" class="text-amber-400 text-sm">5</strong>S
@@ -93,13 +89,16 @@
                     <div id="game-display" class="py-4 my-auto w-full flex flex-col items-center justify-center">
                         </div>
 
-                    <div id="hp-control-deck" class="hidden bg-slate-950/80 border border-slate-800 rounded-2xl p-4 mt-2">
-                        <div class="flex items-center justify-between mb-2">
-                            <div id="mic-status-badge" class="text-[10px] font-bold px-3 py-1 bg-slate-900 rounded-full border border-slate-800 text-slate-500 uppercase">MIC OFF</div>
-                            <div class="text-[11px] font-bold text-amber-400">RADAR KONTROL HP AKTIF</div>
+                    <div id="hp-control-deck" class="hidden w-full max-w-xl mx-auto space-y-3 mt-4">
+                        <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                            <div id="mic-status-badge" class="text-[10px] font-bold px-3 py-1 bg-slate-900 text-slate-500 rounded-full border border-slate-800 uppercase">MIC OFF</div>
+                            <div id="speech-preview" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Menunggu laptop...</div>
                         </div>
-                        <div id="speech-preview" class="text-xs font-bold text-slate-400 bg-black/50 py-2.5 px-4 rounded-xl min-h-[36px] flex items-center justify-center border border-slate-900 uppercase tracking-wider">
-                            Menunggu inisiasi panggung...
+                        
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="handleManualClick('MERAH')" class="bg-red-600/20 border border-red-500 hover:bg-red-600/40 text-red-200 py-4 rounded-xl font-bold text-sm tracking-widest duration-200 active:scale-95">MERAH</button>
+                            <button onclick="handleManualClick('BIRU')" class="bg-blue-600/20 border border-blue-500 hover:bg-blue-600/40 text-blue-200 py-4 rounded-xl font-bold text-sm tracking-widest duration-200 active:scale-95">BIRU</button>
+                            <button onclick="handleManualClick('KUNING')" class="bg-amber-600/20 border border-amber-500 hover:bg-amber-600/40 text-amber-200 py-4 rounded-xl font-bold text-sm tracking-widest duration-200 active:scale-95">KUNING</button>
                         </div>
                     </div>
                 </div>
@@ -107,7 +106,7 @@
                 <div class="bg-slate-950/40 border border-amber-500/10 rounded-2xl p-3.5 flex items-center gap-3 shadow-xl">
                     <div class="text-xl text-amber-500">⚜️</div>
                     <div class="text-[10px] text-slate-400 leading-relaxed" id="system-instruction-note">
-                        Pastikan status di pojok atas sudah berubah warna HIJAU sebelum mengklik nama Tim di kanan.
+                        Sistem menggunakan Kamar Tunggal Tetap. Buka web ini di Laptop lalu di HP untuk sinkronisasi otomatis.
                     </div>
                 </div>
             </div>
@@ -156,7 +155,10 @@
         let deviceMode = ''; 
         let peer = null;
         let peerConnection = null;
-        let finalRoomID = '';
+        
+        // ID Kamar Statis Aman untuk Server Publik
+        const STATIC_ROOM_LAPTOP = "permata-room-panggung-utama-2026";
+        const STATIC_ROOM_HP = "permata-room-kontrol-juri-2026";
 
         let selectedTim = '';
         let matchScores = { Tarbiyah: 0, Tahsin: 0, Dirosa: 0 };
@@ -184,74 +186,23 @@
 
             try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetRoom = urlParams.get('room');
-
             if (deviceMode === 'laptop') {
-                finalRoomID = "permata-" + Math.floor(10000 + Math.random() * 90000);
+                setupLaptopScreen();
                 initPeerJSForLaptop();
             } else {
-                if (targetRoom) {
-                    finalRoomID = targetRoom;
-                    setupHPScreen();
-                    initPeerJSForHP();
-                } else {
-                    document.getElementById('game-display').innerHTML = `
-                        <div class="p-6 text-center text-rose-400 font-bold">
-                            ⚠️ Silakan scan QR Code langsung dari layar laptop menggunakan kamera HP Anda.
-                        </div>
-                    `;
-                }
+                setupHPScreen();
+                initPeerJSForHP();
             }
         }
 
-        function initPeerJSForLaptop() {
-            peer = new Peer(finalRoomID);
-            
-            peer.on('open', (id) => {
-                updateSyncUI(false, "MENUNGGU HP...");
-                const currentBaseUrl = window.location.href.split('?')[0];
-                const targetConnectUrl = `${currentBaseUrl}?room=${id}`;
-
-                document.getElementById('game-display').innerHTML = `
-                    <div class="max-w-md mx-auto text-center space-y-4 py-4">
-                        <span class="text-xs font-bold text-amber-400 tracking-widest uppercase block">PINDAI UNTUK HUBUNGKAN HANDPHONE</span>
-                        <div id="qrcode" class="my-2 flex justify-center"></div>
-                        <p class="text-[11px] text-slate-400 leading-relaxed px-4">Scan QR di atas dengan HP Juri/Peserta, otomatis menyinkronkan sistem internal.</p>
-                        <input type="text" value="${targetConnectUrl}" readonly class="w-full bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-[10px] text-teal-400 text-center select-all">
-                    </div>
-                `;
-                new QRCode(document.getElementById("qrcode"), { text: targetConnectUrl, width: 160, height: 160 });
-            });
-
-            peer.on('connection', (conn) => {
-                peerConnection = conn;
-                updateSyncUI(true, "TERINTEGRASI");
-                document.getElementById('game-display').innerHTML = `
-                    <div class="text-center py-8">
-                        <div class="text-5xl mb-3 animate-bounce">🟢</div>
-                        <h3 class="text-xl font-bold text-emerald-400 tracking-wider">KONEKSI BERHASIL DIDIRIKAN</h3>
-                        <p class="text-xs text-slate-400 mt-1">Silakan klik nama <strong class="text-amber-400">TIM</strong> di sebelah kanan untuk memulai kuis.</p>
-                    </div>
-                `;
-                listenToHPMessages();
-            });
-        }
-
-        function initPeerJSForHP() {
-            peer = new Peer();
-            peer.on('open', () => {
-                updateSyncUI(false, "MENYAMBUNGKAN...");
-                let attempts = setInterval(() => {
-                    if (peer.destroyed) { clearInterval(attempts); return; }
-                    peerConnection = peer.connect(finalRoomID);
-                    peerConnection.on('open', () => {
-                        clearInterval(attempts);
-                        updateSyncUI(true, "TERKONEKSI LAPTOP");
-                        listenToLaptopMessages();
-                    });
-                }, 1200);
-            });
+        function setupLaptopScreen() {
+            document.getElementById('game-display').innerHTML = `
+                <div class="text-center space-y-2 py-8">
+                    <div class="text-4xl animate-pulse">📡</div>
+                    <h3 class="text-sm font-bold text-amber-400 uppercase tracking-widest">Menunggu Koneksi Handphone</h3>
+                    <p class="text-xs text-slate-400">Silakan buka halaman web ini di HP Anda sekarang dan pilih mode "KONTROL HP".</p>
+                </div>
+            `;
         }
 
         function setupHPScreen() {
@@ -259,10 +210,10 @@
             document.getElementById('btn-master-reset').classList.add('hidden');
             
             document.getElementById('game-display').innerHTML = `
-                <div class="text-center py-6">
-                    <div class="text-3xl mb-2">📱</div>
-                    <p class="text-xs text-slate-400">Smartphone aktif sebagai penerima ketukan mic suara.</p>
-                    <p class="text-[10px] text-amber-500 font-bold mt-1">Tunggu Juri memilih Tim di Laptop...</p>
+                <div class="text-center py-4">
+                    <div class="text-2xl mb-1">📱</div>
+                    <p class="text-xs text-slate-300 font-semibold">HP Siap Digunakan</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">Bisa menjawab menggunakan suara langsung atau menekan tombol di bawah.</p>
                 </div>
             `;
 
@@ -286,13 +237,13 @@
                         if (currentSequenceIndex >= 3) return;
                         let targetWarnaSekarang = currentTargetSequence[currentSequenceIndex];
 
-                        if (targetWarnaSekarang === "MERAH" && (kata.includes("merah") || kata.includes("mera") || kata.includes("mela") || kata.includes("mrah"))) {
+                        if (targetWarnaSekarang === "MERAH" && (kata.includes("merah") || kata.includes("mera") || kata.includes("mela"))) {
                             validateSequentialColorOnHP();
                         }
                         else if (targetWarnaSekarang === "BIRU" && (kata.includes("biru") || kata.includes("bilu") || kata.includes("biro"))) {
                             validateSequentialColorOnHP();
                         }
-                        else if (targetWarnaSekarang === "KUNING" && (kata.includes("kuning") || kata.includes("kunin") || kata.includes("kunig") || kata.includes("uning"))) {
+                        else if (targetWarnaSekarang === "KUNING" && (kata.includes("kuning") || kata.includes("kunin") || kata.includes("uning"))) {
                             validateSequentialColorOnHP();
                         }
                     });
@@ -302,6 +253,43 @@
                     if (isQuestionActive && !isWaitingForNextSoal) { try { recognition.start(); } catch(e) {} }
                 };
             }
+        }
+
+        function initPeerJSForLaptop() {
+            peer = new Peer(STATIC_ROOM_LAPTOP);
+            
+            peer.on('open', () => { updateSyncUI(false, "SIAP TERHUBUNG"); });
+            
+            peer.on('connection', (conn) => {
+                peerConnection = conn;
+                updateSyncUI(true, "TERINTEGRASI");
+                document.getElementById('game-display').innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-5xl mb-3 animate-bounce">🟢</div>
+                        <h3 class="text-xl font-bold text-emerald-400 tracking-wider">SISTEM AKTIF & TERHUBUNG</h3>
+                        <p class="text-xs text-slate-400 mt-1">Silakan klik salah satu nama <strong class="text-amber-400">TIM</strong> pada papan skor kanan untuk memunculkan kotak soal.</p>
+                    </div>
+                `;
+                listenToHPMessages();
+            });
+        }
+
+        function initPeerJSForHP() {
+            peer = new Peer(STATIC_ROOM_HP);
+            
+            peer.on('open', () => {
+                updateSyncUI(false, "MENGHUBUNGKAN...");
+                let attempts = setInterval(() => {
+                    if (peer.destroyed) { clearInterval(attempts); return; }
+                    peerConnection = peer.connect(STATIC_ROOM_LAPTOP);
+                    
+                    peerConnection.on('open', () => {
+                        clearInterval(attempts);
+                        updateSyncUI(true, "TERKONEKSI");
+                        listenToLaptopMessages();
+                    });
+                }, 1000);
+            });
         }
 
         function updateSyncUI(connected, text) {
@@ -341,6 +329,7 @@
                     document.getElementById('question-num').innerText = data.qNum;
                     document.getElementById('mic-status-badge').innerText = "🎙️ MIC ON";
                     document.getElementById('mic-status-badge').className = "text-[10px] font-bold px-3 py-1 bg-red-950 text-red-400 rounded-full border border-red-900 pulse-mic";
+                    document.getElementById('speech-preview').innerText = "KIRI KE KANAN...";
                     
                     try { recognition.stop(); setTimeout(() => { recognition.start(); }, 50); } catch(e) { try{recognition.start();}catch(x){} }
                 }
@@ -355,15 +344,23 @@
                     document.getElementById(`score-${data.tim}`).innerText = data.score;
                 }
                 if (data.type === 'RESET') {
-                    window.location.href = window.location.href.split('?')[0];
+                    location.reload();
                 }
             });
         }
 
+        function handleManualClick(warna) {
+            if (!isQuestionActive || isWaitingForNextSoal) return;
+            
+            let targetWarnaSekarang = currentTargetSequence[currentSequenceIndex];
+            if (warna === targetWarnaSekarang) {
+                document.getElementById('speech-preview').innerText = "KETUK MANUAL: " + warna;
+                validateSequentialColorOnHP();
+            }
+        }
+
         function triggerSelectTim(tim) {
             if (deviceMode !== 'laptop') return; 
-            
-            // Juri bisa memainkan game secara mandiri jika HP belum terhubung
             if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
 
             clearInterval(gameTimer);
@@ -539,7 +536,7 @@
 
         function resetSystemMaster() {
             if (peerConnection) { peerConnection.send({ type: 'RESET' }); }
-            setTimeout(() => { window.location.href = window.location.href.split('?')[0]; }, 300);
+            setTimeout(() => { location.reload(); }, 300);
         }
     </script>
 </body>
